@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+	echo "No className given."
+	exit 1
+fi
+
+className=I$(echo ${1}| sed 's/\(.\)/\U\1/')
+fileName=${className}
+location=${2+"${2}/"}
+
+
+cat << _EOF_ >> ${location}${fileName}.java
+interface ${className} {
+
+};
+_EOF_

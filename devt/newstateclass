@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+	echo "No className given."
+	exit 1
+fi
+
+className=$(echo ${1}| sed 's/\(.\)/\U\1/')
+fileName=${className}
+location=${2+"${2}/"}
+
+
+cat << _EOF_ >> ${location}${fileName}.java
+public class ${className}
+{
+	private int a_iID = -1;
+
+	public ${className}() {
+
+	}
+
+	public int GetId() {
+		return a_iID;
+	}
+
+	public ${className}State GetState() {
+		return new  ${className}State(a_iID);
+	}
+
+	public class  ${className}State {
+		public int iID;
+
+		public  ${className}State(int iID) {
+			this.iID = iID;
+		}
+	}
+}
+_EOF_

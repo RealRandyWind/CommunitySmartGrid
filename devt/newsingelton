@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+	echo "No className given."
+	exit 1
+fi
+
+className=S$(echo ${1}| sed 's/\(.\)/\U\1/')
+fileName=${className}
+location=${2+"${2}/"}
+
+
+cat << _EOF_ >> ${location}${fileName}.java
+public class ${className} {
+	private static ${className} a_oInstance = null;
+
+	private ${className}() {
+
+	}
+
+	public static ${className}* GetInstance() {
+		if(a_oInstance != null) { return a_oInstance; }
+		a_oInstance = new ${className}();
+		return a_oInstance;
+	}
+};
+_EOF_
