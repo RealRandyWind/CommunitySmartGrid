@@ -1,7 +1,6 @@
 libs
 deps
 bin
-tests
 tests/bin
+tests/deps
 tests/bin/objects
-tests/bin/deps
