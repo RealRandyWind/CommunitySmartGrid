@@ -19,16 +19,20 @@ LIBCOMPILER=jar cfv
 LIBCOMPILERFLAGS=
 
 #PREPARE DEPENDENCY AND APPLICATIONS
-#$(shell ls $(APP_DIR))
 APPS=$(shell ls $(APP_DIR))
 BASE=smartgrid
+DEPS=
+
+#$(subst :,$(space),$(LD_LIBRARY_PATH))
 
 #PREPARING
 _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
+_CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries 
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
+export _CLASSPATHS
 export _RLS_DIR
 export _TST_DIR
 export COMPILER
@@ -38,7 +42,7 @@ export LIBCOMPILERFLAGS
 
 #BUILDING AND COMPILING
 $(_RLS_DIR)/libraries/$(BASE).jar: $(_BASE_SRC)
-	$(COMPILER) $(COMPILERFLAGS) $(_BASE_SRC) -d $(_RLS_DIR)/objects/
+	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/objects/
 	$(LIBCOMPILER) $@ $(_RLS_DIR)/libraries/
 
 $(SUBDIRS):
