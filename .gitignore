@@ -1,0 +1,7 @@
+libs
+deps
+bin
+tests
+tests/bin
+tests/bin/objects
+tests/bin/deps
