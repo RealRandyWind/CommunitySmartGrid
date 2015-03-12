@@ -1,3 +1,5 @@
+package com.nativedevelopment.smartgrid.server.subscription;
+
 public class Main {
 	private static Main a_oInstance = null;
 	private static int a_iExitCode = 0;

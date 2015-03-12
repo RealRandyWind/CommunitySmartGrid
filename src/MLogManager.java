@@ -1,3 +1,5 @@
+package com.nativedevelopment.smartgrid;
+
 public class MLogManager
 {
 	public enum ELogType{
