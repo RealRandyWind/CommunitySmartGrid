@@ -29,7 +29,7 @@ DEPS=
 _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
-_CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries 
+_CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
 export _CLASSPATHS
@@ -57,7 +57,7 @@ clean:
 	rm -rf $(_RLS_DIR)/*.jar $(_RLS_DIR)/objects/* $(_RLS_DIR)/libraries/*
 
 clean-tests:
-	rm -rf $(_TST_DIR)/$(RLS_DIR)/*.jar $(_TST_DIR)/$(RLS_DIR)/objects/*
+	rm -rf $(_TST_DIR)/bin/*.jar $(_TST_DIR)/$(RLS_DIR)/bin/objects/*
 
 test:
 	$(MAKE) -C $(TST_DIR)
@@ -71,7 +71,7 @@ dirs:
 	mkdir -p $(SRC_DIR)
 	mkdir -p $(APP_DIR)
 	mkdir -p $(TST_DIR)
-	mkdir -p $(TST_DIR)/objects
-	mkdir -p $(TST_DIR)/$(SRC_DIR)
-	mkdir -p $(TST_DIR)/$(RLS_DIR)
-	mkdir -p $(TST_DIR)/$(DEP_DIR)
+	mkdir -p $(TST_DIR)/bin/objects
+	mkdir -p $(TST_DIR)/src
+	mkdir -p $(TST_DIR)/bin
+	mkdir -p $(TST_DIR)/deps

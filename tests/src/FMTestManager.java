@@ -1,40 +1,29 @@
-#!/bin/bash
+package com.nativedevelopment.smartgrid.tests;
 
-if [ -z $1 ]; then
-	echo "No className given."
-	exit 1
-fi
-
-className=FM$(echo ${1}| sed 's/\(.\)/\U\1/')
-fileName=${className}
-productInterfaceName=${2}
-location=${3+"${3}/"}
-
-
-cat << _EOF_ >> ${location}${fileName}.java
 import java.util.Vector;
 import java.util.List;
 
-public class ${className} {
-	public enum E${productInterfaceName}Type {
+
+public class FMTestManager {
+	public enum ETestCaseType {
 		DEFAULT
 	}
 
-	private static ${className} a_oInstance = null;
+	private static FMTestManager a_oInstance = null;
 	private boolean a_bIsSetUp = false;
 	private boolean a_bIsShutDown = true;
 	
-	private Vector<${productInterfaceName}> a_lProducts = null;
+	private Vector<TestCase> a_lProducts = null;
 
-	private ${className}() {
+	private FMTestManager() {
 		a_bIsSetUp = false;
 		a_bIsShutDown = true;
-		a_lProducts = new Vector<${productInterfaceName}>();
+		a_lProducts = new Vector<TestCase>();
 	}
 
-	public static ${className} GetInstance() {
+	public static FMTestManager GetInstance() {
 		if(a_oInstance != null) { return a_oInstance; }
-		a_oInstance = new ${className}();
+		a_oInstance = new FMTestManager();
 		return a_oInstance;
 	}
 
@@ -44,7 +33,7 @@ public class ${className} {
 		}
 		a_bIsShutDown = false;
 
-		// TODO ${className} SetUp
+		// TODO FMTestManager SetUp
 
 		a_bIsSetUp = true;
 	}
@@ -55,12 +44,12 @@ public class ${className} {
 		}
 		a_bIsSetUp = false;
 
-		// TODO ${className} ShutDown
+		// TODO FMTestManager ShutDown
 
 		a_bIsShutDown = true;
 	}
 
-	private ${productInterfaceName} Fx_BuiltDefaultProduct() {
+	private TestCase Fx_BuiltDefaultProduct() {
 		return null;
 	}
 
@@ -68,8 +57,8 @@ public class ${className} {
 		
 	}
 	
-	public ${productInterfaceName} BuiltProduct(E${productInterfaceName}Type eType) {
-		${productInterfaceName} oProduct = null;
+	public TestCase BuiltProduct(ETestCaseType eType) {
+		TestCase oProduct = null;
 
 		switch (eType) 
 		{
@@ -81,16 +70,16 @@ public class ${className} {
 		return oProduct;
 	}
 
-	public ${productInterfaceName} GetProduct(int iProduct) {
+	public TestCase GetProduct(int iProduct) {
 		if(iProduct < 0 || iProduct >= a_lProducts.size()) { return null; }
 	
 		return a_lProducts.get(iProduct);
 	}
 
-	public List<${productInterfaceName}> GetProducts(Iterable<Integer> liProducts) {
-		Vector<${productInterfaceName}> loProducts = new Vector<${productInterfaceName}>();
+	public List<TestCase> GetProducts(Iterable<Integer> liProducts) {
+		Vector<TestCase> loProducts = new Vector<TestCase>();
 		for(int iProduct : liProducts) {
-			${productInterfaceName} oProduct = GetProduct(iProduct);
+			TestCase oProduct = GetProduct(iProduct);
 			if(oProduct == null) { continue; }
 			loProducts.add(oProduct);
 		}
@@ -99,7 +88,7 @@ public class ${className} {
 	}
 
 	public void DestroyProduct(int iProduct) {
-		${productInterfaceName} oProduct = GetProduct(iProduct);
+		TestCase oProduct = GetProduct(iProduct);
 		if(oProduct == null) { return; }
 		a_lProducts.set(iProduct, null);
 	}
@@ -108,4 +97,3 @@ public class ${className} {
 		for(int iProduct : liProducts) { DestroyProduct(iProduct); }
 	}
 }
-_EOF_

@@ -1,38 +1,32 @@
-#!/bin/bash
+package com.nativedevelopment.smartgrid.tests;
 
-className=Main
-fileName=${className}
-location=${1+"${1}/"}
-
-
-cat << _EOF_ >> ${location}${fileName}.java
-public class ${className} {
-	private static ${className} a_oInstance = null;
+public class Main {
+	private static Main a_oInstance = null;
 	private static int a_iExitCode = 0;
 	private boolean a_bIsRunning = false;
 
-	private ${className}() {
+	private Main() {
 		a_bIsRunning = false;
 	}
 
 	private void Fx_ShutDown() {
 		if(!a_bIsRunning) {
-			System.out.printf("_WARNING: [${className}.Entry] entry already not running\n");
+			System.out.printf("_WARNING: [Main.Entry] entry already not running\n");
 		}
 
-		// TODO ${className} ShutDown
+		// TODO Main ShutDown
 
 		a_bIsRunning = false;
 	}
 
-	public static ${className} GetInstance() {
+	public static Main GetInstance() {
 		if(a_oInstance != null) { return a_oInstance; }
-		a_oInstance = new ${className}();
+		a_oInstance = new Main();
 		return a_oInstance;
 	}
 
 	public static void ErrorShutDown() {
-		${className}.ErrorShutDown(1);
+		Main.ErrorShutDown(1);
 	}
 
 	public static void ErrorShutDown(int iExitCode) {
@@ -43,7 +37,7 @@ public class ${className} {
 
 	int Entry() {
 		if(a_bIsRunning) {
-			System.out.printf("_WARNING: [${className}.Entry] entry already running\n");
+			System.out.printf("_WARNING: [Main.Entry] entry already running\n");
 			return 1;
 		}
 		a_bIsRunning = true;
@@ -56,9 +50,8 @@ public class ${className} {
 
 	public static void main(String[] arguments)
 	{
-		${className} oApplication = ${className}.GetInstance();
+		Main oApplication = Main.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
 	}
 }
-_EOF_
