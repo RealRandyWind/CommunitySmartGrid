@@ -1,5 +1,7 @@
 package com.nativedevelopment.smartgrid.client;
 
+import com.nativedevelopment.smartgrid.MLogManager
+
 public class Main {
 	private static Main a_oInstance = null;
 	private static int a_iExitCode = 0;

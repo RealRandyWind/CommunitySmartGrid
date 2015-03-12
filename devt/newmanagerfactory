@@ -23,7 +23,6 @@ public class ${className} {
 	private static ${className} a_oInstance = null;
 	private boolean a_bIsSetUp = false;
 	private boolean a_bIsShutDown = true;
-	
 	private Vector<${productInterfaceName}> a_lProducts = null;
 
 	private ${className}() {

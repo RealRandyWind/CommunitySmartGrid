@@ -35,7 +35,7 @@ public class MLogManager
 
 	public void SetUp() {
 		if(a_bIsSetUp) {
-			Warning("[MLogManager.SetUp] already setup already.",0);
+			Warning("[MLogManager.SetUp] setup already.",0);
 			return; 
 		}
 		a_bIsShutDown = false;
@@ -43,12 +43,12 @@ public class MLogManager
 		// TODO MLogManager SetUp
 
 		a_bIsSetUp = true;
-		Success("[MLogManager.SetUp] setup MLogManager is done.",0);
+		Success("[MLogManager.SetUp] setup is done.",0);
 	}
 
 	public void ShutDown() {
 		if(a_bIsShutDown) {
-			System.out.printf("_" + LOG_WARNING_STR + "[MLogManager.ShutDown] shutdown already.\n");
+			System.out.printf("_" + LOG_WARNING_STR + "[MLogManager.ShutDown] already shutdown.\n");
 			return; 
 		}
 		a_bIsSetUp = false;
@@ -56,7 +56,7 @@ public class MLogManager
 		// TODO MLogManager ShutDown
 
 		a_bIsShutDown = true;
-		System.out.printf("_" + LOG_SUCCESS_STR + "[MLogManager.ShutDown] shutdown already.\n");
+		System.out.printf("_" + LOG_SUCCESS_STR + "[MLogManager.ShutDown] shutdown is done.\n");
 	}
 
 	public void SetLogFile(String sFilePath) {
