@@ -13,6 +13,7 @@ public class MLogManager
 	private static final String LOG_INFO_STR = "INFO: ";
 	private static final String LOG_WARNING_STR = "WARNING: ";
 	private static final String LOG_DEBUG_STR = "DEBUG: ";
+	private static final String LOG_TEST_STR = "TEST: ";
 
 	private static final long LOG_WARNING_USLEEP_TIME = (long)(2*1e+6);
 	private static final long LOG_FILE_FLUSHRATE = 32;
@@ -115,6 +116,15 @@ public class MLogManager
 
 	public void Debug(String sFormat, int iCode, Object... olArgs) {
 		String sString = String.format(LOG_DEBUG_STR + sFormat + "\n", olArgs);
+		Fx_PrintLog(sString,iCode);
+		/*
+		Fx_WriteLog(sString,5,iCode)
+		if(a_sTypeIsPrint[5]) { Fx_PrintLog(sString,iCode)}
+		*/
+	}
+
+	public void Test(String sFormat, int iCode, Object... olArgs) {
+		String sString = String.format(LOG_TEST_STR + sFormat + "\n", olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,5,iCode)
