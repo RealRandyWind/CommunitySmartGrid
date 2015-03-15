@@ -97,7 +97,7 @@ public class FMConnectionManager {
 	public void DestroyProduct(int iProduct) {
 		Connection oProduct = GetProduct(iProduct);
 		if(oProduct == null) {
-			ogManager.Warning("[FMConnectionManager.DestroyProduct] product id(%d) does not exist.",0,iProduct);
+			logManager.Warning("[FMConnectionManager.DestroyProduct] product id(%d) does not exist.",0,iProduct);
 			return; 
 		}
 		a_lProducts.set(iProduct, null);

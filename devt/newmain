@@ -6,7 +6,7 @@ location=${1+"${1}/"}
 
 
 cat << _EOF_ >> ${location}${fileName}.java
-public class ${className} {
+public abstract class ${className} {
 	private static ${className} a_oInstance = null;
 	private static int a_iExitCode = 0;
 	private boolean a_bIsRunning = false;
@@ -15,12 +15,15 @@ public class ${className} {
 		a_bIsRunning = false;
 	}
 
+	abstract void ShutDown();
+	abstract void StartUp();
+
 	private void Fx_ShutDown() {
 		if(!a_bIsRunning) {
 			System.out.printf("_WARNING: [${className}.Entry] entry already not running\n");
 		}
 
-		// TODO ${className} ShutDown
+		ShutDown();
 
 		a_bIsRunning = false;
 	}
@@ -48,7 +51,7 @@ public class ${className} {
 		}
 		a_bIsRunning = true;
 
-		// TODO Code here
+		StartUp();
 
 		Fx_ShutDown();
 		return a_iExitCode;

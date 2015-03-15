@@ -1,20 +1,28 @@
-package com.nativedevelopment.smartgrid.server.storage;
+package com.nativedevelopment.smartgrid;
 
 public class Main {
-	private static Main a_oInstance = null;
+	protected static Main a_oInstance = null;
 	private static int a_iExitCode = 0;
 	private boolean a_bIsRunning = false;
 
-	private Main() {
+	protected Main() {
 		a_bIsRunning = false;
+	}
+
+	protected void ShutDown() {
+		System.out.printf("_WARNING: [Main.ShutDown] not yet implemented\n");
+	}
+
+	protected void StartUp() {
+		System.out.printf("_WARNING: [Main.StartUp] not yet implemented\n");
 	}
 
 	private void Fx_ShutDown() {
 		if(!a_bIsRunning) {
-			System.out.printf("_WARNING: [Main.Fx_ShutDown] already not running.\n");
+			System.out.printf("_WARNING: [Main.Entry] already not running\n");
 		}
 
-		// TODO Main ShutDown
+		ShutDown();
 
 		a_bIsRunning = false;
 	}
@@ -35,21 +43,16 @@ public class Main {
 		System.exit(a_iExitCode);
 	}
 
-	int Entry() {
+	public int Entry() {
 		if(a_bIsRunning) {
-			System.out.printf("_WARNING: [Main.Entry] already running.\n");
+			System.out.printf("_WARNING: [Main.Entry] already running\n");
 			return 1;
 		}
 		a_bIsRunning = true;
 
+		StartUp();
+
 		Fx_ShutDown();
 		return a_iExitCode;
-	}
-
-	public static void main(String[] arguments)
-	{
-		Main oApplication = Main.GetInstance();
-		int iEntryReturn = oApplication.Entry();
-		System.exit(a_iExitCode);
 	}
 }
