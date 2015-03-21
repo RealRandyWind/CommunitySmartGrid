@@ -4,6 +4,8 @@ UNAME_S=$(shell uname -s)
 UNAME_P=$(shell uname -p)
 ROOT_DIR=$(shell pwd)
 
+PACKAGE=com.nativedevelopment.smartgrid
+
 #DIRECTORIES
 LIB_DIR=libs
 SRC_DIR=src
@@ -20,10 +22,8 @@ LIBCOMPILERFLAGS=cfv
 APPCOMPILER=jar
 APPCOMPILERFLAGS=cvfm
 
-
 #PREPARE DEPENDENCY AND APPLICATIONS
 APPS=$(shell ls $(APP_DIR))
-
 BASE=smartgrid
 DEPS=
 
@@ -36,6 +36,7 @@ _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
 _CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries:$(_RLS_DIR)/objects
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
+export PACK
 export _CLASSPATHS
 export _RLS_DIR
 export _TST_DIR
