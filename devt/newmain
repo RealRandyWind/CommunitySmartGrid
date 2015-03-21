@@ -57,8 +57,7 @@ public abstract class ${className} {
 		return a_iExitCode;
 	}
 
-	public static void main(String[] arguments)
-	{
+	public static void main(String[] arguments) {
 		${className} oApplication = ${className}.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
