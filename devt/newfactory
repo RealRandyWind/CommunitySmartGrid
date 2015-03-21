@@ -41,8 +41,7 @@ public class ${className} {
 	public ${productInterfaceName} BuiltProduct(E${productInterfaceName}Type eType) {
 		${productInterfaceName} oProduct;
 
-		switch (eType) 
-		{
+		switch (eType) {
 			case DEFAULT: oProduct = Fx_BuiltDefaultProduct(); break;
 			default: break;
 		}

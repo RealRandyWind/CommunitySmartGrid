@@ -21,8 +21,7 @@ public class AnalyticServer extends Main {
 		return a_oInstance;
 	}
 
-	public static void main(String[] arguments)
-	{
+	public static void main(String[] arguments) {
 		Main oApplication = AnalyticServer.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
