@@ -13,8 +13,8 @@ public class Main {
 		System.out.printf("_WARNING: [Main.ShutDown] not yet implemented\n");
 	}
 
-	protected void StartUp() {
-		System.out.printf("_WARNING: [Main.StartUp] not yet implemented\n");
+	protected void SetUp() {
+		System.out.printf("_WARNING: [Main.SetUp] not yet implemented\n");
 	}
 
 	private void Fx_ShutDown() {
@@ -50,7 +50,7 @@ public class Main {
 		}
 		a_bIsRunning = true;
 
-		StartUp();
+		SetUp();
 
 		Fx_ShutDown();
 		return a_iExitCode;

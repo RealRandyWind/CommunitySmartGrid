@@ -1,18 +1,29 @@
 package com.nativedevelopment.smartgrid.server.managment;
 
 import com.nativedevelopment.smartgrid.Main;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.MConnectionManager;
 
 public class ManagmentServer extends Main {
+	private MLogManager mLogManager = MLogManager.GetInstance();
+	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
+	
 	protected ManagmentServer() {
 
 	}
 
 	protected void ShutDown() {
+		mConnectionMannager.ShutDown();
+		mLogManager.ShutDown();
+
 		System.out.printf("_SUCCESS: [ManagmentServer.ShutDown]\n");
 	}
 
-	protected void StartUp() {
-		System.out.printf("_SUCCESS: [ManagmentServer.StartUp]\n");
+	protected void SetUp() {
+		mLogManager.SetUp();
+		mConnectionMannager.SetUp();
+
+		mLogManager.Success("[ManagmentServer.SetUp]",0);
 	}
 
 	public static Main GetInstance() {

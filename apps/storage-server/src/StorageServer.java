@@ -1,18 +1,29 @@
 package com.nativedevelopment.smartgrid.server.storage;
 
 import com.nativedevelopment.smartgrid.Main;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.MConnectionManager;
 
 public class StorageServer extends Main {
+	private MLogManager mLogManager = MLogManager.GetInstance();
+	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
+	
 	protected StorageServer() {
 
 	}
 
 	protected void ShutDown() {
+		mConnectionMannager.ShutDown();
+		mLogManager.ShutDown();
+
 		System.out.printf("_SUCCESS: [StorageServer.ShutDown]\n");
 	}
 
-	protected void StartUp() {
-		System.out.printf("_SUCCESS: [StorageServer.StartUp]\n");
+	protected void SetUp() {
+		mLogManager.SetUp();
+		mConnectionMannager.SetUp();
+
+		mLogManager.Success("[StorageServer.SetUp]",0);
 	}
 
 	public static Main GetInstance() {

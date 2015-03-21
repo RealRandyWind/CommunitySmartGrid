@@ -7,6 +7,16 @@ public class MLogManager
 		ANY,ALL,DEFAULT
 	}
 
+	private static final String LOG_RESET_COL = "\u001b[0m";
+
+	private static final String LOG_LOG_COL = LOG_RESET_COL;
+	private static final String LOG_ERROR_COL = "\u001b[31m";
+	private static final String LOG_SUCCESS_COL = "\u001b[32m";
+	private static final String LOG_INFO_COL = "\u001b[36m";
+	private static final String LOG_WARNING_COL = "\u001b[33m";
+	private static final String LOG_DEBUG_COL = LOG_RESET_COL;
+	private static final String LOG_TEST_COL = "\u001b[34m";
+
 	private static final String LOG_LOG_STR = "LOG: ";
 	private static final String LOG_ERROR_STR = "ERROR: ";
 	private static final String LOG_SUCCESS_STR = "SUCCESS: ";
@@ -69,7 +79,7 @@ public class MLogManager
 	}
 
 	public void Log(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_LOG_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_LOG_COL + LOG_LOG_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,0,iCode)
@@ -78,7 +88,7 @@ public class MLogManager
 	}
 
 	public void Success(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_SUCCESS_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_SUCCESS_COL + LOG_SUCCESS_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,1,iCode)
@@ -87,7 +97,7 @@ public class MLogManager
 	}
 
 	public void Info(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_INFO_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_INFO_COL + LOG_INFO_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,2,iCode)
@@ -96,7 +106,7 @@ public class MLogManager
 	}
 
 	public void Warning(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_WARNING_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_WARNING_COL + LOG_WARNING_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,3,iCode)
@@ -105,17 +115,17 @@ public class MLogManager
 	}
 
 	public void Error(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_ERROR_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_ERROR_COL + LOG_ERROR_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,4,iCode)
 		if(a_sTypeIsPrint[4]) { Fx_PrintLog(sString,iCode)}
-		Main.ErrorShutDown();
 		*/
+		Main.ErrorShutDown();
 	}
 
 	public void Debug(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_DEBUG_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_DEBUG_COL + LOG_DEBUG_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,5,iCode)
@@ -124,7 +134,7 @@ public class MLogManager
 	}
 
 	public void Test(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_TEST_STR + sFormat + "\n", olArgs);
+		String sString = String.format(LOG_TEST_COL + LOG_TEST_STR + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,5,iCode)
@@ -134,6 +144,6 @@ public class MLogManager
 
 	private void Fx_PrintLog(String sMessage,int iCode) {
 		/*Todo make treath prove*/
-		System.out.print(sMessage);
+		System.out.print(sMessage + LOG_RESET_COL + "\n");
 	}
 }

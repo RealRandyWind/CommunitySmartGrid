@@ -1,18 +1,29 @@
 package com.nativedevelopment.smartgrid.server.analytic;
 
 import com.nativedevelopment.smartgrid.Main;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.MConnectionManager;
 
 public class AnalyticServer extends Main {
+	private MLogManager mLogManager = MLogManager.GetInstance();
+	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
+	
 	protected AnalyticServer() {
 
 	}
 
 	protected void ShutDown() {
+		mConnectionMannager.ShutDown();
+		mLogManager.ShutDown();
+
 		System.out.printf("_SUCCESS: [AnalyticServer.ShutDown]\n");
 	}
 
-	protected void StartUp() {
-		System.out.printf("_SUCCESS: [AnalyticServer.StartUp]\n");
+	protected void SetUp() {
+		mLogManager.SetUp();
+		mConnectionMannager.SetUp();
+
+		mLogManager.Success("[AnalyticServer.SetUp]",0);
 	}
 
 	public static Main GetInstance() {
