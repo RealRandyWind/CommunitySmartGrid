@@ -1,5 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
+import java.net.Socket;
+
 public class Connection implements Runnable{
 	private Socket a_oSocket = null;
 	private Thread a_oThread = null;
