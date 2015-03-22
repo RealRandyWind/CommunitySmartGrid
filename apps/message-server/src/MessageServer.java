@@ -13,8 +13,8 @@ import java.io.IOException;
 public class MessageServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
-    private Channel channel;
-    private final static String ACTION_QUEUE_NAME = "actions";
+	private Channel channel;
+	private final static String ACTION_QUEUE_NAME = "actions";
 	
 	protected MessageServer() {
 
@@ -31,20 +31,20 @@ public class MessageServer extends Main {
 		mLogManager.SetUp();
 		mConnectionMannager.SetUp();
 
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        Connection connection = null;
-        mLogManager.Info("Connecting to localhost...", 0);
-        try {
-            connection = factory.newConnection();
-            channel = connection.createChannel();
-            channel.queueDeclare(ACTION_QUEUE_NAME, false, false, false, null);
+		ConnectionFactory factory = new ConnectionFactory();
+		factory.setHost("localhost");
+		Connection connection = null;
+		mLogManager.Info("Connecting to localhost...", 0);
+		try {
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+			channel.queueDeclare(ACTION_QUEUE_NAME, false, false, false, null);
 
-            mLogManager.Success("Connected", 0);
-            mLogManager.Success("[MessageServer.SetUp]", 0);
-        } catch (IOException e) {
-            mLogManager.Error(e.getMessage(), 0);
-        }
+			mLogManager.Success("Connected", 0);
+			mLogManager.Success("[MessageServer.SetUp]", 0);
+		} catch (IOException e) {
+			mLogManager.Error(e.getMessage(), 0);
+		}
 
 	}
 
@@ -54,27 +54,27 @@ public class MessageServer extends Main {
 		return a_oInstance;
 	}
 
-    public void DoMain() {
-        mLogManager.Info("Waiting for messages...", 0);
+	public void DoMain() {
+		mLogManager.Info("Waiting for messages...", 0);
 
-        QueueingConsumer consumer = new QueueingConsumer(channel);
+		QueueingConsumer consumer = new QueueingConsumer(channel);
 
 
-        while (true) {
-            QueueingConsumer.Delivery delivery = null;
-            try {
-                channel.basicConsume(ACTION_QUEUE_NAME, true, consumer);
-                delivery = consumer.nextDelivery();
-                String message = new String(delivery.getBody());
-                mLogManager.Info("Received '" + message + "'", 0);
-            } catch (InterruptedException e) {
-                mLogManager.Error(e.getMessage(), 0);
-            } catch (IOException e) {
-                mLogManager.Error(e.getMessage(), 0);
-            }
+		while (true) {
+			QueueingConsumer.Delivery delivery = null;
+			try {
+				channel.basicConsume(ACTION_QUEUE_NAME, true, consumer);
+				delivery = consumer.nextDelivery();
+				String message = new String(delivery.getBody());
+				mLogManager.Info("Received '" + message + "'", 0);
+			} catch (InterruptedException e) {
+				mLogManager.Error(e.getMessage(), 0);
+			} catch (IOException e) {
+				mLogManager.Error(e.getMessage(), 0);
+			}
 
-        }
-    }
+		}
+	}
 
 	public static void main(String[] arguments)	{
 		Main oApplication = MessageServer.GetInstance();

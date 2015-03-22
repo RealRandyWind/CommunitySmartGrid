@@ -43,9 +43,9 @@ public class Main {
 		System.exit(a_iExitCode);
 	}
 
-    public void DoMain() {
+	public void DoMain() {
 
-    }
+	}
 
 	public int Entry() {
 		if(a_bIsRunning) {
@@ -57,7 +57,7 @@ public class Main {
 		SetUp();
 
 		Fx_ShutDown();
-        DoMain();
+		DoMain();
 		return a_iExitCode;
 	}
 }
