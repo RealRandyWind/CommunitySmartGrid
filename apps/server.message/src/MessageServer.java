@@ -14,7 +14,7 @@ public class MessageServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
 	private Channel channel;
-	private final static String ACTION_QUEUE_NAME = "actions";
+	public final static String ACTION_QUEUE_NAME = "actions";
 	
 	protected MessageServer() {
 
@@ -32,7 +32,7 @@ public class MessageServer extends Main {
 		mConnectionMannager.SetUp();
 
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("[MessageServer.SetUp] localhost");
+		factory.setHost("localhost");
 		Connection connection = null;
 		mLogManager.Info("[MessageServer.SetUp] Connecting to localhost...", 0);
 		try {
@@ -55,22 +55,23 @@ public class MessageServer extends Main {
 	}
 
 	public void Run() {
-		mLogManager.Info("[MessageServer.Run] Waiting for messages...", 0);
+
 
 		QueueingConsumer consumer = new QueueingConsumer(channel);
-
-
+		try {
+			channel.basicConsume(ACTION_QUEUE_NAME, true, consumer);
+		} catch (IOException e) {
+			mLogManager.Error(e.getMessage(), 0);
+		}
+		mLogManager.Info("[MessageServer.Run] Waiting for messages...", 0);
 		while (true) {
 			QueueingConsumer.Delivery delivery = null;
 			try {
-				channel.basicConsume(ACTION_QUEUE_NAME, true, consumer);
 				delivery = consumer.nextDelivery();
 				String message = new String(delivery.getBody());
-				mLogManager.Info("[MessageServer.Run] Received '" + message + "'", 0);
+				mLogManager.Info("Received '" + message + "'",0);
 			} catch (InterruptedException e) {
-				mLogManager.Error(e.getMessage(), 0);
-			} catch (IOException e) {
-				mLogManager.Error(e.getMessage(), 0);
+				mLogManager.Error(e.getMessage(),0);
 			}
 		}
 	}

@@ -27,7 +27,7 @@ public class Client extends Main {
 
 	public void Run	() {
 		mLogManager.Log("[Client.Run] running",0);
-		mConnectionMannager.Run();
+		//mConnectionMannager.Run();
 	}
 
 	public static Main GetInstance() {

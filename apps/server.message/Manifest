@@ -1,1 +1,2 @@
 Main-Class: com.nativedevelopment.smartgrid.server.message.MessageServer
+Class-Path: ../deps/rabbitmq-client.jar
