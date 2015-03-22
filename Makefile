@@ -27,8 +27,6 @@ APPS=$(shell ls $(APP_DIR))
 BASE=smartgrid
 DEPS=$(shell ls $(DEP_DIR))
 
-#$(subst :,$(space),$(LD_LIBRARY_PATH))
-
 #PREPARING
 _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
@@ -37,7 +35,7 @@ _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
 _CLASSPATHS=$(_RLS_DIR)/*:$(_RLS_DIR)/libraries/*:$(_DEP_DIR)/*:$(_RLS_DIR)/objects
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
-export PACK
+export PACKAGE
 export _CLASSPATHS
 export _RLS_DIR
 export _DEP_DIR
