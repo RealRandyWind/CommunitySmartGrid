@@ -39,7 +39,7 @@ public class MConnectionManager {
 		try {
 			a_oServerSocket = new ServerSocket(4444); //TODO fix magic
 		} catch (Exception e) {
-			mLogManager.Error("[MConnectionManager.SetUp] s%",0,e.getMessage());
+			mLogManager.Error(e.getMessage(),0,);
 		}
 		// TODO MConnectionManager SetUp
 		
@@ -59,7 +59,7 @@ public class MConnectionManager {
 				Fx_AddConnection(new Connection(socket,null));
 				mLogManager.Log("[MConnectionManager.Run] new connection s%",0,socket);
 			} catch (Exception e) {
-				mLogManager.Error("[MConnectionManager.Run] s%",0,e.getMessage());
+				mLogManager.Error(e.getMessage(),0);
 			}
 		}
 	}
@@ -89,7 +89,7 @@ public class MConnectionManager {
 		try {
 			a_oServerSocket.close();
 		} catch (Exception e) {
-			mLogManager.Error("[MConnectionManager.Fx_Stop] s%",0,e.getMessage());
+			mLogManager.Error(e.getMessage(),0);
 		}	
 	}
 
