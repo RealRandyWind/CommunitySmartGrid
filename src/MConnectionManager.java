@@ -39,7 +39,7 @@ public class MConnectionManager {
 		try {
 			a_oServerSocket = new ServerSocket(4444); //TODO fix magic
 		} catch (Exception e) {
-			mLogManager.Error(e.getMessage(),0,);
+			mLogManager.Error(e.getMessage(),0);
 		}
 		// TODO MConnectionManager SetUp
 		
