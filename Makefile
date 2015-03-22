@@ -34,7 +34,7 @@ _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
 _DEP_DIR=$(ROOT_DIR)/$(DEP_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
-_CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries:$(_RLS_DIR)/objects:$(_DEP_DIR)/rabbitmq-client.jar # TODO harcoded jar
+_CLASSPATHS=$(_RLS_DIR)/*:$(_RLS_DIR)/libraries/*:$(_DEP_DIR)/*:$(_RLS_DIR)/objects
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
 export PACK
