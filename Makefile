@@ -25,20 +25,22 @@ APPCOMPILERFLAGS=cvfm
 #PREPARE DEPENDENCY AND APPLICATIONS
 APPS=$(shell ls $(APP_DIR))
 BASE=smartgrid
-DEPS=
+DEPS=$(shell ls $(DEP_DIR))
 
 #$(subst :,$(space),$(LD_LIBRARY_PATH))
 
 #PREPARING
 _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
+_DEP_DIR=$(ROOT_DIR)/$(DEP_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
-_CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries:$(_RLS_DIR)/objects
+_CLASSPATHS=$(_RLS_DIR):$(_RLS_DIR)/libraries:$(_RLS_DIR)/objects:$(_DEP_DIR)/rabbitmq-client.jar # TODO harcoded jar
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
 export PACK
 export _CLASSPATHS
 export _RLS_DIR
+export _DEP_DIR
 export _TST_DIR
 export COMPILER
 export COMPILERFLAGS

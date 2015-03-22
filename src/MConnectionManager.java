@@ -5,8 +5,7 @@ import java.util.List;
 import java.net.Socket;
 import java.net.ServerSocket;
 
-public class MConnectionManager implements Runnable
-{
+public class MConnectionManager implements Runnable {
 	private static MConnectionManager a_oInstance = null;
 	
 	private boolean a_bIsSetUp = false;

@@ -11,8 +11,7 @@ location=${2+"${2}/"}
 
 
 cat << _EOF_ >> ${location}${fileName}.java
-public class ${className}
-{
+public class ${className} {
 	private int a_iID = -1;
 
 	public ${className}() {

@@ -11,8 +11,7 @@ location=${2+"${2}/"}
 
 
 cat << _EOF_ >> ${location}${fileName}.java
-public class ${className}
-{
+public class ${className} {
 	private static ${className} a_oInstance = null;
 	private boolean a_bIsSetUp = false;
 	private boolean a_bIsShutDown = true;
