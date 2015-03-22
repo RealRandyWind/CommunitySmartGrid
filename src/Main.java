@@ -37,6 +37,10 @@ public class Main {
 		System.exit(a_iExitCode);
 	}
 
+	public void DoMain() {
+
+	}
+
 	public int Entry() {
 		if(a_bIsRunning) {
 			System.out.printf("_WARNING: [Main.Entry] already running\n");

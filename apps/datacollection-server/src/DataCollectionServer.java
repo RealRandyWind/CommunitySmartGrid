@@ -32,8 +32,7 @@ public class DataCollectionServer extends Main {
 		return a_oInstance;
 	}
 
-	public static void main(String[] arguments)
-	{
+	public static void main(String[] arguments)	{
 		Main oApplication = DataCollectionServer.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);

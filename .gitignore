@@ -1,6 +1,6 @@
 libs
-deps
 bin
 tests/bin
 tests/deps
 tests/bin/objects
+.idea
