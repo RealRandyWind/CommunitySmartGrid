@@ -9,22 +9,16 @@ public class Main {
 		a_bIsRunning = false;
 	}
 
-	protected void ShutDown() {
+	public void ShutDown() {
 		System.out.printf("_WARNING: [Main.ShutDown] not yet implemented\n");
 	}
 
-	protected void SetUp() {
+	public void SetUp() {
 		System.out.printf("_WARNING: [Main.SetUp] not yet implemented\n");
 	}
 
-	private void Fx_ShutDown() {
-		if(!a_bIsRunning) {
-			System.out.printf("_WARNING: [Main.Entry] already not running\n");
-		}
-
-		ShutDown();
-
-		a_bIsRunning = false;
+	public void Run() {
+		System.out.printf("_WARNING: [Main.Run] not yet implemented\n");
 	}
 
 	public static Main GetInstance() {
@@ -51,8 +45,19 @@ public class Main {
 		a_bIsRunning = true;
 
 		SetUp();
-
+		Run();
 		Fx_ShutDown();
+
 		return a_iExitCode;
+	}
+
+	private void Fx_ShutDown() {
+		if(!a_bIsRunning) {
+			System.out.printf("_WARNING: [Main.Entry] already not running\n");
+		}
+
+		ShutDown();
+
+		a_bIsRunning = false;
 	}
 }

@@ -1,8 +1,9 @@
 package com.nativedevelopment.smartgrid;
 
-public class MLogManager
-{
-	public enum ELogType{
+import java.sql.Timestamp;
+
+public class MLogManager {
+	public enum ELogType {
 		LOG,INFO,SUCCESS,WARNING,ERROR,DEBUG,
 		ANY,ALL,DEFAULT
 	}
@@ -54,7 +55,7 @@ public class MLogManager
 		// TODO MLogManager SetUp
 
 		a_bIsSetUp = true;
-		Success("[MLogManager.SetUp] setup is done.",0);
+		Success("[MLogManager.SetUp]",0);
 	}
 
 	public void ShutDown() {
@@ -67,7 +68,7 @@ public class MLogManager
 		// TODO MLogManager ShutDown
 
 		a_bIsShutDown = true;
-		System.out.printf("_" + LOG_SUCCESS_STR + "[MLogManager.ShutDown] shutdown is done.\n");
+		System.out.printf("_" + LOG_SUCCESS_STR + "[MLogManager.ShutDown].\n");
 	}
 
 	public void SetLogFile(String sFilePath) {
@@ -144,6 +145,7 @@ public class MLogManager
 
 	private void Fx_PrintLog(String sMessage,int iCode) {
 		/*Todo make treath prove*/
-		System.out.print(sMessage + LOG_RESET_COL + "\n");
+		Timestamp oTimeStamp = new Timestamp(System.currentTimeMillis());
+		System.out.print(sMessage + LOG_RESET_COL + " - " + oTimeStamp + "\n");
 	}
 }

@@ -12,14 +12,14 @@ public class DataCollectionServer extends Main {
 
 	}
 
-	protected void ShutDown() {
+	public void ShutDown() {
 		mConnectionMannager.ShutDown();
 		mLogManager.ShutDown();
 
 		System.out.printf("_SUCCESS: [DataCollectionServer.ShutDown]\n");
 	}
 
-	protected void SetUp() {
+	public void SetUp() {
 		mLogManager.SetUp();
 		mConnectionMannager.SetUp();
 

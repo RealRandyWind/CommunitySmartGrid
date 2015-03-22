@@ -11,18 +11,23 @@ public class Client extends Main {
 	protected Client() {
 	}
 
-	protected void ShutDown() {
+	public void ShutDown() {
 		mConnectionMannager.ShutDown();
 		mLogManager.ShutDown();
 
 		System.out.printf("_SUCCESS: [Client.ShutDown]\n");
 	}
 
-	protected void SetUp() {
+	public void SetUp() {
 		mLogManager.SetUp();
 		mConnectionMannager.SetUp();
 
 		mLogManager.Success("[Client.SetUp]",0);
+	}
+
+	public void Run	() {
+		mLogManager.Log("[Client.Run] running",0);
+		mConnectionMannager.Run();
 	}
 
 	public static Main GetInstance() {
