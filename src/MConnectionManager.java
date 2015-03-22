@@ -4,11 +4,7 @@ import java.util.Vector;
 import java.net.Socket;
 import java.net.ServerSocket;
 
-<<<<<<< HEAD
 public class MConnectionManager {
-=======
-public class MConnectionManager implements Runnable {
->>>>>>> 9e1e134b5115a426867665a76bd1338677ff0f79
 	private static MConnectionManager a_oInstance = null;
 	
 	private boolean a_bIsSetUp = false;
