@@ -23,8 +23,7 @@ APPCOMPILER=jar
 APPCOMPILERFLAGS=cvfm
 
 #PREPARE DEPENDENCY AND APPLICATIONS
-APPS=client server.message
-#$(shell ls $(APP_DIR))
+APPS=$(shell ls $(APP_DIR))
 BASE=smartgrid
 DEPS=$(shell ls $(DEP_DIR))
 
