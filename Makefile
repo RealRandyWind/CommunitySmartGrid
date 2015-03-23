@@ -35,6 +35,7 @@ _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
 _CLASSPATHS="$(_RLS_DIR)/*:$(_RLS_DIR)/libraries/*:$(_DEP_DIR)/*"
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
+#EXPORTING
 export null
 export space
 export PACKAGE
@@ -54,7 +55,7 @@ $(_RLS_DIR)/libraries/$(BASE).jar: $(_BASE_SRC)
 	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/objects/
 	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ -C $(_RLS_DIR)/ ./libraries/ -C $(_RLS_DIR)/objects/ .
 
-$(SUBDIRS):
+$(SUBDIRS): $(_RLS_DIR)/libraries/$(BASE).jar
 	$(MAKE) -C $@
 
 #EXTRA OPTIONS
