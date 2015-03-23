@@ -23,7 +23,8 @@ APPCOMPILER=jar
 APPCOMPILERFLAGS=cvfm
 
 #PREPARE DEPENDENCY AND APPLICATIONS
-APPS=$(shell ls $(APP_DIR))
+APPS=client server.message
+#$(shell ls $(APP_DIR))
 BASE=smartgrid
 DEPS=$(shell ls $(DEP_DIR))
 
@@ -32,9 +33,11 @@ _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
 _DEP_DIR=$(ROOT_DIR)/$(DEP_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
-_CLASSPATHS=$(_RLS_DIR)/*:$(_RLS_DIR)/libraries/*:$(_DEP_DIR)/*:$(_RLS_DIR)/objects
+_CLASSPATHS="$(_RLS_DIR)/*:$(_RLS_DIR)/libraries/*:$(_DEP_DIR)/*"
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
+export null
+export space
 export PACKAGE
 export _CLASSPATHS
 export _RLS_DIR
@@ -50,24 +53,27 @@ export APPCOMPILERFLAGS
 #BUILDING AND COMPILING
 $(_RLS_DIR)/libraries/$(BASE).jar: $(_BASE_SRC)
 	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/objects/
-	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ $(_RLS_DIR)/libraries/ -C $(_RLS_DIR)/objects/ .
+	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ -C $(_RLS_DIR)/ ./libraries/ -C $(_RLS_DIR)/objects/ .
 
 $(SUBDIRS):
 	$(MAKE) -C $@
 
 #EXTRA OPTIONS
-.PHONY: apps $(SUBDIRS) clean test dirs
+.PHONY: apps $(SUBDIRS) clean tests dirs test
 
 apps: $(SUBDIRS)
 
 clean:
 	rm -rf $(_RLS_DIR)/*.jar $(_RLS_DIR)/objects/* $(_RLS_DIR)/libraries/*
 
-clean-tests:
-	rm -rf $(_TST_DIR)/bin/*.jar $(_TST_DIR)/$(RLS_DIR)/bin/objects/*
+tests-clean:
+	rm -rf $(_TST_DIR)/bin/*.jar $(_TST_DIR)/bin/objects/*
+
+tests:
+	$(MAKE) -C $(TST_DIR)
 
 test:
-	$(MAKE) -C $(TST_DIR)
+	java -jar ./tests/bin/tests.jar
 
 dirs:
 	mkdir -p $(LIB_DIR)

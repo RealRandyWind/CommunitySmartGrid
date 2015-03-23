@@ -7,12 +7,16 @@ public class TestEngine extends Main {
 
 	}
 
-	protected void ShutDown() {
+	public void ShutDown() {
 		System.out.printf("_SUCCESS: [TestEngine.ShutDown]\n");
 	}
 
-	protected void StartUp() {
-		System.out.printf("_SUCCESS: [TestEngine.StartUp]\n");
+	public void SetUp() {
+		System.out.printf("_SUCCESS: [TestEngine.SetUp]\n");
+	}
+
+	public void Run() {
+		System.out.printf("_SUCCESS: [TestEngine.Run]\n");
 	}
 
 	public static Main GetInstance() {

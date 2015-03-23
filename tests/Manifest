@@ -1,1 +1,3 @@
 Main-Class: com.nativedevelopment.smartgrid.tests.TestEngine
+Class-Path: ../../bin/libraries/*.jar ../../bin/*.jar
+Manifest-Version: 0.1.1
