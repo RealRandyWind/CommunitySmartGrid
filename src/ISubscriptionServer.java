@@ -1,5 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
-public interface ISubscriptionServer {
+import com.nativedevelopment.smartgrid.IClient;
 
+public interface ISubscriptionServer {
+    public IClient getClient(String clientId);
 };

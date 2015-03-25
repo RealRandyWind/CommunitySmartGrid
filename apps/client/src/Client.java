@@ -1,10 +1,13 @@
 package com.nativedevelopment.smartgrid.client;
 
-import com.nativedevelopment.smartgrid.Main;
-import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.Action;
+import com.nativedevelopment.smartgrid.IClient;
 import com.nativedevelopment.smartgrid.MConnectionManager;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.Main;
 
-public class Client extends Main {
+public class Client extends Main implements IClient{
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
 
@@ -42,4 +45,9 @@ public class Client extends Main {
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
 	}
+
+    @Override
+    public void passActionToDevice(Action action) {
+
+    }
 }

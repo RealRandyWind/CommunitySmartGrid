@@ -1,10 +1,13 @@
 package com.nativedevelopment.smartgrid.server.subscription;
 
-import com.nativedevelopment.smartgrid.Main;
-import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.IClient;
+import com.nativedevelopment.smartgrid.ISubscriptionServer;
 import com.nativedevelopment.smartgrid.MConnectionManager;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.Main;
 
-public class SubscriptionServer extends Main {
+public class SubscriptionServer extends Main implements ISubscriptionServer {
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
 	
@@ -38,4 +41,9 @@ public class SubscriptionServer extends Main {
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
 	}
+
+    @Override
+    public IClient getClient(String clientId) {
+        return new com.nativedevelopment.smartgrid.client.Client();
+    }
 }

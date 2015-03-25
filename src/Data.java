@@ -3,6 +3,7 @@ package com.nativedevelopment.smartgrid;
 
 public class Data {
 	public String deviceId;
+    public String clientId;
 	/** Time of data */
 	public long unixTimestamp;
 	/** Usage in unit/second */

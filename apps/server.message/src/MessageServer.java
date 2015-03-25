@@ -69,6 +69,10 @@ public class MessageServer extends Main {
 				delivery = consumer.nextDelivery();
                 Action a = (Action) Serializer.deserialize(delivery.getBody());
 				mLogManager.Info("Received action for '" + a.deviceId + "'",0);
+                // hier is een action, doorsturen naar client application
+                // TODO zodra we dat kunnen
+
+
 			} catch (InterruptedException e) {
 				mLogManager.Error(e.getMessage(),0);
 			}
