@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class AnalyticServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionManager = MConnectionManager.GetInstance();

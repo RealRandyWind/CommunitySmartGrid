@@ -44,7 +44,6 @@ public class MessageServer extends Main {
 		} catch (IOException e) {
 			mLogManager.Error(e.getMessage(), 0);
 		}
-
 	}
 
 	public static Main GetInstance() {
