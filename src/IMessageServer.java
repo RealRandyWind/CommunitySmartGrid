@@ -1,5 +1,5 @@
 package com.nativedevelopment.smartgrid;
 
-interface IMessageServer {
+public interface IMessageServer {
 
 };

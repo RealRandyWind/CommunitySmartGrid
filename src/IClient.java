@@ -1,5 +1,5 @@
 package com.nativedevelopment.smartgrid;
 
-interface IClient {
+public interface IClient {
 
 };

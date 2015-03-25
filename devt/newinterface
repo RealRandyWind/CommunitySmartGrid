@@ -11,7 +11,7 @@ location=${2+"${2}/"}
 
 
 cat << _EOF_ >> ${location}${fileName}.java
-interface ${className} {
+public interface ${className} {
 
 };
 _EOF_

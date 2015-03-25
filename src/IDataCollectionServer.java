@@ -1,5 +1,5 @@
 package com.nativedevelopment.smartgrid;
 
-interface IDataCollectionServer {
-
+public interface IDataCollectionServer {
+	void AddClient(IClient oClient);
 };

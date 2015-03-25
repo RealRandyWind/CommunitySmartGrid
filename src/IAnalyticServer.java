@@ -1,5 +1,5 @@
 package com.nativedevelopment.smartgrid;
 
-interface IAnalyticServer {
+public interface IAnalyticServer {
 	public void AddData(Data oData);
 }
