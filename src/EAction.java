@@ -1,7 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
 
-public enum eAction {
+public enum EAction {
 	StopUsage,
 	DecreaseUsage,
 	IncreaseUsage,

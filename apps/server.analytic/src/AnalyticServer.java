@@ -1,9 +1,8 @@
 package com.nativedevelopment.smartgrid.server.analytic;
 
-import com.nativedevelopment.smartgrid.Data;
-import com.nativedevelopment.smartgrid.Main;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.MConnectionManager;import com.rabbitmq.client.Channel;
+import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.Serializer;
+import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public class AnalyticServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
-	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
+	private MConnectionManager mConnectionManager = MConnectionManager.GetInstance();
 	private Connection mConnection;
 	private Channel mChannel;
 	/** Maps stores the data history of the devices.
@@ -29,7 +28,7 @@ public class AnalyticServer extends Main {
 	}
 
 	public void ShutDown() {
-		mConnectionMannager.ShutDown();
+        mConnectionManager.ShutDown();
 		mLogManager.ShutDown();
 
 		try {
@@ -46,7 +45,7 @@ public class AnalyticServer extends Main {
 
 	public void SetUp() {
 		mLogManager.SetUp();
-		mConnectionMannager.SetUp();
+        mConnectionManager.SetUp();
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");
@@ -60,6 +59,13 @@ public class AnalyticServer extends Main {
 
 
 		mLogManager.Success("[AnalyticServer.SetUp]",0);
+
+        // debug:
+        mLogManager.Info("Running debug code.", 0);
+        Data dummy = new Data();
+        dummy.deviceId = "testdevice";
+        dummy.potentialProduction = 100.0;
+        this.OnDataReceived(dummy);
 	}
 
 	public static Main GetInstance() {
@@ -69,16 +75,30 @@ public class AnalyticServer extends Main {
 	}
 
 	public void Run() {
-		try {
+		/*try {
 			mChannel.queueDeclare("actions", false, false, false, null);
 			String message = "Hello World!";
 			mChannel.basicPublish("", "actions", null, message.getBytes());
 			mLogManager.Info(" [x] Sent '" + message + "'",0);
 		} catch (IOException e) {
 			mLogManager.Error(e.getMessage(), 0);
-		}
+		}*/
 
 	}
+
+    /**
+     * Sends an action to the device.
+     * @param action The action to send
+     */
+    private void sendAction(Action action) {
+        mLogManager.Info("Sending action to " + action.deviceId, 0);
+        try {
+            mChannel.queueDeclare("actions", false, false, false, null);
+            mChannel.basicPublish("", "actions", null, Serializer.serialize(action));
+        } catch (IOException e) {
+            mLogManager.Error(e.getMessage(), 0);
+        }
+    }
 
 	public static void main(String[] arguments) {
 		Main oApplication = AnalyticServer.GetInstance();
@@ -93,6 +113,17 @@ public class AnalyticServer extends Main {
 	private void AnalyzeData(Data data) {
 		ArrayList<Data> datas = mDataHistory.get(data.deviceId);
 		// iterate over all devices and find one with positive production
+
+        for(ArrayList<Data> deviceData : mDataHistory.values()) {
+            Data last = deviceData.get(deviceData.size()-1);
+            if (last.potentialProduction > 0.0) {
+                Action sinkAct = new Action(data.deviceId, EAction.IncreaseUsage);
+                Action sourceAct = new Action(last.deviceId, EAction.IncreaseProduction);
+                this.sendAction(sinkAct);
+                this.sendAction(sourceAct);
+                return;
+            }
+        }
 	}
 
 	/**
@@ -108,5 +139,6 @@ public class AnalyticServer extends Main {
 			datas = mDataHistory.get(data.deviceId);
 		}
 		datas.add(data);
+        this.AnalyzeData(data);
 	}
 }

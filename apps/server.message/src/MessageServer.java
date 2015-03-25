@@ -1,8 +1,7 @@
 package com.nativedevelopment.smartgrid.server.message;
 
-import com.nativedevelopment.smartgrid.Main;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.MConnectionManager;
+import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -68,8 +67,8 @@ public class MessageServer extends Main {
 			QueueingConsumer.Delivery delivery = null;
 			try {
 				delivery = consumer.nextDelivery();
-				String message = new String(delivery.getBody());
-				mLogManager.Info("Received '" + message + "'",0);
+                Action a = (Action) Serializer.deserialize(delivery.getBody());
+				mLogManager.Info("Received action for '" + a.deviceId + "'",0);
 			} catch (InterruptedException e) {
 				mLogManager.Error(e.getMessage(),0);
 			}
