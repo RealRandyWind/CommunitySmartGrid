@@ -1,6 +1,8 @@
 package com.nativedevelopment.smartgrid;
 
-public class Action {
+import java.io.Serializable;
+
+public class Action implements Serializable {
 	public enum EAction {
 		StopUsage,
 		DecreaseUsage,
@@ -11,4 +13,9 @@ public class Action {
 
 	public String deviceId;
 	public EAction action;
+
+	public Action(String deviceId, EAction action) {
+		this.deviceId = deviceId;
+		this.action = action;
+	}
 }
