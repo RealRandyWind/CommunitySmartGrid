@@ -10,7 +10,7 @@ public class MLogManager {
 
 	private static final String LOG_RESET_COL = "\u001b[0m";
 
-	private static final String LOG_LOG_COL = LOG_RESET_COL;
+	private static final String LOG_LOG_COL = "\u001B[37m";
 	private static final String LOG_ERROR_COL = "\u001b[31m";
 	private static final String LOG_SUCCESS_COL = "\u001b[32m";
 	private static final String LOG_INFO_COL = "\u001b[36m";
@@ -122,7 +122,7 @@ public class MLogManager {
 		Fx_WriteLog(sString,4,iCode)
 		if(a_sTypeIsPrint[4]) { Fx_PrintLog(sString,iCode)}
 		*/
-		Main.ErrorShutDown();
+		com.nativedevelopment.smartgrid.Main.ErrorShutDown();
 	}
 
 	public void Debug(String sFormat, int iCode, Object... olArgs) {

@@ -66,7 +66,7 @@ public class AnalyticServer extends Main {
 		mLogManager.Success("[AnalyticServer.SetUp]",0);
 
         // debug:
-        mLogManager.Info("Running debug code.", 0);
+        mLogManager.Log("Running debug code.", 0);
         Data dummy = new Data();
         dummy.deviceId = UUID.randomUUID();
         dummy.potentialProduction = 100.0;
@@ -96,7 +96,8 @@ public class AnalyticServer extends Main {
      * @param action The action to send
      */
     private void sendAction(Action action) {
-        mLogManager.Info("Sending action to " + action.deviceId, 0);
+        // TODO: this code should be in the FakeMessageServer (and also the setup code)
+        mLogManager.Log("Sending action to " + action.deviceId, 0);
         try {
             mChannel.queueDeclare("actions", false, false, false, null);
             mChannel.basicPublish("", "actions", null, Serializer.serialize(action));

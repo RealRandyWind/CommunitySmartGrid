@@ -63,8 +63,7 @@ public class Client extends Main implements IClient {
 		return a_oInstance;
 	}
 
-	public static void main(String[] arguments)
-	{
+	public static void main(String[] arguments)	{
 		Main oApplication = Client.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
