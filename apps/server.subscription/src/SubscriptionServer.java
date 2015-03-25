@@ -1,11 +1,14 @@
 package com.nativedevelopment.smartgrid.server.subscription;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.FakeSubscriptionServer;
 import com.nativedevelopment.smartgrid.IClient;
 import com.nativedevelopment.smartgrid.ISubscriptionServer;
 import com.nativedevelopment.smartgrid.MConnectionManager;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Main;
+
+import java.util.UUID;
 
 public class SubscriptionServer extends Main implements ISubscriptionServer {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -43,7 +46,7 @@ public class SubscriptionServer extends Main implements ISubscriptionServer {
 	}
 
     @Override
-    public IClient getClient(String clientId) {
-        return new com.nativedevelopment.smartgrid.client.Client();
+    public IClient getClient(UUID clientId) {
+        return null;
     }
 }
