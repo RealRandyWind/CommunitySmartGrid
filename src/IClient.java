@@ -1,5 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
-public interface IClient {
+import com.nativedevelopment.smartgrid.Action;
 
+public interface IClient {
+    public void passActionToDevice(Action action);
 };

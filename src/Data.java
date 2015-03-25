@@ -1,8 +1,10 @@
 package com.nativedevelopment.smartgrid;
 
+import java.util.UUID;
 
 public class Data {
-	public String deviceId;
+	public UUID deviceId;
+    public String clientId;
 	/** Time of data */
 	public long unixTimestamp;
 	/** Usage in unit/second */

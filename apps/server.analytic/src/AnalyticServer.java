@@ -1,6 +1,11 @@
 package com.nativedevelopment.smartgrid.server.analytic;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.Action;
+import com.nativedevelopment.smartgrid.Data;
+import com.nativedevelopment.smartgrid.MConnectionManager;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.Main;
 import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -11,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class AnalyticServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -20,7 +26,7 @@ public class AnalyticServer extends Main {
 	/** Maps stores the data history of the devices.
 	 *  key: devideId
 	 *  value: Data list */
-	private Map<String, ArrayList<Data>> mDataHistory = new HashMap<String, ArrayList<Data>>();
+	private Map<UUID, ArrayList<Data>> mDataHistory = new HashMap<UUID, ArrayList<Data>>();
 
 	protected AnalyticServer() {
 
@@ -62,7 +68,7 @@ public class AnalyticServer extends Main {
         // debug:
         mLogManager.Info("Running debug code.", 0);
         Data dummy = new Data();
-        dummy.deviceId = "testdevice";
+        dummy.deviceId = UUID.randomUUID();
         dummy.potentialProduction = 100.0;
         this.OnDataReceived(dummy);
 	}

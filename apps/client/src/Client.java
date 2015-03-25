@@ -4,10 +4,12 @@ import java.util.UUID;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.nativedevelopment.smartgrid.Action;
 import com.nativedevelopment.smartgrid.IDevice;
-import com.nativedevelopment.smartgrid.Main;
-import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.IClient;
 import com.nativedevelopment.smartgrid.MConnectionManager;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.Main;
 
 public class Client extends Main implements IClient {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -67,4 +69,9 @@ public class Client extends Main implements IClient {
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
 	}
+
+    @Override
+    public void passActionToDevice(Action action) {
+
+    }
 }

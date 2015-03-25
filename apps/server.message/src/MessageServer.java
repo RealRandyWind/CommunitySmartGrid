@@ -1,6 +1,12 @@
 package com.nativedevelopment.smartgrid.server.message;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.Action;
+import com.nativedevelopment.smartgrid.FakeSubscriptionServer;
+import com.nativedevelopment.smartgrid.IClient;
+import com.nativedevelopment.smartgrid.MConnectionManager;
+import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.Main;
 import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -68,6 +74,9 @@ public class MessageServer extends Main {
 				delivery = consumer.nextDelivery();
                 Action a = (Action) Serializer.deserialize(delivery.getBody());
 				mLogManager.Info("Received action for '" + a.deviceId + "'",0);
+                // hier is een action, doorsturen naar client application
+                IClient destinationClient = FakeSubscriptionServer.instance.getClient(a.deviceId);
+                destinationClient.passActionToDevice(a);
 			} catch (InterruptedException e) {
 				mLogManager.Error(e.getMessage(),0);
 			}
