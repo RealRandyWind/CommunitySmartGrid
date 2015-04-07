@@ -1,5 +1,9 @@
 package com.nativedevelopment.smartgrid.client;
 
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 import java.util.Map;
 import java.util.HashMap;
@@ -30,6 +34,19 @@ public class Client extends Main implements IClient {
 	public void SetUp() {
 		mLogManager.SetUp();
 		mConnectionMannager.SetUp();
+
+		try {
+			IClient stub = (IClient) UnicastRemoteObject.exportObject(this, 0);
+
+			// Bind the remote object's stub in the registry
+			Registry registry = LocateRegistry.getRegistry();
+			registry.bind("Client", stub); // todo allow multiple clients by appending "Client" with identifier
+
+			mLogManager.Success("[Client.SetUp] Server ready", 0);
+		} catch (Exception e) {
+			mLogManager.Error("Server exception: " + e.toString(),0);
+			e.printStackTrace();
+		}
 
 		mLogManager.Success("[Client.SetUp]",0);
 	}
@@ -66,11 +83,11 @@ public class Client extends Main implements IClient {
 	public static void main(String[] arguments)	{
 		Main oApplication = Client.GetInstance();
 		int iEntryReturn = oApplication.Entry();
-		System.exit(iEntryReturn);
+		//System.exit(iEntryReturn);
 	}
 
     @Override
-    public void passActionToDevice(Action action) {
-
+    public void passActionToDevice(Action action)  throws RemoteException {
+		mLogManager.Debug("[Client.passActionToDevice] called", 0);
     }
 }

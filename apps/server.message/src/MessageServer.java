@@ -14,6 +14,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class MessageServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -79,6 +80,8 @@ public class MessageServer extends Main {
                 destinationClient.passActionToDevice(a);
 			} catch (InterruptedException e) {
 				mLogManager.Error(e.getMessage(),0);
+			} catch (RemoteException e) {
+				e.printStackTrace();
 			}
 		}
 	}

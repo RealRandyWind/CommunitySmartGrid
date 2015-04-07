@@ -13,7 +13,7 @@ public class FakeClient implements com.nativedevelopment.smartgrid.IClient {
     }
 
     @Override
-    public void passActionToDevice(com.nativedevelopment.smartgrid.Action action) {
+    public void passActionToDevice(Action action) {
         // doet RMI oid en stuurt het naar de client gehost op this.ip
     }
 }

@@ -13,6 +13,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class AnalyticServer extends Main {
 		mLogManager.SetUp();
         mConnectionManager.SetUp();
 
-		ConnectionFactory factory = new ConnectionFactory();
+		/*ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");
 		try {
 			mConnection = factory.newConnection();
@@ -60,17 +62,27 @@ public class AnalyticServer extends Main {
 		} catch (IOException e) {
 			//e.printStackTrace();
 			mLogManager.Error(e.toString(),0);
-		}
+		}*/
 
 
 		mLogManager.Success("[AnalyticServer.SetUp]",0);
 
         // debug:
         mLogManager.Log("Running debug code.", 0);
-        Data dummy = new Data();
+        /*Data dummy = new Data();
         dummy.deviceId = UUID.randomUUID();
         dummy.potentialProduction = 100.0;
-        this.OnDataReceived(dummy);
+        this.OnDataReceived(dummy);*/
+		// testing if we can use RMI for contacting Client
+		// !! start RMI handmating dmv "rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false"
+		try {
+			String host = null;
+			Registry registry = LocateRegistry.getRegistry(host); // TODO find smart way to get ip
+			IClient stub = (IClient) registry.lookup("Client");
+			stub.passActionToDevice(new Action(UUID.randomUUID(), Action.EAction.DecreaseProduction));
+		} catch (Exception e) {
+			mLogManager.Error("Client exception: " + e.toString(),0);
+		}
 	}
 
 	public static Main GetInstance() {

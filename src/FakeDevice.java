@@ -12,7 +12,7 @@ public class FakeDevice implements IDevice {
     }
 
     @Override
-    public String getIdentifier() {
+    public UUID getIdentifier() {
         return null;
     }
 

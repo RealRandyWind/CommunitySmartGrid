@@ -2,6 +2,9 @@ package com.nativedevelopment.smartgrid;
 
 import com.nativedevelopment.smartgrid.Action;
 
-public interface IClient {
-    public void passActionToDevice(Action action);
-};
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface IClient extends Remote {
+    public void passActionToDevice(Action action) throws RemoteException;
+}
