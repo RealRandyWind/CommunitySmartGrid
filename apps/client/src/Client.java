@@ -91,6 +91,7 @@ public class Client extends Main implements IClient {
     @Override
     public void passActionToDevice(Action action) throws RemoteException {
 		mLogManager.Debug("[Client.passActionToDevice] called", 0);
+		mLogManager.Info("[Client.passActionToDevice] Received action for device " + action.deviceId, 0);
     }
 
 	@Override

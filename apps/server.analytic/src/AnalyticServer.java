@@ -13,6 +13,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
@@ -68,8 +70,14 @@ public class AnalyticServer extends Main {
 		mLogManager.Log("Running debug code.", 0);
         Data dummy = new Data();
         dummy.deviceId = UUID.randomUUID();
-		dummy.clientId = UUID.fromString("3b287567-0813-4903-b7d6-e23bf5402c01"); //todo hardcoded
-        dummy.potentialProduction = 100.0;
+		dummy.clientId = UUID.fromString(Config.TestClientUUID);
+		try {
+			dummy.clientIp = InetAddress.getByName(Config.TestClientHost);
+		} catch (UnknownHostException e) {
+			mLogManager.Error(e.getMessage(),0);
+			this.ShutDown();
+		}
+		dummy.potentialProduction = 100.0;
         this.OnDataReceived(dummy);
 	}
 
@@ -88,8 +96,7 @@ public class AnalyticServer extends Main {
      * @param action The action to send
      */
     private void sendAction(Action action) {
-        // TODO: this code should be in the FakeMessageServer (and also the setup code)
-        mLogManager.Log("Sending action to " + action.deviceId, 0);
+        mLogManager.Log("Sending action for " + action.clientId + " to message queue", 0);
         try {
             mChannel.queueDeclare("actions", false, false, false, null);
             mChannel.basicPublish("", "actions", null, Serializer.serialize(action));
@@ -115,8 +122,8 @@ public class AnalyticServer extends Main {
         for(ArrayList<Data> deviceData : mDataHistory.values()) {
             Data last = deviceData.get(deviceData.size()-1);
             if (last.potentialProduction > 0.0) {
-                Action sinkAct = new Action(data.deviceId, Action.EAction.IncreaseUsage);
-                Action sourceAct = new Action(last.deviceId, Action.EAction.IncreaseProduction);
+                Action sinkAct = new Action(data.deviceId, Action.EAction.IncreaseUsage, data.clientId, data.clientIp);
+                Action sourceAct = new Action(last.deviceId, Action.EAction.IncreaseProduction, data.clientId, data.clientIp);
                 this.sendAction(sinkAct);
                 this.sendAction(sourceAct);
                 return;

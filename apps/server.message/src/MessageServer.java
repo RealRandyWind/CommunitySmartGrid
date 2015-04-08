@@ -78,17 +78,17 @@ public class MessageServer extends Main {
 			try {
 				delivery = consumer.nextDelivery();
                 Action a = (Action) Serializer.deserialize(delivery.getBody());
-				mLogManager.Log("Received action for '" + a.deviceId + "'",0);
+				mLogManager.Log("Received action for device " + a.deviceId + ", client " + a.clientId,0);
                 // hier is een action, doorsturen naar client application
 				try {
-					String host = Config.TestClientHost;
+					String host = a.clientIp.getHostName();
 					//System.setProperty("java.rmi.server.hostname", InetAddress.getByName(host).getHostAddress());
-					mLogManager.Debug(InetAddress.getByName(host).getHostAddress(),0);
+					mLogManager.Debug("Locating the registry for this client, ip: " + host,0);
 					Registry registry = LocateRegistry.getRegistry(host); // TODO find smart way to get ip
 					mLogManager.Debug("Got registry for " + host, 0);
-					IClient stub = (IClient) registry.lookup("Client3b287567-0813-4903-b7d6-e23bf5402c01");
-					mLogManager.Debug("Looked up stub",0);
-					stub.passActionToDevice(new Action(a.deviceId, a.action));
+					IClient clientStub = (IClient) registry.lookup("Client" + a.clientId);
+					mLogManager.Debug("Looked up stub for Client" + a.clientId,0);
+					clientStub.passActionToDevice(a);
 					mLogManager.Log("Passed action to client",0);
 				} catch (Exception e) {
 					mLogManager.Error("Client exception: " + e.toString(),0);
