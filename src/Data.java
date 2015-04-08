@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Data {
 	public UUID deviceId;
-    public String clientId;
+    public UUID clientId;
 	/** Time of data */
 	public long unixTimestamp;
 	/** Usage in unit/second */

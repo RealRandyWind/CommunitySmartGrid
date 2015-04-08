@@ -52,37 +52,25 @@ public class AnalyticServer extends Main {
 
 	public void SetUp() {
 		mLogManager.SetUp();
-        mConnectionManager.SetUp();
 
-		/*ConnectionFactory factory = new ConnectionFactory();
+		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");
 		try {
 			mConnection = factory.newConnection();
 			mChannel = mConnection.createChannel();
 		} catch (IOException e) {
-			//e.printStackTrace();
 			mLogManager.Error(e.toString(),0);
-		}*/
-
-
-		mLogManager.Success("[AnalyticServer.SetUp]",0);
-
-        // debug:
-        mLogManager.Log("Running debug code.", 0);
-        /*Data dummy = new Data();
-        dummy.deviceId = UUID.randomUUID();
-        dummy.potentialProduction = 100.0;
-        this.OnDataReceived(dummy);*/
-		// testing if we can use RMI for contacting Client
-		// !! start RMI handmating dmv "rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false"
-		try {
-			String host = null;
-			Registry registry = LocateRegistry.getRegistry(host); // TODO find smart way to get ip
-			IClient stub = (IClient) registry.lookup("Client");
-			stub.passActionToDevice(new Action(UUID.randomUUID(), Action.EAction.DecreaseProduction));
-		} catch (Exception e) {
-			mLogManager.Error("Client exception: " + e.toString(),0);
 		}
+
+		mLogManager.Success("[AnalyticServer.SetUp]", 0);
+
+		// debug:
+		mLogManager.Log("Running debug code.", 0);
+        Data dummy = new Data();
+        dummy.deviceId = UUID.randomUUID();
+		dummy.clientId = UUID.fromString("3b287567-0813-4903-b7d6-e23bf5402c01"); //todo hardcoded
+        dummy.potentialProduction = 100.0;
+        this.OnDataReceived(dummy);
 	}
 
 	public static Main GetInstance() {
@@ -92,14 +80,6 @@ public class AnalyticServer extends Main {
 	}
 
 	public void Run() {
-		/*try {
-			mChannel.queueDeclare("actions", false, false, false, null);
-			String message = "Hello World!";
-			mChannel.basicPublish("", "actions", null, message.getBytes());
-			mLogManager.Info(" [x] Sent '" + message + "'",0);
-		} catch (IOException e) {
-			mLogManager.Error(e.getMessage(), 0);
-		}*/
 
 	}
 
@@ -114,7 +94,7 @@ public class AnalyticServer extends Main {
             mChannel.queueDeclare("actions", false, false, false, null);
             mChannel.basicPublish("", "actions", null, Serializer.serialize(action));
         } catch (IOException e) {
-            mLogManager.Error(e.getMessage(), 0);
+            mLogManager.Error(e.toString(), 0);
         }
     }
 
@@ -145,7 +125,7 @@ public class AnalyticServer extends Main {
 	}
 
 	/**
-	 * Called (by connection manager) when real-time data reaches the analytic server.
+	 * Called when real-time data reaches the analytic server.
 	 * @param data The data
 	 */
 	protected void OnDataReceived(Data data) {

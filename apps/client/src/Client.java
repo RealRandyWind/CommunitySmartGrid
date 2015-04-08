@@ -14,21 +14,24 @@ import com.nativedevelopment.smartgrid.IClient;
 import com.nativedevelopment.smartgrid.MConnectionManager;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Main;
+import com.nativedevelopment.smartgrid.Config;
 
 public class Client extends Main implements IClient {
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
+	private UUID uuid;
 
 	private Map<UUID,IDevice> kvDevices = new HashMap<UUID,IDevice>();
 
 	protected Client() {
+		this.uuid = UUID.randomUUID();
 	}
 
 	public void ShutDown() {
 		mConnectionMannager.ShutDown();
 		mLogManager.ShutDown();
 
-		System.out.printf("_SUCCESS: [Client.ShutDown]\n");
+		System.out.printf("_SUCCESS: [Client.ShutDown] Thread from RMI still active in background.\n");
 	}
 
 	public void SetUp() {
@@ -40,9 +43,9 @@ public class Client extends Main implements IClient {
 
 			// Bind the remote object's stub in the registry
 			Registry registry = LocateRegistry.getRegistry();
-			registry.bind("Client", stub); // todo allow multiple clients by appending "Client" with identifier
+			registry.bind("Client" + this.getIdentifier(), stub); // todo allow multiple clients by appending "Client" with identifier
 
-			mLogManager.Success("[Client.SetUp] Server ready", 0);
+			mLogManager.Success("[Client.SetUp] Server ready, bound in registry with name Client"+this.getIdentifier(), 0);
 		} catch (Exception e) {
 			mLogManager.Error("Server exception: " + e.toString(),0);
 			e.printStackTrace();
@@ -51,8 +54,8 @@ public class Client extends Main implements IClient {
 		mLogManager.Success("[Client.SetUp]",0);
 	}
 
-	public void Run	() {
-		mLogManager.Log("[Client.Run] running",0);
+	public void Run() {
+		mLogManager.Log("[Client.Run] running test",0);
 		//mConnectionMannager.Run();
 	}
 
@@ -83,11 +86,17 @@ public class Client extends Main implements IClient {
 	public static void main(String[] arguments)	{
 		Main oApplication = Client.GetInstance();
 		int iEntryReturn = oApplication.Entry();
-		//System.exit(iEntryReturn);
 	}
 
     @Override
-    public void passActionToDevice(Action action)  throws RemoteException {
+    public void passActionToDevice(Action action) throws RemoteException {
 		mLogManager.Debug("[Client.passActionToDevice] called", 0);
     }
+
+	@Override
+	public UUID getIdentifier() {
+		// TODO hardcoded
+		return UUID.fromString("3b287567-0813-4903-b7d6-e23bf5402c01");
+		//return this.uuid;
+	}
 }

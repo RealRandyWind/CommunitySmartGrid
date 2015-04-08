@@ -14,7 +14,11 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.UUID;
 
 public class MessageServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -74,14 +78,23 @@ public class MessageServer extends Main {
 			try {
 				delivery = consumer.nextDelivery();
                 Action a = (Action) Serializer.deserialize(delivery.getBody());
-				mLogManager.Info("Received action for '" + a.deviceId + "'",0);
+				mLogManager.Log("Received action for '" + a.deviceId + "'",0);
                 // hier is een action, doorsturen naar client application
-                IClient destinationClient = FakeSubscriptionServer.instance.getClient(a.deviceId);
-                destinationClient.passActionToDevice(a);
+				try {
+					String host = Config.TestClientHost;
+					//System.setProperty("java.rmi.server.hostname", InetAddress.getByName(host).getHostAddress());
+					mLogManager.Debug(InetAddress.getByName(host).getHostAddress(),0);
+					Registry registry = LocateRegistry.getRegistry(host); // TODO find smart way to get ip
+					mLogManager.Debug("Got registry for " + host, 0);
+					IClient stub = (IClient) registry.lookup("Client3b287567-0813-4903-b7d6-e23bf5402c01");
+					mLogManager.Debug("Looked up stub",0);
+					stub.passActionToDevice(new Action(a.deviceId, a.action));
+					mLogManager.Log("Passed action to client",0);
+				} catch (Exception e) {
+					mLogManager.Error("Client exception: " + e.toString(),0);
+				}
 			} catch (InterruptedException e) {
 				mLogManager.Error(e.getMessage(),0);
-			} catch (RemoteException e) {
-				e.printStackTrace();
 			}
 		}
 	}

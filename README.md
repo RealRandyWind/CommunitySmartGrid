@@ -6,11 +6,11 @@ First, start that RMI registry:
 
     rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false
 
-I have implemented small example in the Client/AnalyticServer to have the analytic server  call using RMI on remote Client object.
+I now have the message server working in the sense that it sends the messages to a hardcoded client over RMI.
 
-To run the client server:
+To run the client server (replace the local ip address):
 
-    java -classpath /home/wouter/Development/communitysmartgrid/bin/objects/ -Djava.rmi.server.codebase=file:/home/wouter/Development/communitysmartgrid/bin/objects/ -jar client.jar
+    java -classpath /home/wouter/Development/communitysmartgrid/bin/objects/ -Djava.rmi.server.codebase=file:/home/wouter/Development/communitysmartgrid/bin/objects/ -Djava.rmi.server.hostname=192.168.1.107 -jar client.jar
 
 To run the code for AnalyticServer:
 
