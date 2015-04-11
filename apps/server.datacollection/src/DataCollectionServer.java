@@ -45,6 +45,7 @@ public class DataCollectionServer extends Main {
 					ByteArrayInputStream baos = new ByteArrayInputStream(buffer);
 					ObjectInputStream oos = new ObjectInputStream(baos);
 					Data d = (Data)oos.readObject();
+					d.clientIp = data.getAddress();  // change to the external ip of the client
 					mLogManager.Log("This data is from client " + d.clientId + " of device " + d.deviceId, 0);
 
 					String host = Config.IP_Analytic;
