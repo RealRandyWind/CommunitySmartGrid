@@ -1,5 +1,9 @@
 package com.nativedevelopment.smartgrid.client;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -8,13 +12,7 @@ import java.util.UUID;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.nativedevelopment.smartgrid.Action;
-import com.nativedevelopment.smartgrid.IDevice;
-import com.nativedevelopment.smartgrid.IClient;
-import com.nativedevelopment.smartgrid.MConnectionManager;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Main;
-import com.nativedevelopment.smartgrid.Config;
+import com.nativedevelopment.smartgrid.*;
 
 public class Client extends Main implements IClient {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -28,7 +26,6 @@ public class Client extends Main implements IClient {
 	}
 
 	public void ShutDown() {
-		mConnectionMannager.ShutDown();
 		mLogManager.ShutDown();
 
 		System.out.printf("_SUCCESS: [Client.ShutDown] Thread from RMI still active in background.\n");
@@ -36,7 +33,6 @@ public class Client extends Main implements IClient {
 
 	public void SetUp() {
 		mLogManager.SetUp();
-		mConnectionMannager.SetUp();
 
 		try {
 			IClient stub = (IClient) UnicastRemoteObject.exportObject(this, 0);
@@ -56,7 +52,18 @@ public class Client extends Main implements IClient {
 
 	public void Run() {
 		mLogManager.Log("[Client.Run] running test",0);
-		//mConnectionMannager.Run();
+		Data d = new Data();
+		d.clientId = UUID.fromString(Config.TestClientUUID);
+		try {
+			d.clientIp = InetAddress.getByName(Config.TestClientHost);
+			d.deviceId = UUID.randomUUID();
+			d.predictedProduction = 100.0;
+			d.potentialProduction = 100.0;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		this.sendRealTimeData(d);
+		this.sendRealTimeData(d);
 	}
 
 	public void AddDevice(IDevice oDevice) {
@@ -92,6 +99,7 @@ public class Client extends Main implements IClient {
     public void passActionToDevice(Action action) throws RemoteException {
 		mLogManager.Debug("[Client.passActionToDevice] called", 0);
 		mLogManager.Info("[Client.passActionToDevice] Received action for device " + action.deviceId, 0);
+		this.Run();
     }
 
 	@Override
@@ -99,5 +107,25 @@ public class Client extends Main implements IClient {
 		// TODO hardcoded
 		return UUID.fromString("3b287567-0813-4903-b7d6-e23bf5402c01");
 		//return this.uuid;
+	}
+
+	public void sendRealTimeData(Data data) {
+		DatagramSocket socket = null;
+		try {
+			socket = new DatagramSocket();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(data);
+			oos.flush();
+			byte[] databytes = baos.toByteArray();
+
+			DatagramPacket msg = new DatagramPacket(databytes, databytes.length, InetAddress.getByName(Config.IP_DataCollection), Config.Port_DataCollection);
+			socket.send(msg);
+			mLogManager.Log("Send Real-Time data to CollectionServer. Bytes " + databytes.length,0);
+		} catch (SocketException e) {
+			mLogManager.Error("SocketException: " + e.getMessage(), 0);
+		} catch (IOException e) {
+			mLogManager.Error("IOException: " + e.getMessage(), 0);
+		}
 	}
 }

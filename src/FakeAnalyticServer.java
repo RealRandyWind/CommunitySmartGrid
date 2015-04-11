@@ -5,7 +5,8 @@ public class FakeAnalyticServer implements IAnalyticServer {
 
 	}
 
-	public void AddData(Data oData) {
-		
+	@Override
+	public void ReceiveData(Data data) {
+
 	}
 }

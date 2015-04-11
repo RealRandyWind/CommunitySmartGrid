@@ -50,7 +50,7 @@ public class Main {
 
 		SetUp();
 		Run();
-		Fx_ShutDown();
+		//Fx_ShutDown();  rmi start daemon thread, dus shutdown kan hier niet FIXME
 
 		return a_iExitCode;
 	}

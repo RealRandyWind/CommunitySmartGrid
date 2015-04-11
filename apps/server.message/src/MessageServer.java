@@ -31,7 +31,6 @@ public class MessageServer extends Main {
 	}
 
 	public void ShutDown() {
-		mConnectionMannager.ShutDown();
 		mLogManager.ShutDown();
 
 		System.out.printf("_SUCCESS: [MessageServer.ShutDown]\n");
@@ -39,7 +38,6 @@ public class MessageServer extends Main {
 
 	public void SetUp() {
 		mLogManager.SetUp();
-		mConnectionMannager.SetUp();
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");

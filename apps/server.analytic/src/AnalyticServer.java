@@ -10,19 +10,19 @@ import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AnalyticServer extends Main {
+public class AnalyticServer extends Main implements IAnalyticServer {
 	private MLogManager mLogManager = MLogManager.GetInstance();
 	private MConnectionManager mConnectionManager = MConnectionManager.GetInstance();
 	private Connection mConnection;
@@ -37,7 +37,6 @@ public class AnalyticServer extends Main {
 	}
 
 	public void ShutDown() {
-        mConnectionManager.ShutDown();
 		mLogManager.ShutDown();
 
 		try {
@@ -64,10 +63,23 @@ public class AnalyticServer extends Main {
 			mLogManager.Error(e.toString(),0);
 		}
 
+		try {
+			IAnalyticServer stub = (IAnalyticServer) UnicastRemoteObject.exportObject(this, 0);
+
+			// Bind the remote object's stub in the registry
+			Registry registry = LocateRegistry.getRegistry();
+			registry.bind("AnalyticServer", stub);
+
+			mLogManager.Success("[AnalyticServer.SetUp] Server ready, bound in registry with name AnalyticServer", 0);
+		} catch (Exception e) {
+			mLogManager.Error("Server exception: " + e.toString(),0);
+			e.printStackTrace();
+		}
+
 		mLogManager.Success("[AnalyticServer.SetUp]", 0);
 
 		// debug:
-		mLogManager.Log("Running debug code.", 0);
+		/*mLogManager.Log("Running debug code.", 0);
         Data dummy = new Data();
         dummy.deviceId = UUID.randomUUID();
 		dummy.clientId = UUID.fromString(Config.TestClientUUID);
@@ -78,7 +90,7 @@ public class AnalyticServer extends Main {
 			this.ShutDown();
 		}
 		dummy.potentialProduction = 100.0;
-        this.OnDataReceived(dummy);
+        this.ReceiveData(dummy);*/
 	}
 
 	public static Main GetInstance() {
@@ -97,18 +109,17 @@ public class AnalyticServer extends Main {
      */
     private void sendAction(Action action) {
         mLogManager.Log("Sending action for " + action.clientId + " to message queue", 0);
-        try {
+		try {
             mChannel.queueDeclare("actions", false, false, false, null);
             mChannel.basicPublish("", "actions", null, Serializer.serialize(action));
         } catch (IOException e) {
-            mLogManager.Error(e.toString(), 0);
+            mLogManager.Error(e.getMessage(), 0);
         }
     }
 
 	public static void main(String[] arguments) {
 		Main oApplication = AnalyticServer.GetInstance();
 		int iEntryReturn = oApplication.Entry();
-		System.exit(iEntryReturn);
 	}
 
 	/**
@@ -135,7 +146,9 @@ public class AnalyticServer extends Main {
 	 * Called when real-time data reaches the analytic server.
 	 * @param data The data
 	 */
-	protected void OnDataReceived(Data data) {
+	public void ReceiveData(Data data) {
+		mLogManager.Log("Received data from client " + data.clientId + " of device " + data.deviceId, 0);
+
 		ArrayList<Data> datas;
 		if (!mDataHistory.containsKey(data.deviceId)) {
 			datas = new ArrayList<Data>();

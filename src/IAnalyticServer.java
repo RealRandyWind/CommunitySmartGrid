@@ -1,5 +1,8 @@
 package com.nativedevelopment.smartgrid;
 
-public interface IAnalyticServer {
-	public void AddData(Data oData);
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface IAnalyticServer extends Remote {
+	public void ReceiveData(Data data) throws RemoteException;
 }

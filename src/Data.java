@@ -1,9 +1,10 @@
 package com.nativedevelopment.smartgrid;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.UUID;
 
-public class Data {
+public class Data implements Serializable {
 	public UUID deviceId;
     public UUID clientId;
 	public InetAddress clientIp;
