@@ -10,4 +10,4 @@ WD=$(pwd)
 IP=$1
 
 cd ./bin/
-java -classpath ${WD}/bin/objects/ -Djava.rmi.server.codebase=file:${WD}/bin/objects/ -Djava.rmi.server.hostname=${IP} -jar client.jar
+java -classpath ${WD}/bin/objects/ -Djava.rmi.server.codebase=file:${WD}/bin/objects/ -Djava.rmi.server.hostname=${IP} -jar client.jar ${IP}

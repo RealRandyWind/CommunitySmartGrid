@@ -19,6 +19,8 @@ public class Client extends Main implements IClient {
 	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
 	private UUID uuid;
 
+	protected InetAddress ip;
+
 	private Map<UUID,IDevice> kvDevices = new HashMap<UUID,IDevice>();
 
 	protected Client() {
@@ -54,14 +56,10 @@ public class Client extends Main implements IClient {
 		mLogManager.Log("[Client.Run] running test",0);
 		Data d = new Data();
 		d.clientId = UUID.fromString(Config.TestClientUUID);
-		try {
-			d.clientIp = InetAddress.getByName(Config.TestClientHost);
-			d.deviceId = UUID.randomUUID();
-			d.predictedProduction = 100.0;
-			d.potentialProduction = 100.0;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
+		d.clientIp = this.ip;
+		d.deviceId = UUID.randomUUID();
+		d.predictedProduction = 100.0;
+		d.potentialProduction = 100.0;
 		this.sendRealTimeData(d);
 		this.sendRealTimeData(d);
 	}
@@ -90,8 +88,13 @@ public class Client extends Main implements IClient {
 		return a_oInstance;
 	}
 
-	public static void main(String[] arguments)	{
-		Main oApplication = Client.GetInstance();
+	public static void main(String[] arguments) {
+		Client oApplication = (Client) Client.GetInstance();
+		try {
+			oApplication.ip = InetAddress.getByName(arguments[0]);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 		int iEntryReturn = oApplication.Entry();
 	}
 
@@ -99,7 +102,6 @@ public class Client extends Main implements IClient {
     public void passActionToDevice(Action action) throws RemoteException {
 		mLogManager.Debug("[Client.passActionToDevice] called", 0);
 		mLogManager.Info("[Client.passActionToDevice] Received action for device " + action.deviceId, 0);
-		this.Run();
     }
 
 	@Override
