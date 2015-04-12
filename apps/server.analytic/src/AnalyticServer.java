@@ -108,7 +108,7 @@ public class AnalyticServer extends Main implements IAnalyticServer {
      * @param action The action to send
      */
     private void sendAction(Action action) {
-        mLogManager.Log("Sending action for " + action.clientId + " to message queue", 0);
+        mLogManager.Log("Sending action for client " + action.clientId + " of device " + action.deviceId + " to message queue", 0);
 		try {
             mChannel.queueDeclare("actions", false, false, false, null);
             mChannel.basicPublish("", "actions", null, Serializer.serialize(action));
@@ -150,7 +150,7 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 			}
 		}
 
-		if (closest_potential_production == null || closest_source == null) {
+		if (closest_potential_production == null && closest_source == null) {
 			mLogManager.Warning("Could not compute action. No data found.", 0);
 			return;
 		}

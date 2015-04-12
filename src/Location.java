@@ -1,7 +1,9 @@
 package com.nativedevelopment.smartgrid;
 
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
 	protected double lat;
 	protected double lon;
 

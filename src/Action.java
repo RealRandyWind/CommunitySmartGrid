@@ -16,4 +16,8 @@ public class Action implements Serializable {
 		this.clientId = clientId;
 		this.clientIp = clientIp;
 	}
+
+	public String toString() {
+		return "[Action] Client " + clientId + ". Device " + deviceId + ". New production: " + newProduction;
+	}
 }
