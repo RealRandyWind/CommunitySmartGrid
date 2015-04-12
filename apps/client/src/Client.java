@@ -58,8 +58,8 @@ public class Client extends Main implements IClient {
 		d.clientId = UUID.fromString(Config.TestClientUUID);
 		d.clientIp = this.ip;
 		d.deviceId = UUID.randomUUID();
-		d.predictedProduction = 100.0;
 		d.potentialProduction = 100.0;
+		d.location = new Location(53.10627, 6.8751);
 		this.sendRealTimeData(d);
 		this.sendRealTimeData(d);
 	}
