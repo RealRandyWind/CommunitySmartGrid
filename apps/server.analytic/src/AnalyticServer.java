@@ -27,10 +27,10 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 	private MConnectionManager mConnectionManager = MConnectionManager.GetInstance();
 	private Connection mConnection;
 	private Channel mChannel;
-	/** Maps stores the data history of the devices.
+	/** Maps stores the last Data of the devices.
 	 *  key: devideId
-	 *  value: Data list */
-	private Map<UUID, ArrayList<Data>> mDataHistory = new HashMap<UUID, ArrayList<Data>>();
+	 *  value: Last data item */
+	private Map<UUID, Data> lastDatas = new HashMap<UUID, Data>();
 
 	protected AnalyticServer() {
 
@@ -123,23 +123,56 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 	}
 
 	/**
-	 * Uses a data package (and possibly the history) to determine if an action
+	 * Uses a data package to determine if an action
 	 * will be send to a device
 	 * */
 	private void AnalyzeData(Data data) {
-		ArrayList<Data> datas = mDataHistory.get(data.deviceId);
-		// iterate over all devices and find one with positive production
+		double net_usage = 0.0;
+		double net_potential_production = 0.0;
+		// closest device with positive potential production
+		Data closest_potential_production = null;
+		double closest_potential_production_distance = Double.MAX_VALUE;
+		// closest device with positive production (negative usage)
+		Data closest_source = null;
+		double closest_source_distance = Double.MAX_VALUE;
 
-        for(ArrayList<Data> deviceData : mDataHistory.values()) {
-            Data last = deviceData.get(deviceData.size()-1);
-            if (last.potentialProduction > 0.0) {
-                Action sinkAct = new Action(data.deviceId, Action.EAction.IncreaseUsage, data.clientId, data.clientIp);
-                Action sourceAct = new Action(last.deviceId, Action.EAction.IncreaseProduction, data.clientId, data.clientIp);
-                this.sendAction(sinkAct);
-                this.sendAction(sourceAct);
-                return;
-            }
-        }
+		// compute net usage, potential production and closest source and source with potential production
+		for (Data d : lastDatas.values()) {
+			net_usage += d.usage;
+			net_potential_production += d.potentialProduction;
+			if (d.potentialProduction > 0.0 && d.location.distanceTo(data.location) < closest_potential_production_distance) {
+				closest_potential_production_distance = d.location.distanceTo(data.location);
+				closest_potential_production = d;
+			}
+			if (d.usage < 0.0 && d.location.distanceTo(data.location) < closest_source_distance) {
+				closest_source_distance = d.location.distanceTo(data.location);
+				closest_source = d;
+			}
+		}
+
+		if (closest_potential_production == null || closest_source == null) {
+			mLogManager.Warning("Could not compute action. No data found.", 0);
+			return;
+		}
+
+		mLogManager.Log("Net usage: "+net_usage+". Net potential production: "+net_potential_production,0);
+
+		if (net_usage > 0.0 && net_potential_production > 0.0) {
+			// use closest source to newest data point with potential production
+			// add the minimum of potential production and what is needed
+			double needed = net_usage;
+			double newproduction = (closest_potential_production.usage*-1) + Math.min(needed, closest_potential_production.potentialProduction);
+			Action act = new Action(closest_potential_production.clientIp, closest_potential_production.clientId, closest_potential_production.deviceId, newproduction);
+			this.sendAction(act);
+			mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to increase production to " + newproduction,0);
+		} else if (net_usage < 0.0) {
+			// surplus, tell nearest energy source to produce less (maximum of 0 with (current production-surplus))
+			double newproduction = Math.max(closest_source.usage*-1 + net_usage, 0);
+			Action act = new Action(closest_source.clientIp, closest_source.clientId, closest_source.deviceId, newproduction);
+			this.sendAction(act);
+			mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to decrease production to " + newproduction,0);
+		}
+
 	}
 
 	/**
@@ -149,14 +182,9 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 	public void ReceiveData(Data data) {
 		mLogManager.Log("Received data from client " + data.clientId + " of device " + data.deviceId, 0);
 
-		ArrayList<Data> datas;
-		if (!mDataHistory.containsKey(data.deviceId)) {
-			datas = new ArrayList<Data>();
-			mDataHistory.put(data.deviceId, datas);
-		} else {
-			datas = mDataHistory.get(data.deviceId);
-		}
-		datas.add(data);
+		lastDatas.put(data.deviceId, data);
+
+
         this.AnalyzeData(data);
 	}
 }

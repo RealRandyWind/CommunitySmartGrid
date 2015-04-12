@@ -10,10 +10,8 @@ public class Data implements Serializable {
 	public InetAddress clientIp;
 	/** Time of data */
 	public long unixTimestamp;
-	/** Usage in unit/second. Negative for productoin */
+	/** Usage in unit/second. Negative for production */
 	public double usage;
-	/** Predicted usage in next time interval. Negative for production. */
-	public double predictedUsage;
 	/** Potential production in next time interval */
 	public double potentialProduction;
 	public Location location;

@@ -5,22 +5,14 @@ import java.net.InetAddress;
 import java.util.UUID;
 
 public class Action implements Serializable {
-	public enum EAction {
-		StopUsage,
-		DecreaseUsage,
-		IncreaseUsage,
-		IncreaseProduction,
-		DecreaseProduction
-	}
-
 	public UUID deviceId;
 	public UUID clientId;
 	public InetAddress clientIp;
-	public EAction action;
+	public double newProduction; // negative for usage
 
-	public Action(UUID deviceId, EAction action, UUID clientId, InetAddress clientIp) {
+	public Action(InetAddress clientIp, UUID clientId, UUID deviceId, double newproduction) {
 		this.deviceId = deviceId;
-		this.action = action;
+		this.newProduction = newproduction;
 		this.clientId = clientId;
 		this.clientIp = clientIp;
 	}
