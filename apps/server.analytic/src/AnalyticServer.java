@@ -139,10 +139,12 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 		// compute net usage, potential production and closest source and source with potential production
 		for (Data d : lastDatas.values()) {
 			net_usage += d.usage;
-			net_potential_production += d.potentialProduction;
-			if (d.potentialProduction > 0.0 && d.location.distanceTo(data.location) < closest_potential_production_distance) {
-				closest_potential_production_distance = d.location.distanceTo(data.location);
-				closest_potential_production = d;
+			if (d.potentialProduction > 0.0 && d.potentialProduction+d.usage > 0.0) {
+				net_potential_production += d.potentialProduction+d.usage;
+				if (d.location.distanceTo(data.location) < closest_potential_production_distance) {
+					closest_potential_production_distance = d.location.distanceTo(data.location);
+					closest_potential_production = d;
+				}
 			}
 			if (d.usage < 0.0 && d.location.distanceTo(data.location) < closest_source_distance) {
 				closest_source_distance = d.location.distanceTo(data.location);

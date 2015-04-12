@@ -3,16 +3,19 @@ package com.nativedevelopment.smartgrid.client;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Map;
 import java.util.HashMap;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.DummyDevice;
 
 public class Client extends Main implements IClient {
 	private MLogManager mLogManager = MLogManager.GetInstance();
@@ -54,6 +57,20 @@ public class Client extends Main implements IClient {
 
 	public void Run() {
 
+		while (true) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				this.ShutDown();
+			}
+			for (IDevice d : kvDevices.values()) {
+				Data data = d.getData();
+				data.clientId = this.getIdentifier();
+				data.clientIp = this.ip;
+				this.sendRealTimeData(data);
+			}
+		}
 	}
 
 	public void AddDevice(IDevice oDevice) {
@@ -89,21 +106,24 @@ public class Client extends Main implements IClient {
 		}
 
 		oApplication.mLogManager.Log("[Client.Run] running test",0);
-		Data d = new Data();
-		d.clientId = oApplication.getIdentifier();
-		d.clientIp = oApplication.ip;
-		d.deviceId = UUID.randomUUID();
-		d.potentialProduction = Double.parseDouble(arguments[1]);
-		d.usage = Double.parseDouble(arguments[2]);
-		d.location = new Location(53.10627, 6.8751);
-		oApplication.sendRealTimeData(d);
+		Location veendam = new Location(53.10627, 6.8751);
+		DummyDevice test1 = new DummyDevice(veendam);
+		test1.setCurrentUsage(Double.parseDouble(arguments[2]));
+		test1.setPotentialProduction(Double.parseDouble(arguments[1]));
+		oApplication.AddDevice(test1);
 
 		int iEntryReturn = oApplication.Entry();
 	}
 
     @Override
     public void passActionToDevice(Action action) throws RemoteException {
-		mLogManager.Info("[Client.passActionToDevice] Received action:" + action.toString(), 0);
+		mLogManager.Info("[Client.passActionToDevice] Received action:" + action.toString() + "\nSending to device.", 0);
+		IDevice device = kvDevices.get(action.deviceId);
+		if (device == null) {
+			mLogManager.Error("Received action for device " + action.deviceId + ", but this device does not belong to this client",0);
+		} else {
+			device.performAction(action);
+		}
     }
 
 	@Override
