@@ -1,14 +1,13 @@
 package com.nativedevelopment.smartgrid;
 
 
-import com.nativedevelopment.smartgrid.client.Client;
-
 import java.util.UUID;
 
 public class DummyDevice implements IDevice {
 	private UUID id;
 	private double currentUsage;
 	private double potentialProduction;
+	private double potentialUsage;
 	private Location location;
 
 	public DummyDevice(Location location) {
@@ -24,6 +23,10 @@ public class DummyDevice implements IDevice {
 		this.currentUsage = currentUsage;
 	}
 
+	public void setPotentialUsage(double potentialUsage) {
+		this.potentialUsage = potentialUsage;
+	}
+
 	@Override
 	public UUID getIdentifier() {
 		return this.id;
@@ -37,6 +40,7 @@ public class DummyDevice implements IDevice {
 		d.usage = this.currentUsage;
 		d.location = this.location;
 		d.unixTimestamp = System.currentTimeMillis()/1000;
+		d.potentialUsage = this.potentialUsage;
 		return d;
 	}
 

@@ -129,12 +129,16 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 	private void AnalyzeData(Data data) {
 		double net_usage = 0.0;
 		double net_potential_production = 0.0;
+		double net_potential_usage = 0.0;
 		// closest device with positive potential production
 		Data closest_potential_production = null;
 		double closest_potential_production_distance = Double.MAX_VALUE;
 		// closest device with positive production (negative usage)
 		Data closest_source = null;
 		double closest_source_distance = Double.MAX_VALUE;
+		// closest sink device which is not using (full potential) energy
+		Data closest_potential_usage = null;
+		double closest_potential_usage_distance = Double.MAX_VALUE;
 
 		// compute net usage, potential production and closest source and source with potential production
 		for (Data d : lastDatas.values()) {
@@ -146,33 +150,55 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 					closest_potential_production = d;
 				}
 			}
+			if (d.potentialUsage > 0.0 && d.potentialUsage - d.usage > 0.0) {
+				net_potential_usage += d.potentialUsage - d.usage;
+			}
 			if (d.usage < 0.0 && d.location.distanceTo(data.location) < closest_source_distance) {
 				closest_source_distance = d.location.distanceTo(data.location);
 				closest_source = d;
 			}
+			if (d.usage >= 0.0 && d.usage < d.potentialUsage && d.location.distanceTo(data.location) < closest_potential_usage_distance) {
+				closest_potential_usage = d;
+				closest_potential_usage_distance = d.location.distanceTo(data.location);
+			}
 		}
 
 		if (closest_potential_production == null && closest_source == null) {
-			mLogManager.Warning("Could not compute action. No data found.", 0);
+			mLogManager.Warning("Could not compute action. No suitable data found.", 0);
 			return;
 		}
 
-		mLogManager.Log("Net usage: "+net_usage+". Net potential production: "+net_potential_production,0);
+		if (net_usage == 0.0) {
+			mLogManager.Log("Net usage: "+net_usage+". Net potential production: "+net_potential_production,0);
+		} else {
+			mLogManager.Info("Net usage: "+net_usage+". Net potential production: "+net_potential_production,0);
+		}
+
 
 		if (net_usage > 0.0 && net_potential_production > 0.0) {
 			// use closest source to newest data point with potential production
-			// add the minimum of potential production and what is needed
+			// new production = the minimum of potential production and what is needed
 			double needed = net_usage;
 			double newproduction = (closest_potential_production.usage*-1) + Math.min(needed, closest_potential_production.potentialProduction);
 			Action act = new Action(closest_potential_production.clientIp, closest_potential_production.clientId, closest_potential_production.deviceId, newproduction);
 			this.sendAction(act);
 			mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to increase production to " + newproduction,0);
 		} else if (net_usage < 0.0) {
-			// surplus, tell nearest energy source to produce less (maximum of 0 with (current production-surplus))
-			double newproduction = Math.max(closest_source.usage*-1 + net_usage, 0);
-			Action act = new Action(closest_source.clientIp, closest_source.clientId, closest_source.deviceId, newproduction);
-			this.sendAction(act);
-			mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to decrease production to " + newproduction,0);
+			// energy surplus
+			if (net_potential_usage > 0.0) {
+				// there are still energy sinks waiting for more energy. send action to closest_potential_usage
+				double newusage = Math.min(closest_potential_usage.potentialUsage, -1*net_usage);
+				Action act = new Action(closest_potential_usage.clientIp, closest_potential_usage.clientId, closest_potential_usage.deviceId, -1*newusage);
+				this.sendAction(act);
+				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to increase usage to " + newusage,0);
+			} else {
+				// nobody is waiting for more energy, lower energy production
+				// surplus, tell nearest energy source to produce less (maximum of 0 with (current production minus surplus))
+				double newproduction = Math.max(closest_source.usage*-1 + net_usage, 0);
+				Action act = new Action(closest_source.clientIp, closest_source.clientId, closest_source.deviceId, newproduction);
+				this.sendAction(act);
+				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to decrease production to " + newproduction,0);
+			}
 		}
 
 	}

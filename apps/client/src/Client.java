@@ -108,8 +108,9 @@ public class Client extends Main implements IClient {
 		oApplication.mLogManager.Log("[Client.Run] running test",0);
 		Location veendam = new Location(53.10627, 6.8751);
 		DummyDevice test1 = new DummyDevice(veendam);
-		test1.setCurrentUsage(Double.parseDouble(arguments[2]));
+		test1.setCurrentUsage(Double.parseDouble(arguments[3]));
 		test1.setPotentialProduction(Double.parseDouble(arguments[1]));
+		test1.setPotentialUsage(Double.parseDouble(arguments[2]));
 		oApplication.AddDevice(test1);
 
 		int iEntryReturn = oApplication.Entry();
@@ -143,7 +144,7 @@ public class Client extends Main implements IClient {
 
 			DatagramPacket msg = new DatagramPacket(databytes, databytes.length, InetAddress.getByName(Config.IP_DataCollection), Config.Port_DataCollection);
 			socket.send(msg);
-			mLogManager.Log("Send Real-Time data to CollectionServer. Bytes " + databytes.length,0);
+			mLogManager.Log("Send Real-Time data to CollectionServer: " + data.toString(),0);
 		} catch (SocketException e) {
 			mLogManager.Error("SocketException: " + e.getMessage(), 0);
 		} catch (IOException e) {
