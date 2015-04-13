@@ -4,7 +4,6 @@ import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.FakeSubscriptionServer;
 import com.nativedevelopment.smartgrid.IClient;
 import com.nativedevelopment.smartgrid.ISubscriptionServer;
-import com.nativedevelopment.smartgrid.MConnectionManager;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Main;
 
@@ -12,14 +11,12 @@ import java.util.UUID;
 
 public class SubscriptionServer extends Main implements ISubscriptionServer {
 	private MLogManager mLogManager = MLogManager.GetInstance();
-	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
-	
+
 	protected SubscriptionServer() {
 
 	}
 
 	public void ShutDown() {
-		mConnectionMannager.ShutDown();
 		mLogManager.ShutDown();
 
 		System.out.printf("_SUCCESS: [SubscriptionServer.ShutDown]\n");
@@ -27,8 +24,6 @@ public class SubscriptionServer extends Main implements ISubscriptionServer {
 
 	public void SetUp() {
 		mLogManager.SetUp();
-		mConnectionMannager.SetUp();
-
 		mLogManager.Success("[SubscriptionServer.SetUp]",0);
 	}
 

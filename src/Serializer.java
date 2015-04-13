@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class Serializer extends ServiceIO {
+public class Serializer {
     private static MLogManager mLogManager = MLogManager.GetInstance();
 
     public static byte[] serialize(Object obj) {

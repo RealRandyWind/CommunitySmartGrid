@@ -19,7 +19,6 @@ import com.nativedevelopment.smartgrid.DummyDevice;
 
 public class Client extends Main implements IClient {
 	private MLogManager mLogManager = MLogManager.GetInstance();
-	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
 	private UUID uuid;
 
 	protected InetAddress ip;
@@ -59,7 +58,7 @@ public class Client extends Main implements IClient {
 
 		while (true) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				this.ShutDown();

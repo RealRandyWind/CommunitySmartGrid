@@ -4,7 +4,6 @@ import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Action;
 import com.nativedevelopment.smartgrid.FakeSubscriptionServer;
 import com.nativedevelopment.smartgrid.IClient;
-import com.nativedevelopment.smartgrid.MConnectionManager;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Main;
 import com.nativedevelopment.smartgrid.Serializer;
@@ -22,7 +21,6 @@ import java.util.UUID;
 
 public class MessageServer extends Main {
 	private MLogManager mLogManager = MLogManager.GetInstance();
-	private MConnectionManager mConnectionMannager = MConnectionManager.GetInstance();
 	private Channel channel;
 	public final static String ACTION_QUEUE_NAME = "actions";
 	

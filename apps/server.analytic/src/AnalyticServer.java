@@ -3,7 +3,6 @@ package com.nativedevelopment.smartgrid.server.analytic;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Action;
 import com.nativedevelopment.smartgrid.Data;
-import com.nativedevelopment.smartgrid.MConnectionManager;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Main;
 import com.nativedevelopment.smartgrid.Serializer;
@@ -24,7 +23,6 @@ import java.util.UUID;
 
 public class AnalyticServer extends Main implements IAnalyticServer {
 	private MLogManager mLogManager = MLogManager.GetInstance();
-	private MConnectionManager mConnectionManager = MConnectionManager.GetInstance();
 	private Connection mConnection;
 	private Channel mChannel;
 	/** Maps stores the last Data of the devices.
@@ -77,20 +75,6 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 		}
 
 		mLogManager.Success("[AnalyticServer.SetUp]", 0);
-
-		// debug:
-		/*mLogManager.Log("Running debug code.", 0);
-        Data dummy = new Data();
-        dummy.deviceId = UUID.randomUUID();
-		dummy.clientId = UUID.fromString(Config.TestClientUUID);
-		try {
-			dummy.clientIp = InetAddress.getByName(Config.TestClientHost);
-		} catch (UnknownHostException e) {
-			mLogManager.Error(e.getMessage(),0);
-			this.ShutDown();
-		}
-		dummy.potentialProduction = 100.0;
-        this.ReceiveData(dummy);*/
 	}
 
 	public static Main GetInstance() {
@@ -139,6 +123,9 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 		// closest sink device which is not using (full potential) energy
 		Data closest_potential_usage = null;
 		double closest_potential_usage_distance = Double.MAX_VALUE;
+		// closest sink device which can use less energy
+		Data closest_overusing_sink = null;
+		double closest_overusing_sink_distance = Double.MAX_VALUE;
 
 		// compute net usage, potential production and closest source and source with potential production
 		for (Data d : lastDatas.values()) {
@@ -152,6 +139,11 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 			}
 			if (d.potentialUsage > 0.0 && d.potentialUsage - d.usage > 0.0) {
 				net_potential_usage += d.potentialUsage - d.usage;
+			}
+			if (d.potentialUsage < d.usage && d.location.distanceTo(data.location) < closest_overusing_sink_distance) {
+				// this energy sink has indicated it can do with less energy
+				closest_overusing_sink_distance = d.location.distanceTo(data.location);
+				closest_overusing_sink = d;
 			}
 			if (d.usage < 0.0 && d.location.distanceTo(data.location) < closest_source_distance) {
 				closest_source_distance = d.location.distanceTo(data.location);
@@ -175,14 +167,25 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 		}
 
 
-		if (net_usage > 0.0 && net_potential_production > 0.0) {
-			// use closest source to newest data point with potential production
-			// new production = the minimum of potential production and what is needed
-			double needed = net_usage;
-			double newproduction = (closest_potential_production.usage*-1) + Math.min(needed, closest_potential_production.potentialProduction);
-			Action act = new Action(closest_potential_production.clientIp, closest_potential_production.clientId, closest_potential_production.deviceId, newproduction);
-			this.sendAction(act);
-			mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to increase production to " + newproduction,0);
+		if (net_usage > 0.0) {
+			// energy shortage
+			if (net_potential_production > 0.0) {
+				// there is still energy production available
+				// use closest source to newest data point with potential production
+				// new production = the minimum of potential production and what is needed
+				double needed = net_usage;
+				double newproduction = (closest_potential_production.usage*-1) + Math.min(needed, closest_potential_production.potentialProduction);
+				Action act = new Action(closest_potential_production.clientIp, closest_potential_production.clientId, closest_potential_production.deviceId, newproduction);
+				this.sendAction(act);
+				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to increase production to " + newproduction,0);
+			} else if (closest_overusing_sink != null) {
+				// there is an energy sink which has indicated it can do with less energy
+				// tell it to use the lowest amount of energy it can (the potentialUsage)
+				Action act = new Action(closest_overusing_sink.clientIp, closest_overusing_sink.clientId, closest_overusing_sink.deviceId, -1*closest_overusing_sink.potentialUsage);
+				this.sendAction(act);
+				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to decreate usage to " + closest_overusing_sink.potentialUsage,0);
+			}
+
 		} else if (net_usage < 0.0) {
 			// energy surplus
 			if (net_potential_usage > 0.0) {
