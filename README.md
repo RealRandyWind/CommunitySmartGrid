@@ -1,4 +1,4 @@
-**How to make the software**
+**How to make the software**  
 To compile the Java source code, simply execute:
     make dirs
     make
@@ -6,7 +6,7 @@ To compile the Java source code, simply execute:
 
 The first command will make the needed directories. The second will compile the code used by all the servers. And the third command makes the jar’s for the actual servers.
 
-**How to run the software**
+**How to run the software**  
 In order to run the software it is a prerequisite that both RabbitMQ and RMI are installed on the system. RMI often comes pre-installed on most systems, but RabbitMQ usually not.
 Because the commands needed to start some of the servers, especially those hosting RMI objects, became quite lengthy, we have created a few bash scripts for this. 
 
