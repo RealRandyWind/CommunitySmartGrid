@@ -80,7 +80,7 @@ public class MessageServer extends Main {
 					String host = a.clientIp.getHostName();
 					//System.setProperty("java.rmi.server.hostname", InetAddress.getByName(host).getHostAddress());
 					mLogManager.Debug("Locating the registry for this client, ip: " + host,0);
-					Registry registry = LocateRegistry.getRegistry(host); // TODO find smart way to get ip
+					Registry registry = LocateRegistry.getRegistry(host);
 					mLogManager.Debug("Got registry for " + host, 0);
 					IClient clientStub = (IClient) registry.lookup("Client" + a.clientId);
 					mLogManager.Debug("Looked up stub for Client" + a.clientId,0);

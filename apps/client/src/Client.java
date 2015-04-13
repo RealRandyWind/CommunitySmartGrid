@@ -43,7 +43,7 @@ public class Client extends Main implements IClient {
 
 			// Bind the remote object's stub in the registry
 			Registry registry = LocateRegistry.getRegistry();
-			registry.bind("Client" + this.getIdentifier(), stub); // todo allow multiple clients by appending "Client" with identifier
+			registry.bind("Client" + this.getIdentifier(), stub);
 
 			mLogManager.Success("[Client.SetUp] Server ready, bound in registry with name Client"+this.getIdentifier(), 0);
 		} catch (Exception e) {
