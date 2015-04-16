@@ -172,9 +172,9 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 			if (net_potential_production > 0.0) {
 				// there is still energy production available
 				// use closest source to newest data point with potential production
-				// new production = the minimum of potential production and what is needed
+				// new production = the minimum of remaining potential production and what is needed
 				double needed = net_usage;
-				double newproduction = (closest_potential_production.usage*-1) + Math.min(needed, closest_potential_production.potentialProduction);
+				double newproduction = (closest_potential_production.usage*-1) + Math.min(needed, closest_potential_production.potentialProduction-(closest_potential_production.usage*-1));
 				Action act = new Action(closest_potential_production.clientIp, closest_potential_production.clientId, closest_potential_production.deviceId, newproduction);
 				this.sendAction(act);
 				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to increase production to " + newproduction,0);
@@ -183,7 +183,7 @@ public class AnalyticServer extends Main implements IAnalyticServer {
 				// tell it to use the lowest amount of energy it can (the potentialUsage)
 				Action act = new Action(closest_overusing_sink.clientIp, closest_overusing_sink.clientId, closest_overusing_sink.deviceId, -1*closest_overusing_sink.potentialUsage);
 				this.sendAction(act);
-				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to decreate usage to " + closest_overusing_sink.potentialUsage,0);
+				mLogManager.Log("Send action to " + act.deviceId + " ("+act.clientIp+") to decrease usage to " + closest_overusing_sink.potentialUsage,0);
 			}
 
 		} else if (net_usage < 0.0) {
