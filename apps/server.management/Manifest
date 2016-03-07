@@ -1,3 +1,0 @@
-Main-Class: com.nativedevelopment.smartgrid.server.management.ManagementServer
-Class-Path: libraries/smartgrid.jar
-Manifest-Version: 0.1.1

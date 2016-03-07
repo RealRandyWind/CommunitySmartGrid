@@ -1,0 +1,3 @@
+Main-Class: com.nativedevelopment.smartgrid.server.storage.StorageServer
+Class-Path: smartgrid.jar
+Manifest-Version: 0.1.1

@@ -32,7 +32,7 @@ _BASE_SRC=$(shell find src -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
 _DEP_DIR=$(ROOT_DIR)/$(DEP_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
-_CLASSPATHS="$(_RLS_DIR)/*:$(_RLS_DIR)/libraries/*:$(_DEP_DIR)/*"
+_CLASSPATHS="$(_RLS_DIR)/*:$(_RLS_DIR)/*:$(_DEP_DIR)/*"
 SUBDIRS=$(addprefix $(APP_DIR)/,$(APPS))
 
 #EXPORTING
@@ -51,11 +51,11 @@ export APPCOMPILER
 export APPCOMPILERFLAGS
 
 #BUILDING AND COMPILING
-$(_RLS_DIR)/libraries/$(BASE).jar: $(_BASE_SRC)
-	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/objects/
-	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ -C $(_RLS_DIR)/ ./libraries/ -C $(_RLS_DIR)/objects/ .
+$(_RLS_DIR)/$(BASE).jar: $(_BASE_SRC)
+	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/
+	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ -C $(_RLS_DIR)/ ./ -C $(_RLS_DIR)/ .
 
-$(SUBDIRS): $(_RLS_DIR)/libraries/$(BASE).jar
+$(SUBDIRS): $(_RLS_DIR)/$(BASE).jar
 	$(MAKE) -C $@
 
 #EXTRA OPTIONS
@@ -64,10 +64,10 @@ $(SUBDIRS): $(_RLS_DIR)/libraries/$(BASE).jar
 apps: $(SUBDIRS)
 
 clean:
-	rm -rf $(_RLS_DIR)/*.jar $(_RLS_DIR)/objects/* $(_RLS_DIR)/libraries/*
+	rm -rf $(_RLS_DIR)/*.jar $(_RLS_DIR)/* $(_RLS_DIR)/*
 
 tests-clean:
-	rm -rf $(_TST_DIR)/bin/*.jar $(_TST_DIR)/bin/objects/*
+	rm -rf $(_TST_DIR)/bin/*.jar $(_TST_DIR)/bin/*
 
 tests:
 	$(MAKE) -C $(TST_DIR)
@@ -78,13 +78,10 @@ test:
 dirs:
 	mkdir -p $(LIB_DIR)
 	mkdir -p $(RLS_DIR)
-	mkdir -p $(RLS_DIR)/objects
-	mkdir -p $(RLS_DIR)/libraries
 	mkdir -p $(DEP_DIR)
 	mkdir -p $(SRC_DIR)
 	mkdir -p $(APP_DIR)
 	mkdir -p $(TST_DIR)
-	mkdir -p $(TST_DIR)/bin/objects
 	mkdir -p $(TST_DIR)/src
 	mkdir -p $(TST_DIR)/bin
 	mkdir -p $(TST_DIR)/deps
