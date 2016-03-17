@@ -39,13 +39,14 @@ public class ConnectionTest implements ITestCase {
 	}
 
 	@Test
-	public void testOpenIsActiveClose() throws Exception {
+	public void testOpenIsActiveCloseForceClose() throws Exception {
 		a_mLogManager.Test("[ConnectionTest.testOpenIsActiveClose] begin",0);
 		IConnection oConnection = new Connection(null);
 		assertFalse(oConnection.IsActive());
 		oConnection.Open();
 		assertTrue(oConnection.IsActive());
-		oConnection.Close();
+		// TODO test close
+		oConnection.ForceClose();
 		Thread.sleep(2000);
 		assertFalse(oConnection.IsActive());
 		a_mLogManager.Test("[ConnectionTest.testOpenIsActiveClose] end",0);

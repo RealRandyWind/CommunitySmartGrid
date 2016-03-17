@@ -24,5 +24,14 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library name="rabbitmq-client">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/deps/rabbitmq-client.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

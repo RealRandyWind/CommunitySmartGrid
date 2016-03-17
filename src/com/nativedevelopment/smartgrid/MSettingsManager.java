@@ -81,6 +81,7 @@ public class MSettingsManager {
         try {
             File oFile = new File(sPath);
             FileInputStream oFileInputStream = new FileInputStream(oFile);
+            // TODO fix may not be usable in arm java version
             byte[] rawSource = new byte[(int) oFile.length()];
             oFileInputStream.read(rawSource);
             String sSource = new String(rawSource, Charset.defaultCharset());

@@ -10,5 +10,6 @@ public interface ISettings {
     public Serializable Get(String sSetting);
     public void Set(String sSetting, Serializable oValue);
     public void SetSpecial(String sSetting, String sValue);
+    public void SetKeyPrefix(String sKeyPrefix);
     public Iterable<Map.Entry<String,Serializable>> GetAll();
 }

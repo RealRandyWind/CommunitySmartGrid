@@ -28,7 +28,7 @@ BASE=smartgrid
 DEPS=$(shell ls $(DEP_DIR))
 
 #PREPARING
-_BASE_SRC=$(shell find src -name *.java)
+_BASE_SRC=$(shell find $(SRC_DIR) -type f -name *.java)
 _RLS_DIR=$(ROOT_DIR)/$(RLS_DIR)
 _DEP_DIR=$(ROOT_DIR)/$(DEP_DIR)
 _TST_DIR=$(ROOT_DIR)/$(TST_DIR)
@@ -52,8 +52,8 @@ export APPCOMPILERFLAGS
 
 #BUILDING AND COMPILING
 $(_RLS_DIR)/$(BASE).jar: $(_BASE_SRC)
-	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/
-	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ -C $(_RLS_DIR)/ ./ -C $(_RLS_DIR)/ .
+	$(COMPILER) $(COMPILERFLAGS) -cp $(_CLASSPATHS) $(_BASE_SRC) -d $(_RLS_DIR)/$(BASE)/
+	$(LIBCOMPILER) $(LIBCOMPILERFLAGS) $@ -C $(_RLS_DIR)/ ./ -C $(_RLS_DIR)/$(BASE)/ .
 
 $(SUBDIRS): $(_RLS_DIR)/$(BASE).jar
 	$(MAKE) -C $@

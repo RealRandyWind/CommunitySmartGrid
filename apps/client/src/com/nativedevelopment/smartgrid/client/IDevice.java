@@ -1,5 +1,6 @@
 package com.nativedevelopment.smartgrid.client;
 
+import com.nativedevelopment.smartgrid.IConnection;
 import com.nativedevelopment.smartgrid.IControlable;
 
 import java.util.UUID;
