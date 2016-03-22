@@ -5,7 +5,7 @@ import com.nativedevelopment.smartgrid.Connection;
 import java.util.UUID;
 
 public class RMIControllerConnection extends Connection {
-	public RMIControllerConnection(UUID oIdentifier, String sToHost, int iByPort, String lToService) {
+	public RMIControllerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 	}
 

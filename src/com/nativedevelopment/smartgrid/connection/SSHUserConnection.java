@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class SSHUserConnection extends Connection{
-	public SSHUserConnection(UUID oIdentifier, String sToHost, String sPublicPrivateKey, Queue<Serializable> lFromQueue) {
+	public SSHUserConnection(UUID oIdentifier) {
 		super(oIdentifier);
 	}
 

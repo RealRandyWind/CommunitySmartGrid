@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.util.UUID;
 
 public class RMIControllerListenerConnection extends Connection{
-	public RMIControllerListenerConnection(UUID oIdentifier, int iThroughPort, String lAsService, Remote oRemote) {
+	public RMIControllerListenerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 	}
 

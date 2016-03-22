@@ -12,10 +12,10 @@ import java.util.UUID;
  */
 public class LocalStorageConnection extends Connection {
 	public static final String SETTINGS_KEY_FILE = "file";
-	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktimelowerbound";
-	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktimeupperbound";
-	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktimedelta";
-	public static final String SETTINGS_KEY_WRITEMAX = "writemax";
+
+	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
+	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
+	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
