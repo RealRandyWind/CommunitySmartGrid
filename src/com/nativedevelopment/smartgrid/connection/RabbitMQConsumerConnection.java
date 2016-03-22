@@ -10,8 +10,8 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class RabbitMQConsumerConnection extends Connection implements Consumer {
-	public static final String SETTINGS_KEY_HOST = "host.address";
-	public static final String SETTINGS_KEY_PORT = "host.port";
+	public static final String SETTINGS_KEY_REMOTEADRESS = "remote.address";
+	public static final String SETTINGS_KEY_REMOTEPORT = "remote.port";
 	public static final String SETTINGS_KEY_EXCHANGE= "exchange";
 	public static final String SETTINGS_KEY_EXCHANGETYPE = "exchange.type";
 	public static final String SETTINGS_KEY_ROUTINGKEY = "routing.key";
@@ -54,8 +54,8 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
-		a_sFromHost = oConfigurations.GetString(SETTINGS_KEY_HOST);
-		a_nThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_PORT);
+		a_sFromHost = oConfigurations.GetString(SETTINGS_KEY_REMOTEADRESS);
+		a_nThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_sFromExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sTypeExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGETYPE);
 		a_sRoutingKey = oConfigurations.GetString(SETTINGS_KEY_ROUTINGKEY);

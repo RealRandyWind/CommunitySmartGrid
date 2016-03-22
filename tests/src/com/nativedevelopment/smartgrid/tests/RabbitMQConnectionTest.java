@@ -48,8 +48,8 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
 
-		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_HOST,SETTINGS_VALUE_HOST);
-		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_PORT,SETTINGS_VALUE_PORT);
+		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADRESS,SETTINGS_VALUE_HOST);
+		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"test");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISHANDSHAKE,true);
@@ -61,8 +61,8 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 
-		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_HOST,SETTINGS_VALUE_HOST);
-		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_PORT,SETTINGS_VALUE_PORT);
+		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_REMOTEADRESS,SETTINGS_VALUE_HOST);
+		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"test");
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTINGKEY,"");

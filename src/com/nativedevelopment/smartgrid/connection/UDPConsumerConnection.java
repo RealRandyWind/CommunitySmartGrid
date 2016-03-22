@@ -76,6 +76,9 @@ public class UDPConsumerConnection extends Connection {
 				if(rawBytes == null) { continue; }
 				Fx_Consume(rawBytes);
 			}
+
+			a_oDatagramChannel.disconnect();
+			a_oDatagramChannel.close();
 		} catch (Exception oException) {
 			System.out.printf("_WARNING: [UDPConsumerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
 		}

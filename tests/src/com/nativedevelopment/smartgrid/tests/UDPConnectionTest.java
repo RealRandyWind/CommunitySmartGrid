@@ -64,8 +64,8 @@ public class UDPConnectionTest implements ITestCase {
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 
-		InetSocketAddress oReceiverAddress1 = new InetSocketAddress(SETTINGS_VALUE_HOST,55539);
-		InetSocketAddress oReceiverAddress2 = new InetSocketAddress(SETTINGS_VALUE_HOST,55540);
+		SocketAddress oReceiverAddress1 = new InetSocketAddress(SETTINGS_VALUE_HOST,55539);
+		SocketAddress oReceiverAddress2 = new InetSocketAddress(SETTINGS_VALUE_HOST,55540);
 
 
 		a_lReceivers.offer(oReceiverAddress1);

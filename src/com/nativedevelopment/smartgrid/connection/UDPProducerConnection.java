@@ -97,6 +97,8 @@ public class UDPProducerConnection extends Connection{
 					a_oDatagramChannel.send(oByteBuffer, oReceiver);
 				}
 			}
+
+			a_oDatagramChannel.close();
 		} catch (Exception oException) {
 			System.out.printf("_WARNING: [UDPProducerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
 		}
