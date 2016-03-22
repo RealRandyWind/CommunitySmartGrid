@@ -1,0 +1,6 @@
+string = "a string"
+integer = 1
+decimal = 2.0
+list = {1 ,2, 3}
+array = [1, 2, 3, 4, 5]
+keyvalue = {key: "value", key2: "value2"}
