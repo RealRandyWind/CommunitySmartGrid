@@ -34,11 +34,13 @@ public class MLogManager {
 
 	private static MLogManager a_oInstance = null;
 	private boolean a_bIsSetUp = false;
-	private boolean a_bIsShutDown = true;
+	private boolean a_bIsShutDown = false;
+	private boolean a_bIsShutDownOnError = false;
 
 	private MLogManager() {
-		a_bIsShutDown = false;
+		a_bIsShutDown = true;
 		a_bIsSetUp = false;
+		a_bIsShutDownOnError = true;
 	} 
 
 	public static MLogManager GetInstance() {
@@ -79,6 +81,10 @@ public class MLogManager {
 
 	public void SetLogFile(String sFilePath, ELogType eType) {
 		/*if(LOG_ERROR & eType) { Fx_SetLogFile(sFilePath,0); }*/
+	}
+
+	public void SetShutDownOnError(boolean bIsShutDownOnError) {
+		a_bIsShutDownOnError = bIsShutDownOnError;
 	}
 
 	public void Log(String sFormat, int iCode, Object... olArgs) {
@@ -124,7 +130,9 @@ public class MLogManager {
 		Fx_WriteLog(sString,4,iCode)
 		if(a_sTypeIsPrint[4]) { Fx_PrintLog(sString,iCode)}
 		*/
-		Main.ErrorShutDown();
+		if(a_bIsShutDownOnError) {
+			Main.ErrorShutDown();
+		}
 	}
 
 	public void Debug(String sFormat, int iCode, Object... olArgs) {

@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class DeviceTest implements ITestCase {
 	MLogManager a_mLogManager = null;
 
-	String[] a_lDataSPace = new String[6];
+	String[] a_lDataSPace = new String[9];
 	UUID[] a_lActionSpace = new UUID[5];
 
 	@Before
@@ -32,6 +32,9 @@ public class DeviceTest implements ITestCase {
 		a_lDataSPace[3] = "timestamp";
 		a_lDataSPace[4] = "interval";
 		a_lDataSPace[5] = "activity";
+		a_lDataSPace[6] = "x";
+		a_lDataSPace[7] = "y";
+		a_lDataSPace[8] = "z";
 
 		a_lActionSpace[0] = UUID.randomUUID();
 		a_lActionSpace[1] = UUID.randomUUID();

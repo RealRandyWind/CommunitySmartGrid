@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 
 public class Settings implements ISettings {
     protected static final String REGX_STRING = "\"((\\.|[^\"])*)\"\\s*";
-    protected static final String REGX_INTEGER = "(\\d+)\\s*";
-    protected static final String REGX_REAL = "(\\d*(.\\d|\\d.|\\d)\\d*)\\s*";
+    protected static final String REGX_INTEGER = "(-?\\d+)\\s*";
+    protected static final String REGX_REAL = "(-?\\d*(.\\d|\\d.|\\d)\\d*)\\s*";
     protected static final String REGX_BOOLEAN = "(true|false)\\s*";
     protected static final String REGX_NULL = "(null)\\s*";
     private static final int MATCH_GROUP = 1;

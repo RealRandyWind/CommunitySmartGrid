@@ -2,14 +2,16 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 
+import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.Queue;
 import java.util.UUID;
 
-public class CassandraStorageConnection extends Connection {
-	public static final String SETTINGS_KEY_HOST = "host";
-	public static final String SETTINGS_KEY_KEYSPACE= "keyspace";
-	public static final String SETTINGS_KEY_TABLE = "table";
+/**
+ * Created by Gebruiker on 20/03/2016.
+ */
+public class LocalStorageConnection extends Connection {
+	public static final String SETTINGS_KEY_FILE = "file";
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktimelowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktimeupperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktimedelta";
@@ -18,20 +20,22 @@ public class CassandraStorageConnection extends Connection {
 	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
 
-	public CassandraStorageConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue) {
+	private RandomAccessFile a_oFile = null;
+
+	public LocalStorageConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue) {
 		super(oIdentifier);
 		if(lFromQueue == null) {
-			System.out.printf("_WARNING: [CassandraStorageConnection] no queue to produce from\n");
+			System.out.printf("_WARNING: [LocalStorageConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
 		a_lToLogQueue = lToLogQueue;
 	}
 
 	private void Fx_Store(Serializable oSerializable) {
-		System.out.printf("_WARNING: [CassandraStorageConnection.Fx_Store] not yet implemented\n");
+		System.out.printf("_WARNING: [LocalStorageConnection.Fx_Store] not yet implemented\n");
 	}
 
 	public void Run() {
-		System.out.printf("_WARNING: [CassandraStorageConnection.Run] not yet implemented\n");
+		System.out.printf("_WARNING: [LocalStorageConnection.Run] not yet implemented\n");
 	}
 }

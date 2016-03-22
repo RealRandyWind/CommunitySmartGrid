@@ -47,9 +47,11 @@ public class SettingsTest implements ITestCase {
 		String sValueString2 = "serializable";
 		String sValueNoString1 ="a\"serializable\"";
 
-		int nInteger = 1234;
+		int nInteger1 = 1234;
+		int nInteger2 = -1234;
 		String sValueInteger1 ="1234";
 		String sValueInteger2 ="1234 ";
+		String sValueInteger3 ="-1234";
 		String sValueNoInteger1 =".1234";
 		String sValueNoInteger2 ="1234.";
 		String sValueNoInteger3 ="\"1234\"";
@@ -57,10 +59,14 @@ public class SettingsTest implements ITestCase {
 		double dReal1 = 1234;
 		double dReal2 = .1234;
 		double dReal3 = 1234.1234;
+		double dReal4 = -.1234;
+		double dReal5 = -1234.1234;
 		String sValueReal1 =".1234";
 		String sValueReal2 ="1234.";
 		String sValueReal3 ="1234.1234";
 		String sValueReal4 ="1234.1234 ";
+		String sValueReal5 ="-1234.1234";
+		String sValueReal6 ="-.1234";
 		String sValueNoReal1 =".1234.1234";
 		String sValueNoReal2 ="\"1234\"";
 		String sValueNoReal3 ="\".1234\"";
@@ -116,12 +122,14 @@ public class SettingsTest implements ITestCase {
 		oSettings1.SetSpecial("integer3",sValueNoInteger1);
 		oSettings1.SetSpecial("integer4",sValueNoInteger2);
 		oSettings1.SetSpecial("integer5",sValueNoInteger3);
+		oSettings1.SetSpecial("integer6",sValueInteger3);
 
-		assertEquals(nInteger,oSettings1.Get("integer1"));
-		assertEquals(nInteger,oSettings1.Get("integer2"));
+		assertEquals(nInteger1,oSettings1.Get("integer1"));
+		assertEquals(nInteger1,oSettings1.Get("integer2"));
 		assertEquals(dReal2,oSettings1.Get("integer3"));
 		assertEquals(dReal1,oSettings1.Get("integer4"));
 		assertEquals(sValueInteger1,oSettings1.Get("integer5"));
+		assertEquals(nInteger2,oSettings1.Get("integer6"));
 
 		oSettings1.SetSpecial("real1",sValueReal1);
 		oSettings1.SetSpecial("real2",sValueReal2);
@@ -132,6 +140,8 @@ public class SettingsTest implements ITestCase {
 		oSettings1.SetSpecial("real7",sValueNoReal3);
 		oSettings1.SetSpecial("real8",sValueNoReal4);
 		oSettings1.SetSpecial("real9",sValueNoReal5);
+		oSettings1.SetSpecial("real10",sValueReal5);
+		oSettings1.SetSpecial("real11",sValueReal6);
 
 		assertEquals(dReal2,oSettings1.Get("real1"));
 		assertEquals(dReal1,oSettings1.Get("real2"));
@@ -142,6 +152,8 @@ public class SettingsTest implements ITestCase {
 		assertEquals(sValueReal1,oSettings1.Get("real7"));
 		assertEquals(sValueReal2,oSettings1.Get("real8"));
 		assertEquals(sValueReal3,oSettings1.Get("real9"));
+		assertEquals(dReal5,oSettings1.Get("real10"));
+		assertEquals(dReal4,oSettings1.Get("real11"));
 
 		oSettings1.SetSpecial("boolean1",sValueBoolean1);
 		oSettings1.SetSpecial("boolean2",sValueBoolean2);

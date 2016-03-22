@@ -87,7 +87,7 @@ public class MSettingsManager {
             String sSource = new String(rawSource, Charset.defaultCharset());
             return LoadSettingsFromString(sSource);
         } catch (Exception oException) {
-            a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] %s.",0,oException.getMessage());
+            a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] %s \"%s\"\n",0,oException.getClass().getCanonicalName(),oException.getMessage());
         }
         return null;
     }

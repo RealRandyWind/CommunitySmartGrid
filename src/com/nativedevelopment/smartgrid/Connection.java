@@ -3,8 +3,6 @@ package com.nativedevelopment.smartgrid;
 import java.util.UUID;
 
 public class Connection implements IConnection {
-    public static final long THREAD_WAITBEFOREINTERUPT_TIME = 1500;
-
     protected Thread a_oThread = null;
     private UUID a_oIdentifier = null;
     volatile private boolean a_isClose = false;
