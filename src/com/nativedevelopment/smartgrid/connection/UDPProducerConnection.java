@@ -9,12 +9,9 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
 
 public class UDPProducerConnection extends Connection{
-	public static final String SETTINGS_KEY_REMOTEADDRESS = "remote.address";
-	public static final String SETTINGS_KEY_REMOTEPORT = "remote.port";
 	public static final String SETTINGS_KEY_LOCALADDRESS = "local.address";
 	public static final String SETTINGS_KEY_LOCALPORT = "local.port";
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
@@ -25,14 +22,10 @@ public class UDPProducerConnection extends Connection{
 
 	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
-	private Queue<SocketAddress> a_lReceivers = null;
+	private AbstractMap<Object, SocketAddress> a_lRemotes = null;
 
-	private DatagramChannel a_oDatagramChannel = null;
-
-	private String a_sRemoteAddress = null;
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
-	private int a_nRemotePort = 0;
 	private int a_nBufferCapacity = 0;
 
 	private int a_nCheckTime = 0;
@@ -40,14 +33,14 @@ public class UDPProducerConnection extends Connection{
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
-	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, Queue<SocketAddress> lReceivers) {
+	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, AbstractMap<Object, SocketAddress> lRemotes) {
 		super(oIdentifier);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [UDPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
 		a_lToLogQueue = lToLogQueue;
-		a_lReceivers = lReceivers;
+		a_lRemotes = lRemotes;
 	}
 
 	private byte[] Fx_Produce() throws Exception {
@@ -64,8 +57,6 @@ public class UDPProducerConnection extends Connection{
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
-		a_sRemoteAddress = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
-		a_nRemotePort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
 		a_sLocalAddress = oConfigurations.GetString(SETTINGS_KEY_LOCALADDRESS);
 		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
@@ -81,10 +72,12 @@ public class UDPProducerConnection extends Connection{
 	public void Run() {
 		try {
 			SocketAddress oLocal = new InetSocketAddress(a_sLocalAddress, a_nLocalPort);
-
-			a_oDatagramChannel = DatagramChannel.open();
-			a_oDatagramChannel.bind(oLocal);
+			DatagramChannel a_oDatagramChannel = DatagramChannel.open();
 			ByteBuffer oByteBuffer = ByteBuffer.allocate(a_nBufferCapacity);
+
+			a_oDatagramChannel.bind(oLocal);
+
+			Iterable<SocketAddress> lRemotes = a_lRemotes.values();
 
 			while (!IsClose()) {
 				oByteBuffer.clear();
@@ -92,9 +85,10 @@ public class UDPProducerConnection extends Connection{
 				if(rawBytes == null) { continue; }
 				oByteBuffer.put(rawBytes,0,rawBytes.length);
 
-				for (SocketAddress oReceiver: a_lReceivers) {
+				// TODO May replace by channels to avoid repeated security check on send
+				for (SocketAddress oRemote: lRemotes) {
 					oByteBuffer.flip();
-					a_oDatagramChannel.send(oByteBuffer, oReceiver);
+					a_oDatagramChannel.send(oByteBuffer, oRemote);
 				}
 			}
 

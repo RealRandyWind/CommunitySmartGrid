@@ -16,6 +16,7 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	public static final String SETTINGS_KEY_EXCHANGETYPE = "exchange.type";
 	public static final String SETTINGS_KEY_ROUTINGKEY = "routing.key";
 	public static final String SETTINGS_KEY_ISHANDSHAKE = "ishandshake";
+
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 

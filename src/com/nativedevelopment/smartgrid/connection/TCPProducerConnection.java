@@ -10,8 +10,6 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class TCPProducerConnection extends Connection {
-	public static final String SETTINGS_KEY_REMOTEADDRESS = "remote.address";
-	public static final String SETTINGS_KEY_REMOTEPORT = "remote.port";
 	public static final String SETTINGS_KEY_LOCALADDRESS = "local.address";
 	public static final String SETTINGS_KEY_LOCALPORT = "local.port";
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
@@ -22,7 +20,7 @@ public class TCPProducerConnection extends Connection {
 
 	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
-	private Queue<SocketAddress> a_lReceivers = null;
+	private Queue<SocketAddress> a_lRemotes = null;
 
 	private String a_sRemoteAddress = null;
 	private String a_sLocalAddress = null;
@@ -35,14 +33,14 @@ public class TCPProducerConnection extends Connection {
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
-	public TCPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, Queue<SocketAddress> lReceivers) {
+	public TCPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, Queue<SocketAddress> lRemotes) {
 		super(oIdentifier);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [TCPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
 		a_lToLogQueue = lToLogQueue;
-		a_lReceivers = lReceivers;
+		a_lRemotes = lRemotes;
 	}
 
 	private byte[] Fx_Produce() throws Exception {
@@ -59,8 +57,6 @@ public class TCPProducerConnection extends Connection {
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
-		a_sRemoteAddress = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
-		a_nRemotePort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
 		a_sLocalAddress = oConfigurations.GetString(SETTINGS_KEY_LOCALADDRESS);
 		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
