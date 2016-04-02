@@ -72,7 +72,7 @@ public class ${className} {
 
 		switch (eType) {
 			case DEFAULT: oProduct = Fx_BuiltDefaultProduct(); break;
-			default: break;
+			default: return oProduct;
 		}
 
 		a_lProducts.add(oProduct);
@@ -85,8 +85,8 @@ public class ${className} {
 		return a_lProducts.get(iProduct);
 	}
 
-	public List<${productInterfaceName}> GetProducts(Iterable<Integer> liProducts) {
-		Vector<${productInterfaceName}> loProducts = new Vector<${productInterfaceName}>();
+	public Iterable<${productInterfaceName}> GetProducts(Iterable<Integer> liProducts) {
+		List<${productInterfaceName}> loProducts = new List<${productInterfaceName}>();
 		for(int iProduct : liProducts) {
 			${productInterfaceName} oProduct = GetProduct(iProduct);
 			if(oProduct == null) { continue; }
