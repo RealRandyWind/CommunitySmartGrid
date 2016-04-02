@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.util.UUID;
 import java.util.jar.Attributes;
 
 import static org.junit.Assert.*;
@@ -17,6 +18,8 @@ public class DataTest implements ITestCase {
 
 	String[] a_lAttributes = new String[3];
 	Serializable[][] a_lTuples = new Serializable[3][3];
+	UUID a_oIdentifier = null;
+	int a_nFlag = 0;
 
 	@Before
 	public void setUp() throws Exception {
@@ -49,7 +52,7 @@ public class DataTest implements ITestCase {
 	@Test
 	public void testGetAttributes() throws Exception {
 		a_mLogManager.Test("[DataTest.testGetAttributes] begin",0);
-		IData oData = new Data(a_lTuples,a_lAttributes);
+		IData oData = new Data(a_lTuples,a_lAttributes,a_oIdentifier,a_nFlag);
 
 		assertArrayEquals(a_lAttributes,oData.GetAttributes());
 		a_mLogManager.Test("[DataTest.testGetAttributes] end",0);
@@ -58,7 +61,7 @@ public class DataTest implements ITestCase {
 	@Test
 	public void testGetGetAllTuple() throws Exception {
 		a_mLogManager.Test("[DataTest.testGetGetAllTuple] begin",0);
-		IData oData = new Data(a_lTuples,a_lAttributes);
+		IData oData = new Data(a_lTuples,a_lAttributes,a_oIdentifier,a_nFlag);
 
 		assertArrayEquals(a_lTuples,oData.GetAllTuples());
 		assertArrayEquals(a_lTuples[0],oData.GetTuple(0));
