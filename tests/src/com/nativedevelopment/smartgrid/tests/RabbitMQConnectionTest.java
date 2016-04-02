@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.junit.Assert.*;
 
 public class RabbitMQConnectionTest implements ITestCase {
-	static final String SETTINGS_VALUE_HOST = "192.168.178.12";
+	static final String SETTINGS_VALUE_HOST = "localhost"; //"192.168.178.12";
 	static final int SETTINGS_VALUE_PORT = 5672;
 	static final String SETTINGS_VALUE_USER = "guest";
 	static final String SETTINGS_VALUE_PASSWORD = "guest";
@@ -43,7 +43,6 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oFromQueue = new ConcurrentLinkedQueue<>();
 		a_oToQueue = new ConcurrentLinkedQueue<>();
 		a_oLogQueue = new ConcurrentLinkedQueue<>();
-		a_lReceivers = new ConcurrentLinkedQueue<>();
 
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
