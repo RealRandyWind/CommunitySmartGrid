@@ -22,7 +22,7 @@ public class UDPProducerConnection extends Connection{
 
 	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
-	private AbstractMap<Object, SocketAddress> a_lRemotes = null;
+	private AbstractMap<Serializable, SocketAddress> a_lFromRemotesMap = null;
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
@@ -33,14 +33,14 @@ public class UDPProducerConnection extends Connection{
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
-	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, AbstractMap<Object, SocketAddress> lRemotes) {
+	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
 		super(oIdentifier);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [UDPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
 		a_lToLogQueue = lToLogQueue;
-		a_lRemotes = lRemotes;
+		a_lFromRemotesMap = lFromRemotesMap;
 	}
 
 	private byte[] Fx_Produce() throws Exception {
@@ -77,7 +77,7 @@ public class UDPProducerConnection extends Connection{
 
 			a_oDatagramChannel.bind(oLocal);
 
-			Iterable<SocketAddress> lRemotes = a_lRemotes.values();
+			Iterable<SocketAddress> lRemotes = a_lFromRemotesMap.values();
 
 			while (!IsClose()) {
 				oByteBuffer.clear();

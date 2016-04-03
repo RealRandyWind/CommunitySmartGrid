@@ -5,9 +5,7 @@ import com.nativedevelopment.smartgrid.ISettings;
 import com.nativedevelopment.smartgrid.Serializer;
 
 import java.io.Serializable;
-import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.AbstractMap;
 import java.util.Queue;
@@ -20,7 +18,7 @@ public class TCPConsumerConnection extends Connection {
 
 	private Queue<Serializable> a_lToQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
-	private AbstractMap<Object, SocketAddress> a_lRemotes = null;
+	private AbstractMap<Serializable, SocketAddress> a_lToRemotesMap = null;
 
 	private SocketChannel a_oSocketChannel = null;
 
@@ -30,11 +28,11 @@ public class TCPConsumerConnection extends Connection {
 	private int a_nRemotePort = 0;
 	private int a_nBufferCapacity = 0;
 
-	public TCPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue, AbstractMap<Object, SocketAddress> lRemotes) {
+	public TCPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
 		super(oIdentifier);
 		a_lToQueue = lToQueue;
 		a_lToLogQueue = lToLogQueue;
-		a_lRemotes = lRemotes;
+		a_lToRemotesMap = lToRemotesMap;
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
@@ -50,6 +48,14 @@ public class TCPConsumerConnection extends Connection {
 
 	@Override
 	public void Run() {
+		// TODO set up none blocking server socket channel and bind
+		// TODO enter loop while not closing
+		// TODO in loop check new connection request (check connection limit)
+		// TODO in loop add channel to list, add its socket address to remotes
+		// TODO in loop receive data from all listed channels (only block during a receive)
+		// TODO exit loop if closing
+		// TODO close channels remove channels from remotes
+		// TODO close listener
 		System.out.printf("_WARNING: [TCPConsumerConnection.Run] not yet implemented\n");
 	}
 }

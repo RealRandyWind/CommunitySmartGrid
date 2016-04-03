@@ -1,6 +1,8 @@
 package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
+import com.nativedevelopment.smartgrid.IController;
+import com.nativedevelopment.smartgrid.IPromise;
 import com.nativedevelopment.smartgrid.ISettings;
 
 import java.io.Serializable;
@@ -11,26 +13,26 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.UUID;
 
-public class RMIControllerConnection extends Connection {
+public class RMIControllerCallerConnection extends Connection {
 	public static final String SETTINGS_KEY_REMOTEADDRESS = "remote.address";
-	public static final String SETTINGS_KEY_REMOTEPORT = "remote.port";
 	public static final String SETTINGS_KEY_EXCHANGE = "exchange";
 	public static final String SETTING_KEY_ISREBIND = "isrebind";
 
 	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
 
 	private Queue<Serializable> a_lToLogQueue = null;
-	private Remote a_oRemote = null;
+	private IController a_oRemote = null;
+	private IPromise a_oPromise = null;
 
 	private String a_sExchange = null;
 	private String a_sRemoteAddress = null;
-	private int a_nRemotePort = 0;
 	private int a_nCheckTime = 0;
 	private boolean a_bIsRebind = false;
 
-	public RMIControllerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue) {
+	public RMIControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
 		super(oIdentifier);
 		a_lToLogQueue = lToLogQueue;
+		a_oPromise = oPromise;
 	}
 
 	private boolean Fx_Contains(String sBind, String[] lBinds) {
@@ -46,25 +48,28 @@ public class RMIControllerConnection extends Connection {
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sRemoteAddress = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
-		a_nRemotePort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_nCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME);
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 	}
 
 	public void Run() {
 		try {
-			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress, a_nRemotePort);
+			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress);
 
-			a_oRemote = oRegistry.lookup(a_sExchange);
+			if(Fx_Contains(a_sExchange, oRegistry.list())) {
+				a_oRemote = (IController)oRegistry.lookup(a_sExchange);
+				a_oPromise.Set(a_oRemote);
+			}
 
 			while (!IsClose()) {
 				Thread.sleep(a_nCheckTime);
-				if(a_bIsRebind) {
-					a_oRemote = oRegistry.lookup(a_sExchange);
+				if((a_oRemote == null || a_bIsRebind) && Fx_Contains(a_sExchange, oRegistry.list())) {
+					a_oRemote = (IController)oRegistry.lookup(a_sExchange);
+					a_oPromise.Set(a_oRemote);
 				}
 			}
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [RMIControllerListenerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [RMIControllerCallerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

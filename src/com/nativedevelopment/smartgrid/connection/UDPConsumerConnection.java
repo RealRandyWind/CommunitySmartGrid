@@ -19,17 +19,17 @@ public class UDPConsumerConnection extends Connection {
 
 	private Queue<Serializable> a_lToQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
-	private AbstractMap<Object, SocketAddress> a_lRemotes = null;
+	private AbstractMap<Serializable, SocketAddress> a_lToRemotesMap = null;
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
-	public UDPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue, AbstractMap<Object, SocketAddress> lRemotes) {
+	public UDPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
 		super(oIdentifier);
 		a_lToQueue = lToQueue;
 		a_lToLogQueue = lToLogQueue;
-		a_lRemotes = lRemotes;
+		a_lToRemotesMap = lToRemotesMap;
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
@@ -56,8 +56,8 @@ public class UDPConsumerConnection extends Connection {
 				oByteBuffer.clear();
 				// TODO use channels to only allow connections that are expected
 				SocketAddress oRemote = a_oDatagramChannel.receive(oByteBuffer);
-				// TODO use more reliable way to ensure uniqueness.
-				a_lRemotes.putIfAbsent(oRemote.toString(),oRemote);
+				// TODO Tracks connections, use more reliable way to ensure uniqueness
+				a_lToRemotesMap.putIfAbsent(oRemote.toString(),oRemote);
 				oByteBuffer.flip();
 				byte[] rawBytes = new byte[oByteBuffer.remaining()];
 				oByteBuffer.get(rawBytes,0,rawBytes.length);

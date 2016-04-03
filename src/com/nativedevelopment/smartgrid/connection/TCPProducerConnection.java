@@ -6,6 +6,7 @@ import com.nativedevelopment.smartgrid.Serializer;
 
 import java.io.Serializable;
 import java.net.SocketAddress;
+import java.util.AbstractMap;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class TCPProducerConnection extends Connection {
 
 	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<Serializable> a_lToLogQueue = null;
-	private Queue<SocketAddress> a_lRemotes = null;
+	private AbstractMap<Serializable, SocketAddress> a_lFromRemotesMap = null;
 
 	private String a_sRemoteAddress = null;
 	private String a_sLocalAddress = null;
@@ -33,14 +34,14 @@ public class TCPProducerConnection extends Connection {
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
-	public TCPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, Queue<SocketAddress> lRemotes) {
+	public TCPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
 		super(oIdentifier);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [TCPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
 		a_lToLogQueue = lToLogQueue;
-		a_lRemotes = lRemotes;
+		a_lFromRemotesMap = lFromRemotesMap;
 	}
 
 	private byte[] Fx_Produce() throws Exception {
