@@ -25,7 +25,6 @@ public class RabbitMQProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
 	private Queue<Serializable> a_lFromQueue = null;
-	private Queue<Serializable> a_lToLogQueue = null;
 
 	private String a_sToHost = null;
 	private int a_nThroughPort = 0;
@@ -44,25 +43,27 @@ public class RabbitMQProducerConnection extends Connection {
 	private Channel a_oRabbitMQChannel = null;
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
 
-	public RabbitMQProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier);
+	public RabbitMQProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue,
+									  Queue<Serializable> lToLogQueue) {
+		super(oIdentifier, lToLogQueue);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [RabbitMQProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
-		a_lToLogQueue = lToLogQueue;
 	}
 
 	private byte[] Fx_Produce() throws Exception {
 		Serializable oSerializable = a_lFromQueue.poll();
 		if (oSerializable == null){
-			System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] queue empty %d waiting %d ms\n",this.hashCode(),a_nCheckTime);
+			System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] queue empty %d waiting %d ms\n"
+					,this.hashCode(),a_nCheckTime);
 			Thread.sleep(a_nCheckTime);
 			a_nCheckTime += a_nDeltaCheckTime;
 			a_nCheckTime = a_nCheckTime >= a_nCheckTimeUpperBound ? a_nCheckTimeUpperBound : a_nCheckTime;
 		}
 		a_nCheckTime = a_nCheckTimeLowerBound;
-		System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] %d is producing \"%s\"\n",this.hashCode(),String.valueOf(oSerializable));
+		System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] %d is producing \"%s\"\n"
+				,this.hashCode(),String.valueOf(oSerializable));
 		return Serializer.Serialize(oSerializable,0);
 	}
 
@@ -101,7 +102,8 @@ public class RabbitMQProducerConnection extends Connection {
 			}
 		} catch (Exception oException) {
 			//TODO write errors to log queue
-			System.out.printf("_WARNING: [RabbitMQProducerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [RabbitMQProducerConnection.Run] %s \"%s\"\n"
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

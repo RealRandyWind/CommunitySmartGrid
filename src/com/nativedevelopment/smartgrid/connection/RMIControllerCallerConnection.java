@@ -20,7 +20,6 @@ public class RMIControllerCallerConnection extends Connection {
 
 	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
 
-	private Queue<Serializable> a_lToLogQueue = null;
 	private IController a_oRemote = null;
 	private IPromise a_oPromise = null;
 
@@ -30,9 +29,8 @@ public class RMIControllerCallerConnection extends Connection {
 	private boolean a_bIsRebind = false;
 
 	public RMIControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
-		super(oIdentifier);
+		super(oIdentifier, lToLogQueue);
 		// TODO replace oPromise by a Queue of Promises, create Fx_UpdatePromises function.
-		a_lToLogQueue = lToLogQueue;
 		a_oPromise = oPromise;
 	}
 
@@ -46,6 +44,7 @@ public class RMIControllerCallerConnection extends Connection {
 		return a_oRemote;
 	}
 
+	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sRemoteAddress = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
@@ -53,6 +52,7 @@ public class RMIControllerCallerConnection extends Connection {
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 	}
 
+	@Override
 	public void Run() {
 		try {
 			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress);
@@ -70,7 +70,8 @@ public class RMIControllerCallerConnection extends Connection {
 				}
 			}
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [RMIControllerCallerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [RMIControllerCallerConnection.Run] %s \"%s\"\n"
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

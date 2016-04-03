@@ -17,7 +17,6 @@ public class TCPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
 
 	private Queue<Serializable> a_lToQueue = null;
-	private Queue<Serializable> a_lToLogQueue = null;
 	private AbstractMap<Serializable, SocketAddress> a_lToRemotesMap = null;
 
 	private SocketChannel a_oSocketChannel = null;
@@ -28,10 +27,10 @@ public class TCPConsumerConnection extends Connection {
 	private int a_nRemotePort = 0;
 	private int a_nBufferCapacity = 0;
 
-	public TCPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
-		super(oIdentifier);
+	public TCPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue,
+								 AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
+		super(oIdentifier, lToLogQueue);
 		a_lToQueue = lToQueue;
-		a_lToLogQueue = lToLogQueue;
 		a_lToRemotesMap = lToRemotesMap;
 	}
 

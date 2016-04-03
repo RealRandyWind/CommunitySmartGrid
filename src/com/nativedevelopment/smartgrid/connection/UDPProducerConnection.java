@@ -21,7 +21,6 @@ public class UDPProducerConnection extends Connection{
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private Queue<Serializable> a_lFromQueue = null;
-	private Queue<Serializable> a_lToLogQueue = null;
 	private AbstractMap<Serializable, SocketAddress> a_lFromRemotesMap = null;
 
 	private String a_sLocalAddress = null;
@@ -33,13 +32,13 @@ public class UDPProducerConnection extends Connection{
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
-	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
-		super(oIdentifier);
+	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue,
+								 AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
+		super(oIdentifier, lToLogQueue);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [UDPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
-		a_lToLogQueue = lToLogQueue;
 		a_lFromRemotesMap = lFromRemotesMap;
 	}
 
@@ -94,7 +93,8 @@ public class UDPProducerConnection extends Connection{
 
 			a_oDatagramChannel.close();
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [UDPProducerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [UDPProducerConnection.Run] %s \"%s\"\n"
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

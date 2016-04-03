@@ -1,16 +1,20 @@
 package com.nativedevelopment.smartgrid;
 
+import java.io.Serializable;
+import java.util.Queue;
 import java.util.UUID;
 
 public class Connection implements IConnection {
     protected Thread a_oThread = null;
+    protected Queue<Serializable> a_lToLogQueue = null;
     private UUID a_oIdentifier = null;
     volatile private boolean a_isClose = false;
 
-    public Connection(UUID oIdentifier) {
+    public Connection(UUID oIdentifier, Queue<Serializable> lToLogQueue) {
         a_oThread = new Thread(this);
         if(oIdentifier == null) { oIdentifier = UUID.randomUUID(); }
         a_oIdentifier = oIdentifier;
+        a_lToLogQueue = lToLogQueue;
     }
 
     @Override

@@ -21,7 +21,6 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
 	private Queue<Serializable> a_lToQueue = null;
-	private Queue<Serializable> a_lToLogQueue = null;
 
 	private String a_sFromHost = null;
 	private int a_nThroughPort = 0;
@@ -38,19 +37,19 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
 
 	public RabbitMQConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier);
+		super(oIdentifier, lToLogQueue);
 		if(lToQueue == null) {
 			System.out.printf("_WARNING: [RabbitMQConsumerConnection] no queue to consume to\n");
 		}
 		a_lToQueue = lToQueue;
-		a_lToLogQueue = lToLogQueue;
 		a_bIsHandshake = true;
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
 		Serializable oSerializable = Serializer.Deserialize(rawBytes,0);
 		a_lToQueue.offer(oSerializable);
-		System.out.printf("_DEBUG: [RabbitMQConsumerConnection.Fx_Consume] %d is producing %s\n",this.hashCode(),String.valueOf(oSerializable));
+		System.out.printf("_DEBUG: [RabbitMQConsumerConnection.Fx_Consume] %d is producing %s\n"
+				,this.hashCode(),String.valueOf(oSerializable));
 	}
 
 	@Override
@@ -80,7 +79,8 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 			a_oRabbitMQChannel.queueBind(a_sFromQueue, a_sFromExchange, a_sRoutingKey);
 			a_oRabbitMQChannel.basicConsume(a_sFromQueue, a_bIsHandshake, this);
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [RabbitMQConsumerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [RabbitMQConsumerConnection.Run] %s \"%s\"\n"
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 
@@ -121,7 +121,8 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 			Fx_Consume(body);
 		} catch (Exception oException) {
 			//TODO write errors to log queue
-			System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleDelivery] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleDelivery] %s \"%s\"\n"
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

@@ -24,7 +24,6 @@ public class RMIControllerListenerConnection extends Connection{
 
 	protected static Registry a_oRegistry = null;
 
-	private Queue<Serializable> a_lToLogQueue = null;
 	private IController a_oRemote = null;
 	private AbstractMap<Object, Remote> a_lRemotes = null;
 
@@ -35,8 +34,7 @@ public class RMIControllerListenerConnection extends Connection{
 	private boolean a_bIsForceUnExport = false;
 
 	public RMIControllerListenerConnection(UUID oIdentifier, IController oRemote, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier);
-		a_lToLogQueue = lToLogQueue;
+		super(oIdentifier, lToLogQueue);
 		a_oRemote = oRemote;
 	}
 
@@ -45,6 +43,7 @@ public class RMIControllerListenerConnection extends Connection{
 		return Arrays.asList(lBinds).contains(sBind);
 	}
 
+	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
@@ -53,6 +52,7 @@ public class RMIControllerListenerConnection extends Connection{
 		a_bIsForceUnExport = (boolean)oConfigurations.Get(SETTING_KEY_ISFORCEUNEXPORT);
 	}
 
+	@Override
 	public void Run() {
 		try {
 			if (a_oRegistry == null) {

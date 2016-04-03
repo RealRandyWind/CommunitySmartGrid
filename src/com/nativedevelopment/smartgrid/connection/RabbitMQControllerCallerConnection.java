@@ -9,17 +9,16 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class RabbitMQControllerCallerConnection extends Connection {
-	private Queue<Serializable> a_lToLogQueue = null;
 	private IController a_oRemote = null;
 	private IPromise a_oPromise = null;
 
 	public RabbitMQControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
-		super(oIdentifier);
+		super(oIdentifier, lToLogQueue);
 		// TODO replace oPromise by a Queue of Promises, create Fx_UpdatePromises function.
-		a_lToLogQueue = lToLogQueue;
 		a_oPromise = oPromise;
 	}
 
+	@Override
 	public void Run() {
 		System.out.printf("_WARNING: [RabbitMQControllerCallerConnection.Run] not yet implemented\n");
 	}

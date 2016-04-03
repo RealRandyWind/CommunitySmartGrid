@@ -18,17 +18,16 @@ public class UDPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
 
 	private Queue<Serializable> a_lToQueue = null;
-	private Queue<Serializable> a_lToLogQueue = null;
 	private AbstractMap<Serializable, SocketAddress> a_lToRemotesMap = null;
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
-	public UDPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
-		super(oIdentifier);
+	public UDPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue,
+								 AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
+		super(oIdentifier, lToLogQueue);
 		a_lToQueue = lToQueue;
-		a_lToLogQueue = lToLogQueue;
 		a_lToRemotesMap = lToRemotesMap;
 	}
 
@@ -68,7 +67,8 @@ public class UDPConsumerConnection extends Connection {
 			a_oDatagramChannel.disconnect();
 			a_oDatagramChannel.close();
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [UDPConsumerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: [UDPConsumerConnection.Run] %s \"%s\"\n"
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

@@ -10,16 +10,15 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class RabbitMQControllerListenerConnection extends Connection {
-	private Queue<Serializable> a_lToLogQueue = null;
 	private IController a_oRemote = null;
 	private AbstractMap<Object, Remote> a_lRemotes = null;
 
 	public RabbitMQControllerListenerConnection(UUID oIdentifier, IController oRemote, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier);
-		a_lToLogQueue = lToLogQueue;
+		super(oIdentifier, lToLogQueue);
 		a_oRemote = oRemote;
 	}
 
+	@Override
 	public void Run() {
 		System.out.printf("_WARNING: [RabbitMQControllerListenerConnection.Run] not yet implemented\n");
 	}

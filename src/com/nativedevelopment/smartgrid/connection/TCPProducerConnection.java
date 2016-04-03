@@ -20,7 +20,6 @@ public class TCPProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private Queue<Serializable> a_lFromQueue = null;
-	private Queue<Serializable> a_lToLogQueue = null;
 	private AbstractMap<Serializable, SocketAddress> a_lFromRemotesMap = null;
 
 	private String a_sRemoteAddress = null;
@@ -34,13 +33,14 @@ public class TCPProducerConnection extends Connection {
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
-	public TCPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue, AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
-		super(oIdentifier);
+	public TCPProducerConnection(UUID oIdentifier,
+								 Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue,
+								 AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
+		super(oIdentifier, lToLogQueue);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [TCPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
-		a_lToLogQueue = lToLogQueue;
 		a_lFromRemotesMap = lFromRemotesMap;
 	}
 
