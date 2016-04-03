@@ -39,7 +39,7 @@ public class TCPConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("[TCPConnectionTest.testRun] begin",0);
-
+		fail("not yet implemented.");
 		a_mLogManager.Test("[TCPConnectionTest.testRun] Configure",0);
 		a_mLogManager.Test("[TCPConnectionTest.testRun] Open",0);
 		Thread.sleep(500);

@@ -31,9 +31,9 @@ public class MConnectionManagerTest implements ITestCase {
 	@Test
 	public void testAddGetGetAllRemoveConnection() throws Exception {
 		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] begin",0);
-		IConnection oConnection1 = new Connection(null);
-		IConnection oConnection2 = new Connection(null);
-		IConnection oConnection3 = new Connection(null);
+		IConnection oConnection1 = new Connection(null,null);
+		IConnection oConnection2 = new Connection(null,null);
+		IConnection oConnection3 = new Connection(null,null);
 
 		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] Get and Add",0);
 		assertNull(a_mConnectionManager.GetConnection(oConnection1.GetIdentifier()));
@@ -67,7 +67,7 @@ public class MConnectionManagerTest implements ITestCase {
 	@Test
 	public void testDisestablishEstablishConnection() throws Exception {
 		a_mLogManager.Test("[MConnectionManagerTest.testDisestablishEstablishConnection] begin",0);
-		IConnection oConnection = new Connection(null);
+		IConnection oConnection = new Connection(null,null);
 		a_mConnectionManager.AddConnection(oConnection);
 
 		a_mLogManager.Test("[MConnectionManagerTest.testDisestablishEstablishConnection] Establish",0);
