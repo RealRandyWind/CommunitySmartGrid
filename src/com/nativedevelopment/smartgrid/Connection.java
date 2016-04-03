@@ -57,7 +57,7 @@ public class Connection implements IConnection {
 
     @Override
     public void Configure(ISettings oConfigurations) {
-        System.out.printf("_WARNING: [Connection.Configurate] nothing to configure\n");
+        System.out.printf("_WARNING: [Connection.Configure] nothing to configure\n");
     }
 }
 

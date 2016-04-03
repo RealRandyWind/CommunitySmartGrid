@@ -4,14 +4,10 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class Data implements IData {
-    private UUID a_oIdentifier = null;
-    private int a_nFlag = 0;
     private Serializable[][] a_lTuples = null;
     private String[] a_lAttributes = null;
 
-    public Data(Serializable[][] lTuples, String[] lAttributes, UUID oIdentifier, int nFlag) {
-        a_nFlag = nFlag;
-        a_oIdentifier = oIdentifier;
+    public Data(Serializable[][] lTuples, String[] lAttributes) {
         a_lAttributes = lAttributes;
         a_lTuples = lTuples;
     }
@@ -32,15 +28,5 @@ public class Data implements IData {
     @Override
     public Serializable[][] GetAllTuples() {
         return a_lTuples;
-    }
-
-    @Override
-    public UUID GetIdentifier() {
-        return a_oIdentifier;
-    }
-
-    @Override
-    public int GetFlag() {
-        return a_nFlag;
     }
 }
