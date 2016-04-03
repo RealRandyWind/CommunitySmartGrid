@@ -1,8 +1,8 @@
 package com.nativedevelopment.smartgrid.tests;
 
-public class NoneSerializable {
+public class NoneSerializableObject {
 	String a_sName = null;
-	public NoneSerializable(String sName) {
+	public NoneSerializableObject(String sName) {
 		a_sName = sName;
 	}
 

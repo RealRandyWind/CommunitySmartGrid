@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public interface IControllerStub extends IController {
+public interface IStubController extends IController {
 	public void ProcedureNoArguments() throws RemoteException;
 	public void ProcedureArgumentsSerializable(Serializable oAnyArgument, Serializable oAnOther) throws RemoteException;
 	public Serializable FunctionReturnNoArgumentsSerializable() throws RemoteException;

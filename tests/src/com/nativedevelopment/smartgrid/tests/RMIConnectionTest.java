@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.junit.Assert.*;
 
 public class RMIConnectionTest implements ITestCase {
-	static final String SETTINGS_VALUE_EXCHANGE = "ControllerStub";
+	static final String SETTINGS_VALUE_EXCHANGE = "StubController";
 	static final String SETTINGS_VALUE_HOST = "localhost";
 	static final int SETTINGS_VALUE_CHECKTIME = 400;
 	static final int SETTINGS_VALUE_PORT = 0;
@@ -46,7 +46,7 @@ public class RMIConnectionTest implements ITestCase {
 
 		a_lSerializables.put(a_oSerializable, a_oSerializable);
 
-		a_oController = new ControllerStub(a_lQueue, a_oSerializable, a_lSerializables);
+		a_oController = new StubController(a_lQueue, a_oSerializable, a_lSerializables);
 
 		a_oCallerConfiguration = new Settings(null);
 		a_oListenerConfiguration = new Settings(null);
@@ -72,7 +72,7 @@ public class RMIConnectionTest implements ITestCase {
 		a_mLogManager.Test("[RMIConnectionTest.testRun] begin", 0);
 		IPromise oPromise = new Promise();
 		int nTryCount = 6;
-		IControllerStub oControllerStub = null;
+		IStubController oStubController = null;
 
 		IConnection oCaller = new RMIControllerCallerConnection(null,a_oLogQueue, oPromise);
 		IConnection oListener = new RMIControllerListenerConnection(null, a_oController, a_oLogQueue);
@@ -92,23 +92,23 @@ public class RMIConnectionTest implements ITestCase {
 			Thread.sleep(200);
 			nTryCount--;
 		}
-		oControllerStub = (IControllerStub)oPromise.Get();
+		oStubController = (IStubController)oPromise.Get();
 		assertTrue(a_lQueue.isEmpty());
-		oControllerStub.ProcedureNoArguments();
-		oControllerStub.ProcedureArgumentsSerializable(a_oSerializable, a_lSerializables);
-		assertEquals(a_oSerializable, oControllerStub.FunctionReturnNoArgumentsSerializable());
-		assertEquals(a_oSerializable, oControllerStub.FunctionReturnArgumentsSerializable(a_oSerializable, a_lSerializables));
-		assertEquals(new LinkedList<Serializable>(a_lSerializables.values()), oControllerStub.FunctionReturnListNoArgumentsSerializable());
-		assertEquals(a_lSerializables, oControllerStub.FunctionReturnMapNoArgumentsSerializable());
+		oStubController.ProcedureNoArguments();
+		oStubController.ProcedureArgumentsSerializable(a_oSerializable, a_lSerializables);
+		assertEquals(a_oSerializable, oStubController.FunctionReturnNoArgumentsSerializable());
+		assertEquals(a_oSerializable, oStubController.FunctionReturnArgumentsSerializable(a_oSerializable, a_lSerializables));
+		assertEquals(new LinkedList<>(a_lSerializables.values()), oStubController.FunctionReturnListNoArgumentsSerializable());
+		assertEquals(a_lSerializables, oStubController.FunctionReturnMapNoArgumentsSerializable());
 		Thread.sleep(500);
 
 		assertFalse(a_lQueue.isEmpty());
-		assertTrue(a_lQueue.contains(ControllerStub.EMethods.PROCEDURENOARGUMENTS));
-		assertTrue(a_lQueue.contains(ControllerStub.EMethods.PROCEDUREARGUMENTSSERIALIZABLE));
-		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNNOARGUMENTSSERIALIZABLE));
-		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNARGUMENTSSERIALIZABLE));
-		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNLISTNOARGUMENTSSERIALIZABLE));
-		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNMAPNOARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(StubController.EMethods.PROCEDURENOARGUMENTS));
+		assertTrue(a_lQueue.contains(StubController.EMethods.PROCEDUREARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(StubController.EMethods.FUNCTIONRETURNNOARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(StubController.EMethods.FUNCTIONRETURNARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(StubController.EMethods.FUNCTIONRETURNLISTNOARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(StubController.EMethods.FUNCTIONRETURNMAPNOARGUMENTSSERIALIZABLE));
 
 
 		a_mLogManager.Test("[RMIConnectionTest.testRun] Close",0);

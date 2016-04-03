@@ -2,12 +2,11 @@ package com.nativedevelopment.smartgrid.tests;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public class ControllerStub implements IControllerStub {
+public class StubController implements IStubController {
 	public enum EMethods {
 		PROCEDURENOARGUMENTS,
 		PROCEDUREARGUMENTSSERIALIZABLE,
@@ -21,7 +20,7 @@ public class ControllerStub implements IControllerStub {
 	private Map<Serializable,Serializable> a_lSerializables = null;
 	private Serializable a_oSerializable = null;
 
-	public ControllerStub(Queue<Serializable> lQueue, Serializable oSerializable, Map<Serializable,Serializable> lSerializables) {
+	public StubController(Queue<Serializable> lQueue, Serializable oSerializable, Map<Serializable,Serializable> lSerializables) {
 		a_lQueue = lQueue;
 		a_lSerializables = lSerializables;
 		a_oSerializable = oSerializable;
