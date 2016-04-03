@@ -15,6 +15,7 @@ public class RabbitMQControllerCallerConnection extends Connection {
 
 	public RabbitMQControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
 		super(oIdentifier);
+		// TODO replace oPromise by a Queue of Promises, create Fx_UpdatePromises function.
 		a_lToLogQueue = lToLogQueue;
 		a_oPromise = oPromise;
 	}

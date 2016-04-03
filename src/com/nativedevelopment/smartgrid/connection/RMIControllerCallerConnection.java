@@ -31,6 +31,7 @@ public class RMIControllerCallerConnection extends Connection {
 
 	public RMIControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
 		super(oIdentifier);
+		// TODO replace oPromise by a Queue of Promises, create Fx_UpdatePromises function.
 		a_lToLogQueue = lToLogQueue;
 		a_oPromise = oPromise;
 	}
