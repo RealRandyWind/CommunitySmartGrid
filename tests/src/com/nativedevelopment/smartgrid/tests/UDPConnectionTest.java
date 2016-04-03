@@ -35,8 +35,8 @@ public class UDPConnectionTest implements ITestCase {
 	Queue<Serializable> a_oFromQueue = null;
 	Queue<Serializable> a_oToQueue = null;
 	Queue<Serializable> a_oLogQueue = null;
-	AbstractMap<Object, SocketAddress> a_lReceivers = null;
-	AbstractMap<Object, SocketAddress> a_lSenders = null;
+	AbstractMap<Serializable, SocketAddress> a_lReceivers = null;
+	AbstractMap<Serializable, SocketAddress> a_lSenders = null;
 
 	Comparator<SocketAddress> a_oComparator = null;
 
@@ -110,7 +110,6 @@ public class UDPConnectionTest implements ITestCase {
 		oConsumer1.Close();
 		oConsumer2.Close();
 		oProducer.Close();
-
 		Thread.sleep(2000);
 
 		assertTrue(a_oFromQueue.isEmpty());

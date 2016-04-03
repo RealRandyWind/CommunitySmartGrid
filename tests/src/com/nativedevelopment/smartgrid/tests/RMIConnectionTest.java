@@ -1,20 +1,65 @@
 package com.nativedevelopment.smartgrid.tests;
 
-import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.connection.RMIControllerCallerConnection;
+import com.nativedevelopment.smartgrid.connection.RMIControllerListenerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import static org.junit.Assert.*;
 
 public class RMIConnectionTest implements ITestCase {
+	static final String SETTINGS_VALUE_EXCHANGE = "ControllerStub";
+	static final String SETTINGS_VALUE_HOST = "localhost";
+	static final int SETTINGS_VALUE_CHECKTIME = 400;
+	static final int SETTINGS_VALUE_PORT = 0;
+	static final String SERIALIZABLE_OBJECT = "Serializable";
+
+
 	MLogManager a_mLogManager = null;
+
+	IController a_oController = null;
+	Queue<Serializable> a_oLogQueue = null;
+
+	ISettings a_oCallerConfiguration = null;
+	ISettings a_oListenerConfiguration = null;
+
+	Queue<Serializable> a_lQueue = null;
+	HashMap<Serializable, Serializable> a_lSerializables = null;
+	Serializable a_oSerializable = null;
 
 	@Before
 	public void setUp() throws Exception {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mLogManager.SetUp();
 
+		a_lQueue = new ConcurrentLinkedQueue<>();
+		a_lSerializables = new HashMap<>();
+		a_oSerializable = SERIALIZABLE_OBJECT;
+
+		a_lSerializables.put(a_oSerializable, a_oSerializable);
+
+		a_oController = new ControllerStub(a_lQueue, a_oSerializable, a_lSerializables);
+
+		a_oCallerConfiguration = new Settings(null);
+		a_oListenerConfiguration = new Settings(null);
+
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEADDRESS,SETTINGS_VALUE_HOST);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTING_KEY_ISREBIND,false);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIME,SETTINGS_VALUE_CHECKTIME);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIME,SETTINGS_VALUE_CHECKTIME);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,SETTINGS_VALUE_PORT);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
 	}
 
 	@After
@@ -25,6 +70,51 @@ public class RMIConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("[RMIConnectionTest.testRun] begin", 0);
+		IPromise oPromise = new Promise();
+		int nTryCount = 6;
+		IControllerStub oControllerStub = null;
+
+		IConnection oCaller = new RMIControllerCallerConnection(null,a_oLogQueue, oPromise);
+		IConnection oListener = new RMIControllerListenerConnection(null, a_oController, a_oLogQueue);
+
+		a_mLogManager.Test("[RMIConnectionTest.testRun] Configure",0);
+		oCaller.Configure(a_oCallerConfiguration);
+		oListener.Configure(a_oListenerConfiguration);
+
+		a_mLogManager.Test("[RMIConnectionTest.testRun] Open",0);
+		oListener.Open();
+		oCaller.Open();
+		Thread.sleep(500);
+
+		a_mLogManager.Test("[RMIConnectionTest.testRun] Run",0);
+		while(!oPromise.IsDone()) {
+			if (nTryCount <= 0) { fail(); }
+			Thread.sleep(200);
+			nTryCount--;
+		}
+		oControllerStub = (IControllerStub)oPromise.Get();
+		assertTrue(a_lQueue.isEmpty());
+		oControllerStub.ProcedureNoArguments();
+		oControllerStub.ProcedureArgumentsSerializable(a_oSerializable, a_lSerializables);
+		assertEquals(a_oSerializable, oControllerStub.FunctionReturnNoArgumentsSerializable());
+		assertEquals(a_oSerializable, oControllerStub.FunctionReturnArgumentsSerializable(a_oSerializable, a_lSerializables));
+		assertEquals(new LinkedList<Serializable>(a_lSerializables.values()), oControllerStub.FunctionReturnListNoArgumentsSerializable());
+		assertEquals(a_lSerializables, oControllerStub.FunctionReturnMapNoArgumentsSerializable());
+		Thread.sleep(500);
+
+		assertFalse(a_lQueue.isEmpty());
+		assertTrue(a_lQueue.contains(ControllerStub.EMethods.PROCEDURENOARGUMENTS));
+		assertTrue(a_lQueue.contains(ControllerStub.EMethods.PROCEDUREARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNNOARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNLISTNOARGUMENTSSERIALIZABLE));
+		assertTrue(a_lQueue.contains(ControllerStub.EMethods.FUNCTIONRETURNMAPNOARGUMENTSSERIALIZABLE));
+
+
+		a_mLogManager.Test("[RMIConnectionTest.testRun] Close",0);
+		oListener.Close();
+		oCaller.Close();
+		Thread.sleep(2000);
 
 		a_mLogManager.Test("[RMIConnectionTest.testRun] end",0);
 	}
