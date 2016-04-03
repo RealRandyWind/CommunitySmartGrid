@@ -4,12 +4,19 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class Data implements IData {
+    private UUID a_oIdentifier = null;
     private Serializable[][] a_lTuples = null;
     private String[] a_lAttributes = null;
 
-    public Data(Serializable[][] lTuples, String[] lAttributes) {
+    public Data(UUID oIdentifier, Serializable[][] lTuples, String[] lAttributes) {
+        a_oIdentifier = oIdentifier;
         a_lAttributes = lAttributes;
         a_lTuples = lTuples;
+    }
+
+    @Override
+    public UUID GetIdentifier() {
+        return a_oIdentifier;
     }
 
     @Override

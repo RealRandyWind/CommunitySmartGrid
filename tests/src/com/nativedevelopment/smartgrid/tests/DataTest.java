@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +17,7 @@ public class DataTest implements ITestCase {
 
 	String[] a_lAttributes = new String[3];
 	Serializable[][] a_lTuples = new Serializable[3][3];
+	UUID a_iData = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -38,6 +40,8 @@ public class DataTest implements ITestCase {
 		a_lTuples[2][0] = System.currentTimeMillis() + 2000;
 		a_lTuples[2][1] = 1250;
 		a_lTuples[2][2] = 34.85;
+
+		a_iData = UUID.randomUUID();
 	}
 
 	@After
@@ -48,7 +52,7 @@ public class DataTest implements ITestCase {
 	@Test
 	public void testGetAttributes() throws Exception {
 		a_mLogManager.Test("[DataTest.testGetAttributes] begin",0);
-		IData oData = new Data(a_lTuples,a_lAttributes);
+		IData oData = new Data(a_iData, a_lTuples,a_lAttributes);
 
 		assertArrayEquals(a_lAttributes,oData.GetAttributes());
 		a_mLogManager.Test("[DataTest.testGetAttributes] end",0);
@@ -57,13 +61,14 @@ public class DataTest implements ITestCase {
 	@Test
 	public void testGetGetAllTuple() throws Exception {
 		a_mLogManager.Test("[DataTest.testGetGetAllTuple] begin",0);
-		IData oData = new Data(a_lTuples,a_lAttributes);
+		IData oData = new Data(a_iData, a_lTuples,a_lAttributes);
 
 		assertArrayEquals(a_lTuples,oData.GetAllTuples());
 		assertArrayEquals(a_lTuples[0],oData.GetTuple(0));
 		assertArrayEquals(a_lTuples[1],oData.GetTuple(1));
 		assertArrayEquals(a_lTuples[2],oData.GetTuple(2));
 		assertNull(oData.GetTuple(3));
+		assertEquals(a_iData,oData.GetIdentifier());
 		a_mLogManager.Test("[DataTest.testGetGetAllTuple] end",0);
 	}
 }
