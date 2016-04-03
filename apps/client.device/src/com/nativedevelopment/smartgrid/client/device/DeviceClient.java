@@ -2,14 +2,17 @@ package com.nativedevelopment.smartgrid.client.device;
 
 import com.nativedevelopment.smartgrid.*;
 
+import java.util.Queue;
 import java.util.UUID;
 
-public class DeviceClient extends Main {
+public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
 	private MConnectionManager a_mConnectionManager = null;
 
 	private UUID a_oIdentifier = null;
+
+	private Queue<IData> a_lDatas = null;
 
 	protected DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -53,6 +56,11 @@ public class DeviceClient extends Main {
 
 	private void Fx_TerminateConnection(UUID iConnection) {
 		a_mConnectionManager.RemoveConnection(iConnection);
+	}
+
+	@Override
+	public void Configure(ISettings oConfigurations) {
+		a_mLogManager.Warning("[DeviceClient.Configure] nothing to configure\n",0);
 	}
 
 	public static void main(String[] arguments)

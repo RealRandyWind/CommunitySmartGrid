@@ -1,7 +1,7 @@
 package com.nativedevelopment.smartgrid.client;
 
-import com.nativedevelopment.smartgrid.IConnection;
 import com.nativedevelopment.smartgrid.IControlable;
+import com.nativedevelopment.smartgrid.ScheduleSlot;
 
 import java.util.UUID;
 
