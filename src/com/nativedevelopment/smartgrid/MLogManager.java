@@ -1,6 +1,9 @@
 package com.nativedevelopment.smartgrid;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MLogManager {
 	public enum ELogType {
@@ -37,6 +40,8 @@ public class MLogManager {
 	private boolean a_bIsShutDown = false;
 	private boolean a_bIsShutDownOnError = false;
 
+	private Queue<Serializable> a_lLogQueue = null;
+
 	private MLogManager() {
 		a_bIsShutDown = true;
 		a_bIsSetUp = false;
@@ -56,7 +61,7 @@ public class MLogManager {
 		}
 		a_bIsShutDown = false;
 
-		// TODO MLogManager SetUp
+		a_lLogQueue = new ConcurrentLinkedQueue<>();
 
 		a_bIsSetUp = true;
 		Success("[MLogManager.SetUp]",0);
@@ -151,6 +156,10 @@ public class MLogManager {
 		Fx_WriteLog(sString,5,iCode)
 		if(a_sTypeIsPrint[5]) { Fx_PrintLog(sString,iCode)}
 		*/
+	}
+
+	public Queue<Serializable> GetLogQueue() {
+		return a_lLogQueue;
 	}
 
 	private void Fx_PrintLog(String sMessage,int iCode) {

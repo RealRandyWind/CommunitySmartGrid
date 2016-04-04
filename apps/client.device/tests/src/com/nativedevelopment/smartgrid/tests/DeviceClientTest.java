@@ -26,17 +26,7 @@ public class DeviceClientTest implements ITestCase {
 	}
 
 	@Test
-	public void testShutDown() throws Exception {
-		fail("not yet implemented.");
-	}
-
-	@Test
-	public void testSetUp() throws Exception {
-		fail("not yet implemented.");
-	}
-
-	@Test
-	public void testGetInstance() throws Exception {
+	public void testRun() throws Exception {
 		fail("not yet implemented.");
 	}
 }

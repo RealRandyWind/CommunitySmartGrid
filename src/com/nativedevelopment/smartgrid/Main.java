@@ -4,6 +4,7 @@ public class Main {
 	protected static Main a_oInstance = null;
 	private static int a_iExitCode = 0;
 	private boolean a_bIsRunning = false;
+	private boolean a_bIsClosing = false;
 
 	protected Main() {
 		a_bIsRunning = false;
@@ -19,6 +20,14 @@ public class Main {
 
 	public void Run() {
 		System.out.printf("_WARNING: [Main.Run] not yet implemented.\n");
+	}
+
+	public void Exit() {
+		a_bIsClosing = true;
+	}
+
+	public boolean IsClosing() {
+		return a_bIsClosing;
 	}
 
 	public static Main GetInstance() {

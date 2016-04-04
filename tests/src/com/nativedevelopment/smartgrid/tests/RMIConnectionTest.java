@@ -95,10 +95,15 @@ public class RMIConnectionTest implements ITestCase {
 		oStubController = (IStubController)oPromise.Get();
 		assertTrue(a_lQueue.isEmpty());
 		oStubController.ProcedureNoArguments();
+		Thread.sleep(150);
 		oStubController.ProcedureArgumentsSerializable(a_oSerializable, a_lSerializables);
+		Thread.sleep(150);
 		assertEquals(a_oSerializable, oStubController.FunctionReturnNoArgumentsSerializable());
+		Thread.sleep(150);
 		assertEquals(a_oSerializable, oStubController.FunctionReturnArgumentsSerializable(a_oSerializable, a_lSerializables));
+		Thread.sleep(150);
 		assertEquals(new LinkedList<>(a_lSerializables.values()), oStubController.FunctionReturnListNoArgumentsSerializable());
+		Thread.sleep(150);
 		assertEquals(a_lSerializables, oStubController.FunctionReturnMapNoArgumentsSerializable());
 		Thread.sleep(500);
 
@@ -114,7 +119,7 @@ public class RMIConnectionTest implements ITestCase {
 		a_mLogManager.Test("[RMIConnectionTest.testRun] Close",0);
 		oListener.Close();
 		oCaller.Close();
-		Thread.sleep(2000);
+		Thread.sleep(200);
 
 		a_mLogManager.Test("[RMIConnectionTest.testRun] end",0);
 	}

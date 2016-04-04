@@ -80,6 +80,9 @@ public class MSettingsManager {
     public ISettings LoadSettingsFromFile(String sPath) {
         try {
             File oFile = new File(sPath);
+			if(oFile.length() == 0) {
+				a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] empty file \"%s\"",0,sPath);
+			}
             FileInputStream oFileInputStream = new FileInputStream(oFile);
             // TODO fix may not be usable in arm java version
             byte[] rawSource = new byte[(int) oFile.length()];
@@ -87,7 +90,8 @@ public class MSettingsManager {
             String sSource = new String(rawSource, Charset.defaultCharset());
             return LoadSettingsFromString(sSource);
         } catch (Exception oException) {
-            a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] %s \"%s\"\n",0,oException.getClass().getCanonicalName(),oException.getMessage());
+            a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] %s \"%s\"",0
+                    ,oException.getClass().getCanonicalName(),oException.getMessage());
         }
         return null;
     }

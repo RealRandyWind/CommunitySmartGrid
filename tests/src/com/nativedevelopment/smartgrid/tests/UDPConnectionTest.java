@@ -104,13 +104,13 @@ public class UDPConnectionTest implements ITestCase {
 			Thread.sleep(100);
 			a_oFromQueue.offer(String.format("Message %d.",iIndex));
 		}
-		Thread.sleep(1500);
+		Thread.sleep(2000);
 
 		a_mLogManager.Test("[UDPConnectionTest.testRun] Close",0);
 		oConsumer1.Close();
 		oConsumer2.Close();
 		oProducer.Close();
-		Thread.sleep(2000);
+		Thread.sleep(200);
 
 		assertTrue(a_oFromQueue.isEmpty());
 		assertFalse(a_oToQueue.isEmpty());
