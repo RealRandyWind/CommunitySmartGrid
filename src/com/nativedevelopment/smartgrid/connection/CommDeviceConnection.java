@@ -12,14 +12,14 @@ import java.util.UUID;
 
 public class CommDeviceConnection extends Connection{
 	protected Queue<Serializable> a_lToQueue = null;
-	protected Queue<IAction> a_lFromQueue = null;
+	protected Queue<Serializable> a_lFromQueue = null;
 	protected AbstractMap<UUID,Serializable> a_lActionMap = null;
 	protected UUID a_iDevice = null;
 	protected String a_lAttributes[] = null;
 
 	public CommDeviceConnection(UUID oIdentifier, UUID iDevice, String[] lAttributes,
 								AbstractMap<UUID, Serializable> lActionMap,
-								Queue<Serializable> lToQueue, Queue<IAction> lFromQueue,
+								Queue<Serializable> lToQueue, Queue<Serializable> lFromQueue,
 								Queue<Serializable> lToLogQueue) {
 		super(oIdentifier, lToLogQueue);
 		a_lToQueue = lToQueue;
