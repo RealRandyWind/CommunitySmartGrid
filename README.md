@@ -24,3 +24,12 @@ docker rm $(docker ps -a -q)
 # if docker need stop
 docker-machine stop
 ```
+
+## References
+docker nodejs image, https://hub.docker.com/_/node/
+
+docker mongodb image, https://hub.docker.com/_/mongo/
+
+docker rabbitmq image, https://hub.docker.com/_/rabbitmq/
+
+gentelella dashboard nodejs, https://github.com/puikinsh/gentelella
