@@ -26,10 +26,7 @@ docker-machine stop
 ```
 
 ## References
-docker nodejs image, https://hub.docker.com/_/node/
-
-docker mongodb image, https://hub.docker.com/_/mongo/
-
-docker rabbitmq image, https://hub.docker.com/_/rabbitmq/
-
-gentelella dashboard nodejs, https://github.com/puikinsh/gentelella
+[1] docker nodejs image, https://hub.docker.com/_/node/<br>
+[2] docker mongodb image, https://hub.docker.com/_/mongo/<br>
+[3] docker rabbitmq image, https://hub.docker.com/_/rabbitmq/<br>
+[4] gentelella dashboard nodejs, https://github.com/puikinsh/gentelella
