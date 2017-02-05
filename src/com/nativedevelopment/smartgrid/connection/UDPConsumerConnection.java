@@ -8,9 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.util.AbstractMap;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
 
 public class UDPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_LOCALADDRESS = "local.address";
@@ -18,17 +16,19 @@ public class UDPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
 
 	private Queue<Serializable> a_lToQueue = null;
-	private AbstractMap<Serializable, SocketAddress> a_lToRemotesMap = null;
+	private Queue<SocketAddress> a_lRemotes = null;
+	private Set<DatagramChannel> a_lChannels = null;
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
 	public UDPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue,
-								 AbstractMap<Serializable, SocketAddress> lToRemotesMap) {
+								 Queue<SocketAddress> lRemotes) {
 		super(oIdentifier, lToLogQueue);
 		a_lToQueue = lToQueue;
-		a_lToRemotesMap = lToRemotesMap;
+		a_lRemotes = lRemotes;
+		a_lChannels = new HashSet<>();
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
@@ -46,26 +46,23 @@ public class UDPConsumerConnection extends Connection {
 	public void Run() {
 		try {
 			SocketAddress oLocal = new InetSocketAddress(a_sLocalAddress, a_nLocalPort);
-			DatagramChannel a_oDatagramChannel = DatagramChannel.open();
+			DatagramChannel oServerChannel = DatagramChannel.open();
 			ByteBuffer oByteBuffer = ByteBuffer.allocate(a_nBufferCapacity);
 
-			a_oDatagramChannel.bind(oLocal);
+			oServerChannel.bind(oLocal);
 
 			while (!IsClose()) {
 				oByteBuffer.clear();
-				// TODO use channels to only allow connections that are expected
-				SocketAddress oRemote = a_oDatagramChannel.receive(oByteBuffer);
-				// TODO Tracks connections, use more reliable way to ensure uniqueness
-				a_lToRemotesMap.putIfAbsent(oRemote.toString(),oRemote);
+				oServerChannel.receive(oByteBuffer);
 				oByteBuffer.flip();
+				if(!oByteBuffer.hasRemaining()) { continue; }
 				byte[] rawBytes = new byte[oByteBuffer.remaining()];
 				oByteBuffer.get(rawBytes,0,rawBytes.length);
-				if(rawBytes == null) { continue; }
 				Fx_Consume(rawBytes);
 			}
 
-			a_oDatagramChannel.disconnect();
-			a_oDatagramChannel.close();
+			oServerChannel.disconnect();
+			oServerChannel.close();
 		} catch (Exception oException) {
 			System.out.printf("_WARNING: [UDPConsumerConnection.Run] %s \"%s\"\n"
 					,oException.getClass().getCanonicalName(),oException.getMessage());

@@ -12,7 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
-	public static final String DEVICECLIENT_SETTINGSFILE_DEFAULT = "client.device.settings";
+	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
+
+	public static final String SETTINGS_KEYPREFIX_DATAREALTIME = "data.realtime.";
+	public static final String SETTINGS_KEYPREFIX_ACTIONCONTROLL = "action.control.";
+	public static final String SETTINGS_KEYPREFIX_MONITORING = "monitoring.";
+	public static final String SETTINGS_KEYPREFIX_BROADCAST = "broadcast.";
+
+	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
@@ -43,7 +50,13 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mSettingsManager.SetUp();
 		a_mConnectionManager.SetUp();
 
-		Configure(a_mSettingsManager.LoadSettingsFromFile(DEVICECLIENT_SETTINGSFILE_DEFAULT));
+		ISettings oDeviceClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
+		Configure(oDeviceClientSettings);
+
+		// TODO establish device connection
+		// TODO establish realtime data connection
+		// TODO establish monitoring connection
+		// TODO establish broadcast connection
 
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
@@ -78,7 +91,9 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
-		a_mLogManager.Warning("[DeviceClient.Configure] nothing to configure",0);
+		Serializable oIdentifier = oConfigurations.Get(SETTINGS_KEY_IDENTIFIER);
+		a_oIdentifier = oIdentifier == null ? UUID.randomUUID() : UUID.fromString((String)oIdentifier);
+		a_mLogManager.Success("[DeviceClient.Configure] configured",0);
 	}
 
 	@Override

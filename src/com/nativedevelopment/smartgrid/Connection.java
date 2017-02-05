@@ -39,6 +39,11 @@ public class Connection implements IConnection {
     }
 
     @Override
+    public void Join(long nTimeout) throws Exception {
+        a_oThread.join(nTimeout);
+    }
+
+    @Override
     public boolean IsClose() {
         return a_isClose;
     }

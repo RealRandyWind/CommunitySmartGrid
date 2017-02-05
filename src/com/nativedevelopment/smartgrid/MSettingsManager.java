@@ -82,6 +82,7 @@ public class MSettingsManager {
             File oFile = new File(sPath);
 			if(oFile.length() == 0) {
 				a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] empty file \"%s\"",0,sPath);
+				return null;
 			}
             FileInputStream oFileInputStream = new FileInputStream(oFile);
             // TODO fix may not be usable in arm java version

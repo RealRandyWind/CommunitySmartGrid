@@ -12,19 +12,18 @@ import java.nio.channels.DatagramChannel;
 import java.util.*;
 
 public class UDPProducerConnection extends Connection{
-	public static final String SETTINGS_KEY_LOCALADDRESS = "local.address";
-	public static final String SETTINGS_KEY_LOCALPORT = "local.port";
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
 
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
-	private Queue<Serializable> a_lFromQueue = null;
-	private AbstractMap<Serializable, SocketAddress> a_lFromRemotesMap = null;
+	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
-	private String a_sLocalAddress = null;
-	private int a_nLocalPort = 0;
+	private Queue<Serializable> a_lFromQueue = null;
+	private Queue<SocketAddress> a_lRemotes = null;
+	private Set<DatagramChannel> a_lChannels = null;
+
 	private int a_nBufferCapacity = 0;
 
 	private int a_nCheckTime = 0;
@@ -32,14 +31,42 @@ public class UDPProducerConnection extends Connection{
 	private int a_nCheckTimeUpperBound = 0;
 	private int a_nDeltaCheckTime = 0;
 
+	private int a_nDeltaConnections = 0;
+
 	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue,
-								 AbstractMap<Serializable, SocketAddress> lFromRemotesMap) {
+								 Queue<SocketAddress> lRemotes) {
 		super(oIdentifier, lToLogQueue);
 		if(lFromQueue == null) {
 			System.out.printf("_WARNING: [UDPProducerConnection] no queue to produce from\n");
 		}
 		a_lFromQueue = lFromQueue;
-		a_lFromRemotesMap = lFromRemotesMap;
+		a_lRemotes = lRemotes;
+		a_lChannels = new HashSet<>();
+	}
+
+	private void Fx_EstablishConnections() throws Exception {
+		SocketAddress oRemote = a_lRemotes.poll();
+		int iRemote = a_nDeltaConnections;
+		while (oRemote!=null && 0 < iRemote) {
+			DatagramChannel oChannel = DatagramChannel.open();
+			oChannel.connect(oRemote);
+			a_lChannels.add(oChannel);
+			oRemote = a_lRemotes.poll();
+			iRemote--;
+			System.out.printf("_DEBUG: [UDPProducerConnection.Fx_EstablishConnections] new connection to \"%s\" through \"%s\"\n"
+					,String.valueOf(oChannel.getRemoteAddress())
+					,String.valueOf(oChannel.getLocalAddress()));
+		}
+	}
+
+	private boolean Fx_CheckConnection(DatagramChannel oChannel) throws Exception {
+		if(oChannel.isConnected()) {
+			return true;
+		}
+		a_lChannels.remove(oChannel);
+		System.out.printf("_WARNING: [UDPProducerConnection.Fx_CheckConnection] lost connection \"%s\"\n"
+				,String.valueOf(oChannel.getRemoteAddress()));
+		return false;
 	}
 
 	private byte[] Fx_Produce() throws Exception {
@@ -57,12 +84,12 @@ public class UDPProducerConnection extends Connection{
 	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
-		a_sLocalAddress = oConfigurations.GetString(SETTINGS_KEY_LOCALADDRESS);
-		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
 
 		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
 		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
 		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
+
+		a_nDeltaConnections = (int)oConfigurations.Get(SETTINGS_KEY_DELTACONNECTIONS);
 
 		a_nCheckTime = a_nCheckTimeLowerBound;
 	}
@@ -70,28 +97,28 @@ public class UDPProducerConnection extends Connection{
 	@Override
 	public void Run() {
 		try {
-			SocketAddress oLocal = new InetSocketAddress(a_sLocalAddress, a_nLocalPort);
-			DatagramChannel a_oDatagramChannel = DatagramChannel.open();
 			ByteBuffer oByteBuffer = ByteBuffer.allocate(a_nBufferCapacity);
 
-			a_oDatagramChannel.bind(oLocal);
-
-			Iterable<SocketAddress> lRemotes = a_lFromRemotesMap.values();
-
 			while (!IsClose()) {
+				Fx_EstablishConnections();
+
 				oByteBuffer.clear();
 				byte[] rawBytes = Fx_Produce();
 				if(rawBytes == null) { continue; }
 				oByteBuffer.put(rawBytes,0,rawBytes.length);
 
-				// TODO May replace by channels to avoid repeated security check on send
-				for (SocketAddress oRemote: lRemotes) {
+				for (DatagramChannel oChannel: a_lChannels) {
+					if(!Fx_CheckConnection(oChannel)) { continue; }
 					oByteBuffer.flip();
-					a_oDatagramChannel.send(oByteBuffer, oRemote);
+					oChannel.write(oByteBuffer);
 				}
 			}
 
-			a_oDatagramChannel.close();
+			for (DatagramChannel oChannel: a_lChannels) {
+				oChannel.disconnect();
+				oChannel.close();
+			}
+			a_lChannels.clear();
 		} catch (Exception oException) {
 			System.out.printf("_WARNING: [UDPProducerConnection.Run] %s \"%s\"\n"
 					,oException.getClass().getCanonicalName(),oException.getMessage());

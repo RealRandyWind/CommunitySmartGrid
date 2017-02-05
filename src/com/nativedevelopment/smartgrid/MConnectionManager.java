@@ -56,7 +56,6 @@ public class MConnectionManager {
     public void EstablishConnection(UUID iConnection) {
         IConnection oConnection = GetConnection(iConnection);
         if(oConnection == null) {
-            a_mLogManager.Warning("[MConnectionManager.EstablishConnection] connection does not exist \"%s\".",0,iConnection);
             return;
         } else if (oConnection.IsActive()) {
             a_mLogManager.Warning("[MConnectionManager.EstablishConnection] connection already active \"%s\".",0,iConnection);
@@ -69,7 +68,6 @@ public class MConnectionManager {
     public void DisestablishConnection(UUID iConnection) {
         IConnection oConnection = GetConnection(iConnection);
         if(oConnection == null) {
-            a_mLogManager.Warning("[MConnectionManager.DisestablishConnection] connection does not exist \"%s\".",0,iConnection);
             return;
         } else if (!oConnection.IsActive()) {
             a_mLogManager.Warning("[MConnectionManager.DisestablishConnection] connection already inactive \"%s\".",0,iConnection);
@@ -84,16 +82,19 @@ public class MConnectionManager {
     }
 
     public void RemoveConnection(UUID iConnection) {
-        IConnection oConnection = a_lConnections.remove(iConnection);
-        if(oConnection == null) {
+        if(!a_lConnections.containsKey(iConnection)) {
             a_mLogManager.Warning("[MConnectionManager.RemoveConnection] connection does not exist \"%s\".", 0, iConnection);
             return;
         }
-
+        IConnection oConnection = a_lConnections.remove(iConnection);
         oConnection.Close();
     }
 
     public IConnection GetConnection(UUID iConnection) {
+        if(!a_lConnections.containsKey(iConnection)) {
+            a_mLogManager.Warning("[MConnectionManager.GetConnection] connection does not exist \"%s\".",0,iConnection);
+            return null;
+        }
         return a_lConnections.get(iConnection);
     }
 

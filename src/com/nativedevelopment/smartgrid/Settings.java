@@ -40,7 +40,11 @@ public class Settings implements ISettings {
     }
 
     public Serializable Get(String sSetting) {
-        return a_lSettings.get(a_sKeyPrefix + sSetting.toLowerCase());
+        String sKey = a_sKeyPrefix + sSetting.toLowerCase();
+        if(!a_lSettings.containsKey(sKey)) {
+            return  null;
+        }
+        return a_lSettings.get(sKey);
     }
 
     public void Set(String sSetting, Serializable oValue) {

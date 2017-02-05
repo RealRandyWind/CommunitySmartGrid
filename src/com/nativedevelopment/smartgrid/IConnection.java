@@ -7,6 +7,7 @@ public interface IConnection extends Runnable, IConfigurable {
     public void Open();
     public void Close();
     public void ForceClose();
+    public void Join(long nTimeout) throws Exception;
     public boolean IsClose();
     public boolean IsActive();
     public void Run();

@@ -9,7 +9,15 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Client extends Main {
-	private static final String CLIENT_SETTINGS_DEFAULT_PATH = "client.settings";
+	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
+	public static final String SETTINGS_KEY_LOGFILE = "log.file";
+
+	public static final String SETTINGS_KEYPREFIX_DATAREALTIME = "data.realtime.";
+	public static final String SETTINGS_KEYPREFIX_ACTIONCONTROLL = "action.control.";
+	public static final String SETTINGS_KEYPREFIX_MONITORING = "monitoring.";
+	public static final String SETTINGS_KEYPREFIX_BROADCAST = "broadcast.";
+
+	private static final String APP_SETTINGS_DEFAULT_PATH = "client.settings";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
@@ -47,10 +55,10 @@ public class Client extends Main {
 		a_lActions = new ConcurrentLinkedQueue<>();
 
 		/* configure client start */
-		ISettings lClientSettings = a_mSettingsManager.LoadSettingsFromFile(CLIENT_SETTINGS_DEFAULT_PATH);
+		ISettings lClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
 
-		a_mLogManager.SetLogFile(lClientSettings.GetString("logfile"));
-		a_oIdentifier = UUID.fromString(lClientSettings.GetString("uuid"));
+		a_mLogManager.SetLogFile(lClientSettings.GetString(SETTINGS_KEY_LOGFILE));
+		a_oIdentifier = UUID.fromString(lClientSettings.GetString(SETTINGS_KEY_IDENTIFIER));
 
 		// TODO subscription validation token
 		// TODO establish main connection

@@ -10,10 +10,7 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.AbstractMap;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -35,10 +32,9 @@ public class UDPConnectionTest implements ITestCase {
 	Queue<Serializable> a_oFromQueue = null;
 	Queue<Serializable> a_oToQueue = null;
 	Queue<Serializable> a_oLogQueue = null;
-	AbstractMap<Serializable, SocketAddress> a_lReceivers = null;
-	AbstractMap<Serializable, SocketAddress> a_lSenders = null;
-
-	Comparator<SocketAddress> a_oComparator = null;
+	Queue<SocketAddress> a_lReceivers = null;
+	Queue<SocketAddress> a_lSenders1 = null;
+	Queue<SocketAddress> a_lSenders2 = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -48,29 +44,34 @@ public class UDPConnectionTest implements ITestCase {
 		a_oFromQueue = new ConcurrentLinkedQueue<>();
 		a_oToQueue = new ConcurrentLinkedQueue<>();
 		a_oLogQueue = new ConcurrentLinkedQueue<>();
-		a_lReceivers = new ConcurrentHashMap<>();
-		a_lSenders = new ConcurrentHashMap<>();
+		a_lReceivers = new ConcurrentLinkedQueue<>();
+		a_lSenders1 = new ConcurrentLinkedQueue<>();
+		a_lSenders2 = new ConcurrentLinkedQueue<>();
 
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
 
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,55539);
+
+		//a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
 
-		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_LOCALADDRESS,SETTINGS_VALUE_HOST);
-		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_LOCALPORT,SETTINGS_VALUE_PORT);
+		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
 
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 
+		SocketAddress oSenderAddress1 = new InetSocketAddress(SETTINGS_VALUE_HOST,SETTINGS_VALUE_PORT);
 		SocketAddress oReceiverAddress1 = new InetSocketAddress(SETTINGS_VALUE_HOST,55539);
 		SocketAddress oReceiverAddress2 = new InetSocketAddress(SETTINGS_VALUE_HOST,55540);
 
-		a_lReceivers.putIfAbsent(oReceiverAddress1.toString(), oReceiverAddress1);
-		a_lReceivers.putIfAbsent(oReceiverAddress2.toString(), oReceiverAddress2);
+		a_lSenders1.offer(oSenderAddress1);
+		a_lSenders2.offer(oSenderAddress1);
+		a_lReceivers.offer(oReceiverAddress1);
+		a_lReceivers.offer(oReceiverAddress2);
 	}
 
 	@After
@@ -82,8 +83,8 @@ public class UDPConnectionTest implements ITestCase {
 	public void testRun() throws Exception {
 		a_mLogManager.Test("[UDPConnectionTest.testRun] begin",0);
 		IConnection oProducer = new UDPProducerConnection(null,a_oFromQueue,a_oLogQueue,a_lReceivers);
-		IConnection oConsumer1 = new UDPConsumerConnection(null,a_oToQueue,a_oLogQueue, a_lSenders);
-		IConnection oConsumer2 = new UDPConsumerConnection(null,a_oToQueue,a_oLogQueue, a_lSenders);
+		IConnection oConsumer1 = new UDPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders1);
+		IConnection oConsumer2 = new UDPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders2);
 
 		a_mLogManager.Test("[UDPConnectionTest.testRun] Configure",0);
 		oProducer.Configure(a_oProducerConfiguration);

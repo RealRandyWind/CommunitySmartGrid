@@ -1,0 +1,8 @@
+identifier = null
+directory.working = null
+data.realtime.local.addresss = "localhost"
+data.realtime.local.port = 55661
+data.realtime.buffer.capacity = 1024
+action.control.local.address = "localhost"
+action.control.local.port = 55662
+action.control.buffer.capacity = 4092
