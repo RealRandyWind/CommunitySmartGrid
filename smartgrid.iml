@@ -25,12 +25,34 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
-      <library name="rabbitmq-client">
+      <library name="com.rabbitmq:amqp-client:Latest" type="repository">
+        <properties maven-id="com.rabbitmq:amqp-client:LATEST" />
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/deps/rabbitmq-client.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/slf4j-api-1.7.21.jar!/" />
         </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library name="org.mongodb:mongodb-driver:Latest" type="repository">
+        <properties maven-id="org.mongodb:mongodb-driver:LATEST" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-core-3.4.2.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

@@ -21,7 +21,6 @@ import static org.junit.Assert.*;
 public class TCPConnectionTest implements ITestCase {
 	static final int SETTINGS_VALUE_BUFFERCAPACITY = 64;
 	static final String SETTINGS_VALUE_HOST = "localhost";
-	static final int SETTINGS_VALUE_PORT = 55535;
 
 	public static final int TEST_MSG_COUNT = 20;
 
