@@ -15,6 +15,8 @@ docker run --name dev.rabbitmq -p 5672:5672 -d rabbitmq:latest
 docker run --name dev.mongo -p 5673:5673 -d mongo:latest
 docker run --name dev.node -p 5674:5674 -d node:latest
 
+# if container need configuration
+
 # if images need start
 docker start $(docker ps -a -q)
 
