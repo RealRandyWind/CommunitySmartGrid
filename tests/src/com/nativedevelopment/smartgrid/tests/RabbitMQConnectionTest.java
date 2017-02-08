@@ -18,10 +18,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.junit.Assert.*;
 
 public class RabbitMQConnectionTest implements ITestCase {
-	static final String SETTINGS_VALUE_HOST = "localhost"; //"192.168.178.12";
+	static final String SETTINGS_VALUE_HOST = "192.168.99.100";
 	static final int SETTINGS_VALUE_PORT = 5672;
-	static final String SETTINGS_VALUE_USER = "guest";
-	static final String SETTINGS_VALUE_PASSWORD = "guest";
+	static final String SETTINGS_VALUE_USER = "user";
+	static final String SETTINGS_VALUE_PASSWORD = "password";
 
 	public static final int TEST_MSG_COUNT = 20;
 
