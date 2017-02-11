@@ -11,4 +11,6 @@ public interface IConnection extends Runnable, IConfigurable {
     public boolean IsClose();
     public boolean IsActive();
     public void Run();
+    public boolean TimeOutRoutine(boolean condition) throws InterruptedException;
+    public void TimeOut() throws InterruptedException;
 }

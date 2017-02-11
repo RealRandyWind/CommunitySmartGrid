@@ -17,8 +17,8 @@ public class SerializableObject implements Serializable {
 		if (!(obj instanceof SerializableObject)) {
 			return false;
 		}
-		SerializableObject oSSerializableObject = (SerializableObject) obj;
-		return a_sName.equals(oSSerializableObject.a_sName);
+		SerializableObject oSerializableObject = (SerializableObject) obj;
+		return a_sName.equals(oSerializableObject.a_sName);
 	}
 }
 

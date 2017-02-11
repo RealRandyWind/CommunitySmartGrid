@@ -9,4 +9,13 @@ public class NoneSerializableObject {
 	String GetName() {
 		return a_sName;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof NoneSerializableObject)) {
+			return false;
+		}
+		NoneSerializableObject oNoneSerializableObject = (NoneSerializableObject) obj;
+		return a_sName.equals(oNoneSerializableObject.a_sName);
+	}
 }

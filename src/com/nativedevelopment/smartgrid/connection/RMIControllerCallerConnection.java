@@ -25,7 +25,6 @@ public class RMIControllerCallerConnection extends Connection {
 
 	private String a_sExchange = null;
 	private String a_sRemoteAddress = null;
-	private int a_nCheckTime = 0;
 	private boolean a_bIsRebind = false;
 
 	public RMIControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
@@ -63,7 +62,7 @@ public class RMIControllerCallerConnection extends Connection {
 			}
 
 			while (!IsClose()) {
-				Thread.sleep(a_nCheckTime);
+				TimeOut();
 				if((a_oRemote == null || a_bIsRebind) && Fx_Contains(a_sExchange, oRegistry.list())) {
 					a_oRemote = (IController)oRegistry.lookup(a_sExchange);
 					a_oPromise.Set(a_oRemote);

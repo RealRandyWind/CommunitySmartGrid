@@ -10,6 +10,11 @@ public class Connection implements IConnection {
     private UUID a_oIdentifier = null;
     volatile private boolean a_isClose = false;
 
+    protected int a_nCheckTime = 0;
+    protected int a_nCheckTimeLowerBound = 0;
+    protected int a_nCheckTimeUpperBound = 0;
+    protected int a_nDeltaCheckTime = 0;
+
     public Connection(UUID oIdentifier, Queue<Serializable> lToLogQueue) {
         a_oThread = new Thread(this);
         if(oIdentifier == null) { oIdentifier = UUID.randomUUID(); }
@@ -62,6 +67,23 @@ public class Connection implements IConnection {
     public void run() {
         Run();
         a_isClose = false;
+    }
+
+    @Override
+    public boolean TimeOutRoutine(boolean condition) throws InterruptedException {
+        if (!condition) {
+            a_nCheckTime = a_nCheckTimeLowerBound;
+            return false;
+        }
+        TimeOut();
+        a_nCheckTime += a_nDeltaCheckTime;
+        a_nCheckTime = a_nCheckTime >= a_nCheckTimeUpperBound ? a_nCheckTimeUpperBound : a_nCheckTime;
+        return true;
+    }
+
+    @Override
+    public  void TimeOut() throws InterruptedException {
+        Thread.sleep(a_nCheckTime);
     }
 
     @Override

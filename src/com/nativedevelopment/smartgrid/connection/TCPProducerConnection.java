@@ -28,11 +28,6 @@ public class TCPProducerConnection extends Connection {
 
 	private int a_nBufferCapacity = 0;
 
-	private int a_nCheckTime = 0;
-	private int a_nCheckTimeLowerBound = 0;
-	private int a_nCheckTimeUpperBound = 0;
-	private int a_nDeltaCheckTime = 0;
-
 	private int a_nDeltaConnections = 0;
 
 	public TCPProducerConnection(UUID oIdentifier,
@@ -74,13 +69,9 @@ public class TCPProducerConnection extends Connection {
 
 	private byte[] Fx_Produce() throws Exception {
 		Serializable oSerializable = a_lFromQueue.poll();
-		if (oSerializable==null){
-			Thread.sleep(a_nCheckTime);
-			a_nCheckTime += a_nDeltaCheckTime;
-			a_nCheckTime = a_nCheckTime >= a_nCheckTimeUpperBound ? a_nCheckTimeUpperBound : a_nCheckTime;
+		if(TimeOutRoutine(oSerializable==null)) {
 			return null;
 		}
-		a_nCheckTime = a_nCheckTimeLowerBound;
 		return Serializer.Serialize(oSerializable,a_nBufferCapacity);
 	}
 

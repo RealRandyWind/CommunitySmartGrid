@@ -26,11 +26,6 @@ public class UDPProducerConnection extends Connection{
 
 	private int a_nBufferCapacity = 0;
 
-	private int a_nCheckTime = 0;
-	private int a_nCheckTimeLowerBound = 0;
-	private int a_nCheckTimeUpperBound = 0;
-	private int a_nDeltaCheckTime = 0;
-
 	private int a_nDeltaConnections = 0;
 
 	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue,
@@ -71,26 +66,20 @@ public class UDPProducerConnection extends Connection{
 
 	private byte[] Fx_Produce() throws Exception {
 		Serializable oSerializable = a_lFromQueue.poll();
-		if (oSerializable==null){
-			Thread.sleep(a_nCheckTime);
-			a_nCheckTime += a_nDeltaCheckTime;
-			a_nCheckTime = a_nCheckTime >= a_nCheckTimeUpperBound ? a_nCheckTimeUpperBound : a_nCheckTime;
+		if(TimeOutRoutine(oSerializable==null)) {
 			return null;
 		}
-		a_nCheckTime = a_nCheckTimeLowerBound;
 		return Serializer.Serialize(oSerializable,a_nBufferCapacity);
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
-
 		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
 		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
 		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
-
 		a_nDeltaConnections = (int)oConfigurations.Get(SETTINGS_KEY_DELTACONNECTIONS);
-
+		
 		a_nCheckTime = a_nCheckTimeLowerBound;
 	}
 

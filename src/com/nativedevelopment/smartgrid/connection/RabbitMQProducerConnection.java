@@ -54,14 +54,7 @@ public class RabbitMQProducerConnection extends Connection {
 
 	private byte[] Fx_Produce() throws Exception {
 		Serializable oSerializable = a_lFromQueue.poll();
-		if (oSerializable == null){
-			System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] queue empty %d waiting %d ms\n"
-					,this.hashCode(),a_nCheckTime);
-			Thread.sleep(a_nCheckTime);
-			a_nCheckTime += a_nDeltaCheckTime;
-			a_nCheckTime = a_nCheckTime >= a_nCheckTimeUpperBound ? a_nCheckTimeUpperBound : a_nCheckTime;
-		}
-		a_nCheckTime = a_nCheckTimeLowerBound;
+		TimeOutRoutine(oSerializable==null);
 		System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] %d is producing \"%s\"\n"
 				,this.hashCode(),String.valueOf(oSerializable));
 		return Serializer.Serialize(oSerializable, 0);
