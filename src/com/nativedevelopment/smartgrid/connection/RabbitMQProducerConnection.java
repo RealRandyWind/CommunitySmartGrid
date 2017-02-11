@@ -64,7 +64,7 @@ public class RabbitMQProducerConnection extends Connection {
 		a_nCheckTime = a_nCheckTimeLowerBound;
 		System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] %d is producing \"%s\"\n"
 				,this.hashCode(),String.valueOf(oSerializable));
-		return Serializer.Serialize(oSerializable,0);
+		return Serializer.Serialize(oSerializable, 0);
 	}
 
 	@Override
@@ -89,8 +89,9 @@ public class RabbitMQProducerConnection extends Connection {
 			a_oRabbitMQConnectionFactory = new ConnectionFactory();
 			a_oRabbitMQConnectionFactory.setHost(a_sToHost);
 			a_oRabbitMQConnectionFactory.setPort(a_nThroughPort);
-			a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
-			a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
+			// TODO fix support for authentication
+			//a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
+			//a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
 			a_oRabbitMQChannel.exchangeDeclare(a_sToExchange, a_sTypeExchange);

@@ -11,5 +11,14 @@ public class SerializableObject implements Serializable {
 	String GetName() {
 		return a_sName;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof SerializableObject)) {
+			return false;
+		}
+		SerializableObject oSSerializableObject = (SerializableObject) obj;
+		return a_sName.equals(oSSerializableObject.a_sName);
+	}
 }
 

@@ -16,6 +16,9 @@ docker run --name dev.mongo -p 5673:5673 -d mongo:latest
 docker run --name dev.node -p 5674:5674 -d node:latest
 
 # if container need configuration
+docker exec dev.rabbitmq rabbitmqctl add_user user password
+docker exec dev.rabbitmq rabbitmqctl set_permissions -p / user ".*" ".*" ".*"
+docker exec dev.rabbitmq rabbitmqctl set_user_tags user administrator
 
 # if images need start
 docker start $(docker ps -a -q)

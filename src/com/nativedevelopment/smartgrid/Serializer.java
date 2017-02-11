@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
 import java.io.*;
+import java.util.Arrays;
 
 public final class Serializer {
 	private Serializer(){
@@ -21,7 +22,7 @@ public final class Serializer {
 		oObjectOutput.writeObject(oSerializable);
 		oObjectOutput.flush();
 		byte[] rawBytes = oByteArray.toByteArray();
-		oObjectOutput.close();
+		oByteArray.close();
 		return rawBytes;
 	}
 }

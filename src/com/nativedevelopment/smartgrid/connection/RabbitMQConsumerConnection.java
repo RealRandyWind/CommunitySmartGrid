@@ -70,8 +70,9 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 			a_oRabbitMQConnectionFactory = new ConnectionFactory();
 			a_oRabbitMQConnectionFactory.setHost(a_sFromHost);
 			a_oRabbitMQConnectionFactory.setPort(a_nThroughPort);
-			a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
-			a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
+			// TODO fix support for authentication
+			//a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
+			//a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
 			a_oRabbitMQChannel.exchangeDeclare(a_sFromExchange, a_sTypeExchange);
