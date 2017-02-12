@@ -91,4 +91,3 @@ public class Connection implements IConnection {
         System.out.printf("_WARNING: [Connection.Configure] nothing to configure\n");
     }
 }
-

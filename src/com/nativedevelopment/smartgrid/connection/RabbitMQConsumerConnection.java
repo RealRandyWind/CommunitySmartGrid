@@ -48,7 +48,7 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
 		Serializable oSerializable = Serializer.Deserialize(rawBytes,0);
 		a_lToQueue.offer(oSerializable);
-		System.out.printf("_DEBUG: [RabbitMQConsumerConnection.Fx_Consume] %d is producing %s\n"
+		System.out.printf("_DEBUG: [RabbitMQConsumerConnection.Fx_Consume] %d is consuming %s\n"
 				,this.hashCode(),String.valueOf(oSerializable));
 	}
 

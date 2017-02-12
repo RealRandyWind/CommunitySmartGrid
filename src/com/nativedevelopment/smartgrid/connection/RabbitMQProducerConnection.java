@@ -54,7 +54,10 @@ public class RabbitMQProducerConnection extends Connection {
 
 	private byte[] Fx_Produce() throws Exception {
 		Serializable oSerializable = a_lFromQueue.poll();
-		TimeOutRoutine(oSerializable==null);
+		if(TimeOutRoutine(oSerializable==null))
+		{
+			return null;
+		}
 		System.out.printf("_DEBUG: [RabbitMQProducerConnection.Fx_Produce] %d is producing \"%s\"\n"
 				,this.hashCode(),String.valueOf(oSerializable));
 		return Serializer.Serialize(oSerializable, 0);
