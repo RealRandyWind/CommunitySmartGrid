@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public final class Serializer {

@@ -98,15 +98,14 @@ public class TCPProducerConnection extends Connection {
 
 			while(!IsClose()) {
 				Fx_EstablishConnections();
-
-				oByteBuffer.clear();
 				byte[] rawBytes = Fx_Produce();
 				if(rawBytes == null) { continue; }
+				System.out.printf("_DEBUG: %sproduce \"%s\"\n",MLogManager.MethodName(),Arrays.toString(rawBytes));
+				oByteBuffer.clear();
 				oByteBuffer.put(rawBytes,0,rawBytes.length);
-
+				oByteBuffer.flip();
 				for (SocketChannel oChannel: a_lChannels) {
 					if(!Fx_CheckConnection(oChannel)) { continue; }
-					oByteBuffer.flip();
 					oChannel.write(oByteBuffer);
 				}
 			}
