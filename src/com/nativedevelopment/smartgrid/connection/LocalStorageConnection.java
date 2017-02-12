@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
+import com.nativedevelopment.smartgrid.MLogManager;
 
 import java.io.RandomAccessFile;
 import java.io.Serializable;
@@ -24,17 +25,17 @@ public class LocalStorageConnection extends Connection {
 	public LocalStorageConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue) {
 		super(oIdentifier, lToLogQueue);
 		if(lFromQueue == null) {
-			System.out.printf("_WARNING: [LocalStorageConnection] no queue to produce from\n");
+			System.out.printf("_WARNING: %sno queue to produce from\n", MLogManager.MethodName());
 		}
 		a_lFromQueue = lFromQueue;
 	}
 
 	private void Fx_Store(Serializable oSerializable) {
-		System.out.printf("_WARNING: [LocalStorageConnection.Fx_Store] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 
 	@Override
 	public void Run() {
-		System.out.printf("_WARNING: [LocalStorageConnection.Run] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 }

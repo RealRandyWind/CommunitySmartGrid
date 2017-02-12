@@ -28,19 +28,19 @@ public class ConnectionTest implements ITestCase {
 
 	@Test
 	public void testGetIdentifier() throws Exception {
-		a_mLogManager.Test("[ConnectionTest.testGetIdentifier] begin",0);
+		a_mLogManager.Test("begin",0);
 		UUID iConnection2 = UUID.randomUUID();
 		IConnection oConnection1 = new Connection(null,null);
 		IConnection oConnection2 = new Connection(iConnection2,null);
 
 		assertNotNull(oConnection1.GetIdentifier());
 		assertEquals(iConnection2,oConnection2.GetIdentifier());
-		a_mLogManager.Test("[ConnectionTest.testGetIdentifier] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testOpenIsActiveCloseForceClose() throws Exception {
-		a_mLogManager.Test("[ConnectionTest.testOpenIsActiveClose] begin",0);
+		a_mLogManager.Test("begin",0);
 		IConnection oConnection = new Connection(null,null);
 		assertFalse(oConnection.IsActive());
 		oConnection.Open();
@@ -49,6 +49,6 @@ public class ConnectionTest implements ITestCase {
 		oConnection.ForceClose();
 		Thread.sleep(2000);
 		assertFalse(oConnection.IsActive());
-		a_mLogManager.Test("[ConnectionTest.testOpenIsActiveClose] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

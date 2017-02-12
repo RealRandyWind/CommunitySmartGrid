@@ -21,7 +21,7 @@ public class ManagementServer extends Main {
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
 
-		System.out.printf("_SUCCESS: [ManagementServer.ShutDown]\n");
+		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
 
 	public void SetUp() {
@@ -29,7 +29,7 @@ public class ManagementServer extends Main {
 		a_mSettingsManager.SetUp();
 		a_mConnectionManager.SetUp();
 
-		a_mLogManager.Success("[ManagementServer.SetUp]",0);
+		a_mLogManager.Success("",0);
 	}
 
 	public static Main GetInstance() {

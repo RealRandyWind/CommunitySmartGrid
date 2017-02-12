@@ -60,15 +60,15 @@ public class StubDeviceConnectionTest implements ITestCase {
 
 	@Test
 	public void testRun() throws Exception {
-		a_mLogManager.Test("[StubDeviceConnectionTest.testRun] begin",0);
+		a_mLogManager.Test("begin",0);
 		IConnection oConnection = new StubDeviceConnection(null, a_iDevice, a_lAttributes, a_lActionMap, a_lToQueue, a_lFromQueue, a_lToLogQueue, a_lQueue);
 
 		assertTrue(a_lToQueue.isEmpty());
-		a_mLogManager.Test("[StubDeviceConnectionTest.testRun] Open",0);
+		a_mLogManager.Test("Open",0);
 		oConnection.Open();
 		Thread.sleep(100);
 
-		a_mLogManager.Test("[StubDeviceConnectionTest.testRun] Run",0);
+		a_mLogManager.Test("Run",0);
 		for (UUID iAction: a_lActionMap.keySet()) {
 			a_lFromQueue.offer(new Action(iAction,null));
 			Thread.sleep(200);
@@ -76,7 +76,7 @@ public class StubDeviceConnectionTest implements ITestCase {
 		a_lFromQueue.offer(new Action(a_iAction,null));
 		Thread.sleep(4000);
 
-		a_mLogManager.Test("[StubDeviceConnectionTest.testRun] Close",0);
+		a_mLogManager.Test("Close",0);
 		oConnection.Close();
 		Thread.sleep(200);
 
@@ -94,6 +94,6 @@ public class StubDeviceConnectionTest implements ITestCase {
 			assertEquals(a_iDevice,oData.GetIdentifier());
 		}
 
-		a_mLogManager.Test("[StubDeviceConnectionTest.testRun] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

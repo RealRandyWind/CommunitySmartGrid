@@ -60,7 +60,7 @@ public class Connection implements IConnection {
 
     @Override
     public void Run() {
-        System.out.printf("_WARNING: [Connection.Run] not yet implemented\n");
+        System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
     }
 
     @Override
@@ -88,6 +88,6 @@ public class Connection implements IConnection {
 
     @Override
     public void Configure(ISettings oConfigurations) {
-        System.out.printf("_WARNING: [Connection.Configure] nothing to configure\n");
+        System.out.printf("_WARNING: %snothing to configure\n",MLogManager.MethodName());
     }
 }

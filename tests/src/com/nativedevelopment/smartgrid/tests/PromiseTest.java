@@ -29,7 +29,7 @@ public class PromiseTest implements ITestCase {
 
 	@Test
 	public void testSetGetIsDoneIsChanged() throws Exception {
-		a_mLogManager.Test("[PromiseTest.testSetGetIsDoneIsChanged] begin",0);
+		a_mLogManager.Test("begin",0);
 		Serializable oSerializable1 = new SerializableObject("SerializableObject1");
 		Serializable oSerializable2 = new SerializableObject("SerializableObject2");
 		IPromise oPromise = new Promise();
@@ -56,6 +56,6 @@ public class PromiseTest implements ITestCase {
 		assertTrue(oPromise.IsChanged());
 		assertNull(oPromise.Get());
 		assertFalse(oPromise.IsChanged());
-		a_mLogManager.Test("[PromiseTest.testSetGetIsDoneIsChanged] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

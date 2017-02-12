@@ -2,6 +2,7 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.IController;
+import com.nativedevelopment.smartgrid.MLogManager;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -20,6 +21,6 @@ public class RabbitMQControllerListenerConnection extends Connection {
 
 	@Override
 	public void Run() {
-		System.out.printf("_WARNING: [RabbitMQControllerListenerConnection.Run] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n", MLogManager.MethodName());
 	}
 }

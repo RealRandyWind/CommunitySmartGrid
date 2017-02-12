@@ -2,6 +2,7 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 
 import java.io.*;
@@ -64,7 +65,8 @@ public class UDPConsumerConnection extends Connection {
 			oServerChannel.disconnect();
 			oServerChannel.close();
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [UDPConsumerConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

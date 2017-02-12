@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
+import com.nativedevelopment.smartgrid.MLogManager;
 
 import java.io.Serializable;
 import java.util.Queue;
@@ -12,11 +13,11 @@ public class SSHUserConnection extends Connection{
 	}
 
 	private void Fx_Command(Serializable oSerializable) {
-		System.out.printf("_WARNING: [SSHUserConnection.Fx_Command] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n", MLogManager.MethodName());
 	}
 
 	@Override
 	public void Run() {
-		System.out.printf("_WARNING: [SSHUserConnection.Run] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 }

@@ -3,6 +3,7 @@ package com.nativedevelopment.smartgrid.connection;
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.IController;
 import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.MLogManager;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -64,7 +65,7 @@ public class RMIControllerListenerConnection extends Connection{
 			Remote oStub = null;
 
 			if(Fx_Contains(a_sExchange,oRegistry.list())) {
-				System.out.printf("_WARNING: [RMIControllerListenerConnection] local address/name for rmi already in use.\n");
+				System.out.printf("_WARNING: %slocal address/name for rmi already in use.\n", MLogManager.MethodName());
 				Close();
 			} else {
 				oStub = UnicastRemoteObject.exportObject(a_oRemote, a_nLocalPort);
@@ -83,7 +84,7 @@ public class RMIControllerListenerConnection extends Connection{
 
 			UnicastRemoteObject.unexportObject(a_oRemote, a_bIsForceUnExport);
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [RMIControllerListenerConnection.Run] %s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage());
+			System.out.printf("_WARNING: %s%s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage(),MLogManager.MethodName());
 		}
 	}
 }

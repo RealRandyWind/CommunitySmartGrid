@@ -30,19 +30,19 @@ public class SettingsTest implements ITestCase {
 
 	@Test
 	public void testGetIdentifier() throws Exception {
-		a_mLogManager.Test("[SettingsTest.testGetIdentifier] begin",0);
+		a_mLogManager.Test("begin",0);
 		UUID iSettings2 = UUID.randomUUID();
 		ISettings oSettings1 = new Settings(null);
 		ISettings oSettings2 = new Settings(iSettings2);
 
 		assertNotNull(oSettings1.GetIdentifier());
 		assertEquals(iSettings2,oSettings2.GetIdentifier());
-		a_mLogManager.Test("[SettingsTest.testGetIdentifier] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testSetSetSpecialGetGetAllGetString() throws Exception {
-		a_mLogManager.Test("[SettingsTest.testSetSetSpecialGetGetAllGetString] begin",0);
+		a_mLogManager.Test("begin",0);
 		String sValueString1 = "\"serializable\"";
 		String sValueString2 = "serializable";
 		String sValueNoString1 ="a\"serializable\"";
@@ -87,7 +87,7 @@ public class SettingsTest implements ITestCase {
 
 		ISettings oSettings1 = new Settings(null);
 
-		a_mLogManager.Test("[SettingsTest.testSetSetSpecialGetGetAllGetString] Set and Get",0);
+		a_mLogManager.Test("Set and Get",0);
 		assertEquals("null",oSettings1.GetString("testit"));
 		oSettings1.Set("testit",sValueString2);
 		assertEquals(sValueString2,oSettings1.GetString("testit"));
@@ -100,7 +100,7 @@ public class SettingsTest implements ITestCase {
 		oSettings1.Set("testit3",sValueString2);
 		assertEquals(sValueString2,oSettings1.Get("testit3"));
 
-		a_mLogManager.Test("[SettingsTest.testSetSetSpecialGetGetAllGetString] GetAll",0);
+		a_mLogManager.Test("GetAll",0);
 		Iterable<Map.Entry<String,Serializable>> lEntrys = oSettings1.GetAll();
 		int nCount = 0;
 		for (Map.Entry<String,Serializable> oEntry: lEntrys) {
@@ -110,7 +110,7 @@ public class SettingsTest implements ITestCase {
 		}
 		assertTrue(nCount == 3);
 
-		a_mLogManager.Test("[SettingsTest.testSetSetSpecialGetGetAllGetString] GetString and SetSpecial",0);
+		a_mLogManager.Test("GetString and SetSpecial",0);
 		oSettings1.SetSpecial("string1",sValueString1);
 		oSettings1.SetSpecial("string2",sValueNoString1);
 
@@ -175,6 +175,6 @@ public class SettingsTest implements ITestCase {
 		assertNull(oSettings1.Get("null1"));
 		assertEquals(sValueNull,oSettings1.Get("null2"));
 
-		a_mLogManager.Test("[SettingsTest.testSetSetSpecialGetGetAllGetString] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

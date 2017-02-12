@@ -51,16 +51,16 @@ public class DataTest implements ITestCase {
 
 	@Test
 	public void testGetAttributes() throws Exception {
-		a_mLogManager.Test("[DataTest.testGetAttributes] begin",0);
+		a_mLogManager.Test("begin",0);
 		IData oData = new Data(a_iData, a_lTuples,a_lAttributes);
 
 		assertArrayEquals(a_lAttributes,oData.GetAttributes());
-		a_mLogManager.Test("[DataTest.testGetAttributes] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testGetGetAllTuple() throws Exception {
-		a_mLogManager.Test("[DataTest.testGetGetAllTuple] begin",0);
+		a_mLogManager.Test("begin",0);
 		IData oData = new Data(a_iData, a_lTuples,a_lAttributes);
 
 		assertArrayEquals(a_lTuples,oData.GetAllTuples());
@@ -69,6 +69,6 @@ public class DataTest implements ITestCase {
 		assertArrayEquals(a_lTuples[2],oData.GetTuple(2));
 		assertNull(oData.GetTuple(3));
 		assertEquals(a_iData,oData.GetIdentifier());
-		a_mLogManager.Test("[DataTest.testGetGetAllTuple] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

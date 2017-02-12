@@ -20,7 +20,7 @@ public class AnalyticServer extends Main {
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
 
-		System.out.printf("_SUCCESS: [AnalyticServer.ShutDown]\n");
+		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
 
 	public void SetUp() {
@@ -28,7 +28,7 @@ public class AnalyticServer extends Main {
 		a_mSettingsManager.SetUp();
 		a_mConnectionManager.SetUp();
 
-		a_mLogManager.Success("[AnalyticServer.SetUp]",0);
+		a_mLogManager.Success("",0);
 	}
 
 	public static Main GetInstance() {
@@ -40,7 +40,7 @@ public class AnalyticServer extends Main {
 	private UUID Fx_EstablishMainConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[AnalyticServer.Fx_EstablishMainConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return oConnection.GetIdentifier();
 	}
 
@@ -56,35 +56,35 @@ public class AnalyticServer extends Main {
 	private UUID Fx_EstablishMonitoringConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[AnalyticServer.Fx_EstablishMonitoringConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishActionControlConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[AnalyticServer.EstablishActionControlConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishDensDataConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[AnalyticServer.EstablishDensDataConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishRealtimeDataConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[AnalyticServer.EstablishRealtimeDataConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishResultsConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[AnalyticServer.EstablishResultsConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 

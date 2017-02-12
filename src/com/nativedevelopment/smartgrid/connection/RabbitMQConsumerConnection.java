@@ -2,6 +2,7 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.*;
 
@@ -39,7 +40,7 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	public RabbitMQConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue) {
 		super(oIdentifier, lToLogQueue);
 		if(lToQueue == null) {
-			System.out.printf("_WARNING: [RabbitMQConsumerConnection] no queue to consume to\n");
+			System.out.printf("_WARNING: %sno queue to consume to\n",MLogManager.MethodName());
 		}
 		a_lToQueue = lToQueue;
 		a_bIsHandshake = true;
@@ -48,7 +49,8 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
 		Serializable oSerializable = Serializer.Deserialize(rawBytes,0);
 		a_lToQueue.offer(oSerializable);
-		System.out.printf("_DEBUG: [RabbitMQConsumerConnection.Fx_Consume] %d is consuming %s\n"
+		System.out.printf("_DEBUG: %s%d is consuming %s\n"
+				,MLogManager.MethodName()
 				,this.hashCode(),String.valueOf(oSerializable));
 	}
 
@@ -80,7 +82,8 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 			a_oRabbitMQChannel.queueBind(a_sFromQueue, a_sFromExchange, a_sRoutingKey);
 			a_oRabbitMQChannel.basicConsume(a_sFromQueue, a_bIsHandshake, this);
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [RabbitMQConsumerConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
@@ -88,31 +91,31 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	@Override
 	public void handleConsumeOk(String s) {
 		//TODO write message to log queue
-		System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleConsumeOk] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 
 	@Override
 	public void handleCancelOk(String s) {
 		//TODO write message to log queue
-		System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleCancelOk] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 
 	@Override
 	public void handleCancel(String s) throws IOException {
 		//TODO write message to log queue
-		System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleCancel] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 
 	@Override
 	public void handleShutdownSignal(String s, ShutdownSignalException e) {
 		//TODO write message to log queue
-		System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleShutdownSignal] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 
 	@Override
 	public void handleRecoverOk(String s) {
 		//TODO write message to log queue
-		System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleRecoverOk] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
 	}
 
 	@Override
@@ -122,7 +125,8 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 			Fx_Consume(body);
 		} catch (Exception oException) {
 			//TODO write errors to log queue
-			System.out.printf("_WARNING: [RabbitMQConsumerConnection.handleDelivery] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

@@ -1,8 +1,7 @@
 package com.nativedevelopment.smartgrid.client;
 
 import com.nativedevelopment.smartgrid.IAction;
-import com.nativedevelopment.smartgrid.IConnection;
-import com.nativedevelopment.smartgrid.ScheduleSlot;
+import com.nativedevelopment.smartgrid.MLogManager;
 
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ public class Device implements IDevice {
 
     @Override
     public void Control(IAction oAction) {
-        System.out.printf("_WARNING: [Device.Control] not yet implemented\n");
+        System.out.printf("_WARNING: %snot yet implemented\n", MLogManager.MethodName());
     }
 
     @Override

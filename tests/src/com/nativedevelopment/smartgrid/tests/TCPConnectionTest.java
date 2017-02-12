@@ -78,12 +78,12 @@ public class TCPConnectionTest implements ITestCase {
 
 	@Test
 	public void testRun() throws Exception {
-		a_mLogManager.Test("[UDPConnectionTest.testRun] begin",0);
+		a_mLogManager.Test("begin",0);
 		IConnection oProducer = new TCPProducerConnection(null,a_oFromQueue,a_oLogQueue,a_lReceivers);
 		IConnection oConsumer1 = new TCPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders);
 		IConnection oConsumer2 = new TCPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders);
 
-		a_mLogManager.Test("[UDPConnectionTest.testRun] Configure",0);
+		a_mLogManager.Test("Configure",0);
 		oProducer.Configure(a_oProducerConfiguration);
 		oConsumer1.Configure(a_oConsumerConfiguration);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,55540);
@@ -91,20 +91,20 @@ public class TCPConnectionTest implements ITestCase {
 
 		assertTrue(a_oToQueue.isEmpty());
 
-		a_mLogManager.Test("[UDPConnectionTest.testRun] Open",0);
+		a_mLogManager.Test("Open",0);
 		oProducer.Open();
 		oConsumer1.Open();
 		oConsumer2.Open();
 
 		Thread.sleep(500);
-		a_mLogManager.Test("[UDPConnectionTest.testRun] Run",0);
+		a_mLogManager.Test("Run",0);
 		for (int iIndex = 0; iIndex < TEST_MSG_COUNT; iIndex++) {
 			Thread.sleep(100);
 			a_oFromQueue.offer(String.format("Message %d.",iIndex));
 		}
 		Thread.sleep(2000);
 
-		a_mLogManager.Test("[UDPConnectionTest.testRun] Close",0);
+		a_mLogManager.Test("Close",0);
 		oConsumer1.Close();
 		oConsumer2.Close();
 		oProducer.Close();
@@ -113,6 +113,6 @@ public class TCPConnectionTest implements ITestCase {
 		assertTrue(a_oFromQueue.isEmpty());
 		assertFalse(a_oToQueue.isEmpty());
 		assertEquals(TEST_MSG_COUNT*2,a_oToQueue.size());
-		a_mLogManager.Test("[UDPConnectionTest.testRun] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

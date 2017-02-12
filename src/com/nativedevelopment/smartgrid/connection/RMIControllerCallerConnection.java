@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.IController;
-import com.nativedevelopment.smartgrid.IPromise;
-import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.*;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -69,7 +66,8 @@ public class RMIControllerCallerConnection extends Connection {
 				}
 			}
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [RMIControllerCallerConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					, MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

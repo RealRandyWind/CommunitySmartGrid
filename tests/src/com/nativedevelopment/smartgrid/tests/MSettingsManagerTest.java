@@ -31,22 +31,22 @@ public class MSettingsManagerTest implements ITestCase {
 
 	@Test
 	public void testLoadSettingsFromFileFromString() throws Exception {
-		a_mLogManager.Test("[MSettingsManagerTest.testLoadSettingsFromFileFromString] begin",0);
+		a_mLogManager.Test("begin",0);
 		ISettings oSettingsSimple = a_mSettingsManager.LoadSettingsFromFile("tests\\deps\\simple.settings");
 		assertEquals(oSettingsSimple.Get("setting1"),"settingA");
 		assertEquals(oSettingsSimple.Get("setting2"),"settingB");
 		assertEquals(oSettingsSimple.Get("setting 3"),"setting C");
-		a_mLogManager.Test("[MSettingsManagerTest.testLoadSettingsFromFileFromString] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testAddGetGetAllSettings() throws Exception {
-		a_mLogManager.Test("[MSettingsManagerTest.testAddGetGetAllSettings] begin",0);
+		a_mLogManager.Test("begin",0);
 		ISettings oSettings1 = new Settings(null);
 		ISettings oSettings2 = new Settings(null);
 		ISettings oSettings3 = new Settings(null);
 
-		a_mLogManager.Test("[MSettingsManagerTest.testAddGetGetAllSettings] Get and Add",0);
+		a_mLogManager.Test("Get and Add",0);
 		assertNull(a_mSettingsManager.GetSettings(oSettings1.GetIdentifier()));
 		a_mSettingsManager.AddSettings(oSettings1);
 		assertSame(oSettings1,a_mSettingsManager.GetSettings(oSettings1.GetIdentifier()));
@@ -59,7 +59,7 @@ public class MSettingsManagerTest implements ITestCase {
 		a_mSettingsManager.AddSettings(oSettings3);
 		assertSame(oSettings3,a_mSettingsManager.GetSettings(oSettings3.GetIdentifier()));
 
-		a_mLogManager.Test("[MSettingsManagerTest.testAddGetGetAllSettings] GetAll",0);
+		a_mLogManager.Test("GetAll",0);
 		int nCount = 0;
 		Iterable<ISettings> lSettings = a_mSettingsManager.GetAllSettings();
 		for (ISettings oSettings : lSettings ) {
@@ -67,6 +67,6 @@ public class MSettingsManagerTest implements ITestCase {
 			nCount++;
 		}
 		assertTrue(nCount==3);
-		a_mLogManager.Test("[MSettingsManagerTest.testAddGetGetAllSettings] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

@@ -76,7 +76,7 @@ public class RabbitMQConnectionTest implements ITestCase {
 
 	@Test
 	public void testRun() throws Exception {
-		a_mLogManager.Test("[RabbitMQConnectionTest.testRun] begin",0);
+		a_mLogManager.Test("begin",0);
 		IConnection oProducer = new RabbitMQProducerConnection(null,a_oFromQueue,a_oLogQueue);
 		IConnection oConsumer = new RabbitMQConsumerConnection(null,a_oToQueue,a_oLogQueue);
 
@@ -102,6 +102,6 @@ public class RabbitMQConnectionTest implements ITestCase {
 
 		assertTrue(a_oFromQueue.isEmpty());
 		assertFalse(a_oToQueue.isEmpty());
-		a_mLogManager.Test("[RabbitMQConnectionTest.testRun] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

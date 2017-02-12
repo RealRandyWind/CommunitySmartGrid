@@ -31,7 +31,7 @@ public class SerializerTest implements ITestCase {
 
 	@Test
 	public void testSerializeDeserialize() throws Exception {
-		a_mLogManager.Test("[SerializerTest.testSerializeDeserialize] begin",0);
+		a_mLogManager.Test("begin",0);
 		Serializable oSerializable1 = new String("Serializable1");
 		Serializable oSerializable2 = new SerializableObject("SerializableObject2");
 
@@ -40,6 +40,6 @@ public class SerializerTest implements ITestCase {
 
 		assertEquals(Serializer.Deserialize(rawBytes1,0), oSerializable1);
 		assertEquals(Serializer.Deserialize(rawBytes2,0), oSerializable2);
-		a_mLogManager.Test("[SerializerTest.testSerializeDeserialize] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

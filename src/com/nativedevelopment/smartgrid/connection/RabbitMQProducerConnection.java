@@ -2,6 +2,7 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
@@ -99,7 +100,8 @@ public class RabbitMQProducerConnection extends Connection {
 			}
 		} catch (Exception oException) {
 			//TODO write errors to log queue
-			System.out.printf("_WARNING: [RabbitMQProducerConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

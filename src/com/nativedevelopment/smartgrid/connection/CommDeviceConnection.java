@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.Data;
-import com.nativedevelopment.smartgrid.IAction;
-import com.nativedevelopment.smartgrid.IData;
+import com.nativedevelopment.smartgrid.*;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
@@ -31,6 +28,6 @@ public class CommDeviceConnection extends Connection{
 
 	@Override
 	public void Run() {
-		System.out.printf("_WARNING: [CommDeviceConnection.Run] not yet implemented\n");
+		System.out.printf("_WARNING: %snot yet implemented\n", MLogManager.MethodName());
 	}
 }

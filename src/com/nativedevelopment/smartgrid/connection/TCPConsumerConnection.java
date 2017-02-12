@@ -2,6 +2,7 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 
 import java.io.IOException;
@@ -58,7 +59,8 @@ public class TCPConsumerConnection extends Connection {
 		oChannel.shutdownOutput();
 		a_lChannels.add(oChannel);
 
-		System.out.printf("_DEBUG: [TCPConsumerConnection.Fx_AcceptConnection] connection accepted \"%s\" through \"%s\"\n"
+		System.out.printf("_DEBUG: %sconnection accepted \"%s\" through \"%s\"\n"
+				,MLogManager.MethodName()
 				,String.valueOf(oChannel.getRemoteAddress())
 				,String.valueOf(oChannel.getLocalAddress()));
 	}
@@ -68,7 +70,8 @@ public class TCPConsumerConnection extends Connection {
 			return true;
 		}
 		a_lChannels.remove(oChannel);
-		System.out.printf("_WARNING: [TCPConsumerConnection.Fx_CheckConnection] lost connection \"%s\""
+		System.out.printf("_WARNING: %slost connection \"%s\""
+				,MLogManager.MethodName()
 				,String.valueOf(oChannel.getRemoteAddress()));
 		return false;
 	}
@@ -107,11 +110,11 @@ public class TCPConsumerConnection extends Connection {
 					oByteBuffer.clear();
 					oChannel.read(oByteBuffer);
 					oByteBuffer.flip();
-					System.out.printf("_DEBUG: [TCPConsumerConnection.Run] bytes read \"%s\"\n",String.valueOf(oByteBuffer.remaining()));
+					System.out.printf("_DEBUG: %sbytes read \"%s\"\n",MLogManager.MethodName(),String.valueOf(oByteBuffer.remaining()));
 					if(!oByteBuffer.hasRemaining()) { continue; }
 					byte[] rawBytes = new byte[oByteBuffer.remaining()];
 					oByteBuffer.get(rawBytes,0,rawBytes.length);
-					System.out.printf("_DEBUG: [TCPConsumerConnection.Run] bytes \"%s\"\n",Arrays.toString(rawBytes));
+					System.out.printf("_DEBUG: %sbytes \"%s\"\n",MLogManager.MethodName(),Arrays.toString(rawBytes));
 					Fx_Consume(rawBytes);
 				}
 			}
@@ -122,7 +125,8 @@ public class TCPConsumerConnection extends Connection {
 			}
 			a_lChannels.clear();
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [TCPConsumerConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

@@ -11,15 +11,15 @@ public class Main {
 	}
 
 	public void ShutDown() {
-		System.out.printf("_WARNING: [Main.ShutDown] not yet implemented.\n");
+		System.out.printf("_WARNING: %snot yet implemented.\n",MLogManager.MethodName());
 	}
 
 	public void SetUp() {
-		System.out.printf("_WARNING: [Main.SetUp] not yet implemented.\n");
+		System.out.printf("_WARNING: %snot yet implemented.\n",MLogManager.MethodName());
 	}
 
 	public void Run() {
-		System.out.printf("_WARNING: [Main.Run] not yet implemented.\n");
+		System.out.printf("_WARNING: %snot yet implemented.\n",MLogManager.MethodName());
 	}
 
 	public void Exit() {
@@ -48,7 +48,7 @@ public class Main {
 
 	public int Entry() {
 		if(a_bIsRunning) {
-			System.out.printf("_WARNING: [Main.Entry] already running.\n");
+			System.out.printf("_WARNING: %salready running.\n",MLogManager.MethodName());
 			return 1;
 		}
 		a_bIsRunning = true;
@@ -62,7 +62,7 @@ public class Main {
 
 	private void Fx_ShutDown() {
 		if(!a_bIsRunning) {
-			System.out.printf("_WARNING: [Main.Entry] already not running.\n");
+			System.out.printf("_WARNING: %salready not running.\n",MLogManager.MethodName());
 		}
 
 		ShutDown();

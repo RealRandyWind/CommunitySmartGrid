@@ -59,7 +59,7 @@ public class Settings implements ISettings {
         Matcher oBooleanMatcher = a_oBooleanPattern.matcher(sValue);
         Matcher oNullMatcher = a_oNullPattern.matcher(sValue);
 
-        System.out.printf("_WARNING: [Settings.SetSpecial] simple and lazy implementation.\n");
+        System.out.printf("_WARNING: %ssimple and lazy implementation.\n",MLogManager.MethodName());
 
         Serializable oSetting = sValue;
         if (oStringMatcher.matches()) {

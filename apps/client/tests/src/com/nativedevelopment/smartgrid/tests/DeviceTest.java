@@ -50,35 +50,35 @@ public class DeviceTest implements ITestCase {
 
 	@Test
 	public void testGetIdentifier() throws Exception {
-		a_mLogManager.Test("[DeviceTest.testGetIdentifier] begin",0);
+		a_mLogManager.Test("begin",0);
 		UUID iDevice2 = UUID.randomUUID();
 		IDevice oDevice1 = new Device(null,a_lDataSPace,a_lActionSpace);
 		IDevice oDevice2 = new Device(iDevice2,a_lDataSPace,a_lActionSpace);
 
 		assertNotNull(oDevice1.GetIdentifier());
 		assertEquals(iDevice2,oDevice2.GetIdentifier());
-		a_mLogManager.Test("[DeviceTest.testGetIdentifier] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testGetDataSpace() throws Exception {
-		a_mLogManager.Test("[DeviceTest.testGetDataSpace] begin",0);
+		a_mLogManager.Test("begin",0);
 		IDevice oDevice = new Device(null,a_lDataSPace,a_lActionSpace);
 		assertArrayEquals(a_lDataSPace,oDevice.GetDataSpace());
-		a_mLogManager.Test("[DeviceTest.testGetDataSpace] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testGetActionSpace() throws Exception {
-		a_mLogManager.Test("[DeviceTest.testGetActionSpace] begin",0);
+		a_mLogManager.Test("begin",0);
 		IDevice oDevice = new Device(null,a_lDataSPace,a_lActionSpace);
 		assertArrayEquals(a_lActionSpace,oDevice.GetActionSpace());
-		a_mLogManager.Test("[DeviceTest.testGetActionSpace] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testControl() throws Exception {
-		a_mLogManager.Test("[DeviceTest.testControl] begin",0);
+		a_mLogManager.Test("begin",0);
 		IDevice oDevice = new Device(null,a_lDataSPace,a_lActionSpace);
 		Serializable[] lParameters = new Serializable[3];
 		lParameters[0] = "normal";
@@ -86,22 +86,22 @@ public class DeviceTest implements ITestCase {
 		lParameters[2] = 0.234567;
 		IAction oAction = new Action(a_lActionSpace[0],lParameters);
 		oDevice.Control(oAction);
-		a_mLogManager.Test("[DeviceTest.testControl] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testSetIsAllowControl() throws Exception {
-		a_mLogManager.Test("[DeviceTest.testSetIsAllowControl] begin",0);
+		a_mLogManager.Test("begin",0);
 		IDevice oDevice = new Device(null,a_lDataSPace,a_lActionSpace);
 
-		a_mLogManager.Test("[DeviceTest.testSetIsAllowControl] IsAllowControl",0);
+		a_mLogManager.Test("IsAllowControl",0);
 		assertFalse(oDevice.IsAllowControl());
 
-		a_mLogManager.Test("[DeviceTest.testSetIsAllowControl] SetAllowControl",0);
+		a_mLogManager.Test("SetAllowControl",0);
 		oDevice.SetAllowControl(true);
 		assertTrue(oDevice.IsAllowControl());
 		oDevice.SetAllowControl(false);
 		assertFalse(oDevice.IsAllowControl());
-		a_mLogManager.Test("[DeviceTest.testSetIsAllowControl] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

@@ -30,12 +30,12 @@ public class MConnectionManagerTest implements ITestCase {
 
 	@Test
 	public void testAddGetGetAllRemoveConnection() throws Exception {
-		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] begin",0);
+		a_mLogManager.Test("begin",0);
 		IConnection oConnection1 = new Connection(null,null);
 		IConnection oConnection2 = new Connection(null,null);
 		IConnection oConnection3 = new Connection(null,null);
 
-		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] Get and Add",0);
+		a_mLogManager.Test("Get and Add",0);
 		assertNull(a_mConnectionManager.GetConnection(oConnection1.GetIdentifier()));
 		a_mConnectionManager.AddConnection(oConnection1);
 		assertSame(oConnection1,a_mConnectionManager.GetConnection(oConnection1.GetIdentifier()));
@@ -48,7 +48,7 @@ public class MConnectionManagerTest implements ITestCase {
 		a_mConnectionManager.AddConnection(oConnection3);
 		assertSame(oConnection3,a_mConnectionManager.GetConnection(oConnection3.GetIdentifier()));
 
-		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] GetAll",0);
+		a_mLogManager.Test("GetAll",0);
 		int nCount = 0;
 		Iterable<IConnection> lConnections = a_mConnectionManager.GetAllConnections();
 		for (IConnection oConnection : lConnections ) {
@@ -57,28 +57,28 @@ public class MConnectionManagerTest implements ITestCase {
 		}
 		assertTrue(nCount==3);
 
-		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] Remove",0);
+		a_mLogManager.Test("Remove",0);
 		assertSame(oConnection2,a_mConnectionManager.GetConnection(oConnection2.GetIdentifier()));
 		a_mConnectionManager.RemoveConnection(oConnection2.GetIdentifier());
 		assertNull(a_mConnectionManager.GetConnection(oConnection2.GetIdentifier()));
-		a_mLogManager.Test("[MConnectionManagerTest.testAddGetGetAllConnection] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test
 	public void testDisestablishEstablishConnection() throws Exception {
-		a_mLogManager.Test("[MConnectionManagerTest.testDisestablishEstablishConnection] begin",0);
+		a_mLogManager.Test("begin",0);
 		IConnection oConnection = new Connection(null,null);
 		a_mConnectionManager.AddConnection(oConnection);
 
-		a_mLogManager.Test("[MConnectionManagerTest.testDisestablishEstablishConnection] Establish",0);
+		a_mLogManager.Test("Establish",0);
 		assertFalse(oConnection.IsActive());
 		a_mConnectionManager.EstablishConnection(oConnection.GetIdentifier());
 		assertTrue(oConnection.IsActive());
 
-		a_mLogManager.Test("[MConnectionManagerTest.testDisestablishEstablishConnection] Disestablish",0);
+		a_mLogManager.Test("Disestablish",0);
 		a_mConnectionManager.DisestablishConnection(oConnection.GetIdentifier());
 		Thread.sleep(2000);
 		assertFalse(oConnection.IsActive());
-		a_mLogManager.Test("[MConnectionManagerTest.testDisestablishEstablishConnection] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

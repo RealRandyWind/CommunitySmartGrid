@@ -41,7 +41,7 @@ public class Client extends Main {
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
 
-		System.out.printf("_SUCCESS: [Client.ShutDown]\n");
+		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
 
 	public void SetUp() {
@@ -69,7 +69,7 @@ public class Client extends Main {
 		// TODO establish device connections
 		/* configure client end */
 
-		a_mLogManager.Success("[Client.SetUp]",0);
+		a_mLogManager.Success("",0);
 	}
 
 	public static Main GetInstance() {
@@ -81,7 +81,7 @@ public class Client extends Main {
 	private UUID Fx_EstablishMainConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[Client.Fx_EstablishMainConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return oConnection.GetIdentifier();
 	}
 
@@ -93,7 +93,7 @@ public class Client extends Main {
 	private UUID Fx_EstablishSubscriptionConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[Client.Fx_EstablishSubscriptionConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
@@ -104,7 +104,7 @@ public class Client extends Main {
 	private UUID Fx_EstablishMonitoringConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[Client.Fx_EstablishMonitoringConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
@@ -143,39 +143,39 @@ public class Client extends Main {
 	public UUID EstablishActionControlConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[Client.EstablishActionControlConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishDensDataConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[Client.EstablishDensDataConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishRealtimeDataConnection(UUID iConnection) {
 		IConnection oConnection = null;
 		// TODO
-		a_mLogManager.Warning("[Client.EstablishRealtimeDataConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishControllerConnection(UUID iConnection) {
 		IConnection oConnection = null;
-		a_mLogManager.Warning("[Client.EstablishControllerConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishSubscriptionConnection(UUID iConnection) {
 		IConnection oConnection = null;
-		a_mLogManager.Warning("[Client.EstablishSubscriptionConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishDeviceConnection(UUID iConnection) {
 		IConnection oConnection = null;
-		a_mLogManager.Warning("[Client.EstablishDeviceConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 

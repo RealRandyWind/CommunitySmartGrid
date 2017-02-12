@@ -29,7 +29,7 @@ public class ActionTest implements ITestCase {
 
 	@Test
 	public void testGetIdentifier() throws Exception {
-		a_mLogManager.Test("[ActionTest.testGetIdentifier] begin",0);
+		a_mLogManager.Test("begin",0);
 		UUID iAction2 = UUID.randomUUID();
 		Serializable[] lParameters = new Serializable[3];
 		lParameters[0] = "normal";
@@ -40,7 +40,7 @@ public class ActionTest implements ITestCase {
 
 		assertNotNull(oAction1.GetIdentifier());
 		assertEquals(iAction2,oAction2.GetIdentifier());
-		a_mLogManager.Test("[ActionTest.testGetIdentifier] end",0);
+		a_mLogManager.Test("end",0);
 	}
 
 	@Test

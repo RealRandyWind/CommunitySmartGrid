@@ -69,7 +69,7 @@ public class RMIConnectionTest implements ITestCase {
 
 	@Test
 	public void testRun() throws Exception {
-		a_mLogManager.Test("[RMIConnectionTest.testRun] begin", 0);
+		a_mLogManager.Test("begin", 0);
 		IPromise oPromise = new Promise();
 		int nTryCount = 6;
 		IStubController oStubController = null;
@@ -77,16 +77,16 @@ public class RMIConnectionTest implements ITestCase {
 		IConnection oCaller = new RMIControllerCallerConnection(null,a_oLogQueue, oPromise);
 		IConnection oListener = new RMIControllerListenerConnection(null, a_oController, a_oLogQueue);
 
-		a_mLogManager.Test("[RMIConnectionTest.testRun] Configure",0);
+		a_mLogManager.Test("Configure",0);
 		oCaller.Configure(a_oCallerConfiguration);
 		oListener.Configure(a_oListenerConfiguration);
 
-		a_mLogManager.Test("[RMIConnectionTest.testRun] Open",0);
+		a_mLogManager.Test("Open",0);
 		oListener.Open();
 		oCaller.Open();
 		Thread.sleep(500);
 
-		a_mLogManager.Test("[RMIConnectionTest.testRun] Run",0);
+		a_mLogManager.Test("Run",0);
 		while(!oPromise.IsDone()) {
 			if (nTryCount <= 0) { fail(); }
 			Thread.sleep(200);
@@ -116,11 +116,11 @@ public class RMIConnectionTest implements ITestCase {
 		assertTrue(a_lQueue.contains(StubController.EMethods.FUNCTIONRETURNMAPNOARGUMENTSSERIALIZABLE));
 
 
-		a_mLogManager.Test("[RMIConnectionTest.testRun] Close",0);
+		a_mLogManager.Test("Close",0);
 		oListener.Close();
 		oCaller.Close();
 		Thread.sleep(200);
 
-		a_mLogManager.Test("[RMIConnectionTest.testRun] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

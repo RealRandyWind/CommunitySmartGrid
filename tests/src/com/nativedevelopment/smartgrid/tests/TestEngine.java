@@ -1,5 +1,6 @@
 package com.nativedevelopment.smartgrid.tests;
 
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Main;
 
 import java.util.List;
@@ -12,15 +13,15 @@ public class TestEngine extends Main {
 	}
 
 	public void ShutDown() {
-		System.out.printf("_SUCCESS: [TestEngine.ShutDown]\n");
+		System.out.printf("_SUCCESS: %s\n", MLogManager.MethodName());
 	}
 
 	public void SetUp() {
-		System.out.printf("_SUCCESS: [TestEngine.SetUp]\n");
+		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
 
 	public void Run() {
-		System.out.printf("_SUCCESS: [TestEngine.Run]\n");
+		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
 
 	public static Main GetInstance() {

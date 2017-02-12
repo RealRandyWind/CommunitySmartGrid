@@ -42,7 +42,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
 
-		System.out.printf("_SUCCESS: [DeviceClient.ShutDown]\n");
+		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
 
 	public void SetUp() {
@@ -64,7 +64,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 		Fx_EstablishMainConnection(null);
 
-		a_mLogManager.Success("[DeviceClient.SetUp]",0);
+		a_mLogManager.Success("",0);
 	}
 
 	public static Main GetInstance() {
@@ -76,7 +76,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private UUID Fx_EstablishMainConnection(UUID iConnection) {
 		IConnection oConnection = null;
 
-		a_mLogManager.Warning("[DeviceClient.Fx_EstablishMainConnection] not yet implemented",0);
+		a_mLogManager.Warning("not yet implemented",0);
 		return null; //oConnection.GetIdentifier();
 	}
 
@@ -93,7 +93,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public void Configure(ISettings oConfigurations) {
 		Serializable oIdentifier = oConfigurations.Get(SETTINGS_KEY_IDENTIFIER);
 		a_oIdentifier = oIdentifier == null ? UUID.randomUUID() : UUID.fromString((String)oIdentifier);
-		a_mLogManager.Success("[DeviceClient.Configure] configured",0);
+		a_mLogManager.Success("configured",0);
 	}
 
 	@Override

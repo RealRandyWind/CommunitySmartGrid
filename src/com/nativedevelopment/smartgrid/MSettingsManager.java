@@ -37,22 +37,22 @@ public class MSettingsManager {
 
     public void SetUp() {
         if(a_bIsSetUp) {
-            a_mLogManager.Warning("[MSettingsManager.SetUp] setup already.",0);
+            a_mLogManager.Warning("setup already.",0);
             return;
         }
         a_bIsShutDown = false;
 
         a_lSettings = new HashMap<>();
 
-        a_mLogManager.Info("[MSettingsManager.SetUp] working directory \"%s\"",0,System.getProperty("user.dir"));
+        a_mLogManager.Info("working directory \"%s\"",0,System.getProperty("user.dir"));
 
         a_bIsSetUp = true;
-        a_mLogManager.Success("[MSettingsManager.SetUp]",0);
+        a_mLogManager.Success("",0);
     }
 
     public void ShutDown() {
         if(a_bIsShutDown) {
-            a_mLogManager.Warning("[MSettingsManager.ShutDown] shutdown already.",0);
+            a_mLogManager.Warning("shutdown already.",0);
             return;
         }
         a_bIsSetUp = false;
@@ -60,7 +60,7 @@ public class MSettingsManager {
         // TODO MSettingsManager ShutDown
 
         a_bIsShutDown = true;
-        a_mLogManager.Success("[MSettingsManager.ShutDown]",0);
+        a_mLogManager.Success("",0);
     }
 
     private ISettings Fx_CompileSettings(String sSource) {
@@ -69,7 +69,7 @@ public class MSettingsManager {
         for (String sLine : lLines) {
             String[] oKeyValue = sLine.split(SETTING_ASSIGN_REGEX, SETTING_ASSIGN_SPLIT_LIMIT);
             if(oKeyValue.length != SETTING_KEYVALUE_LENGTH) {
-                a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] incorrect syntax in settings file.",0);
+                a_mLogManager.Warning("incorrect syntax in settings file.",0);
                 continue;
             }
             oSettings.SetSpecial(oKeyValue[SETTING_KEY].toLowerCase(),oKeyValue[SETTING_VALUE]);
@@ -81,7 +81,7 @@ public class MSettingsManager {
         try {
             File oFile = new File(sPath);
 			if(oFile.length() == 0) {
-				a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] empty file \"%s\"",0,sPath);
+				a_mLogManager.Warning("empty file \"%s\"",0,sPath);
 				return null;
 			}
             FileInputStream oFileInputStream = new FileInputStream(oFile);
@@ -91,7 +91,7 @@ public class MSettingsManager {
             String sSource = new String(rawSource, Charset.defaultCharset());
             return LoadSettingsFromString(sSource);
         } catch (Exception oException) {
-            a_mLogManager.Warning("[MSettingsManager.LoadSettingsFromFile] %s \"%s\"",0
+            a_mLogManager.Warning("%s \"%s\"",0
                     ,oException.getClass().getCanonicalName(),oException.getMessage());
         }
         return null;
@@ -109,7 +109,7 @@ public class MSettingsManager {
 
     public ISettings GetSettings(UUID iSettings) {
         if (iSettings == null) {
-            a_mLogManager.Warning("[MSettingsManager.GetSettings] null id.",0);
+            a_mLogManager.Warning("null id.",0);
             return null;
         }
         return a_lSettings.get(iSettings);

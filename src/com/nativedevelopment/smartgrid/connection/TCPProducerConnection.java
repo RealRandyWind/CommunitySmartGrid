@@ -2,6 +2,7 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.Connection;
 import com.nativedevelopment.smartgrid.ISettings;
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class TCPProducerConnection extends Connection {
 								 Queue<SocketAddress> lRemotes) {
 		super(oIdentifier, lToLogQueue);
 		if(lFromQueue == null) {
-			System.out.printf("_WARNING: [TCPProducerConnection] no queue to produce from\n");
+			System.out.printf("_WARNING: %sno queue to produce from\n",MLogManager.MethodName());
 		}
 		a_lFromQueue = lFromQueue;
 		a_lRemotes = lRemotes;
@@ -51,7 +52,8 @@ public class TCPProducerConnection extends Connection {
 			a_lChannels.add(oChannel);
 			oRemote = a_lRemotes.poll();
 			iRemote--;
-			System.out.printf("_DEBUG: [TCPProducerConnection.Fx_EstablishConnections] new connection to \"%s\" through \"%s\"\n"
+			System.out.printf("_DEBUG: %snew connection to \"%s\" through \"%s\"\n"
+					,MLogManager.MethodName()
 					,String.valueOf(oChannel.getRemoteAddress())
 					,String.valueOf(oChannel.getLocalAddress()));
 		}
@@ -62,7 +64,8 @@ public class TCPProducerConnection extends Connection {
 			return true;
 		}
 		a_lChannels.remove(oChannel);
-		System.out.printf("_WARNING: [TCPProducerConnection.Fx_CheckConnection] lost connection \"%s\"\n"
+		System.out.printf("_WARNING: %slost connection \"%s\"\n"
+				, MLogManager.MethodName()
 				,String.valueOf(oChannel.getRemoteAddress()));
 		return false;
 	}
@@ -113,7 +116,8 @@ public class TCPProducerConnection extends Connection {
 			}
 			a_lChannels.clear();
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [TCPProducerConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

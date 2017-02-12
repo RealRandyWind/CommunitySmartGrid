@@ -30,7 +30,7 @@ public class PackageTest implements ITestCase {
 
 	@Test
 	public void testGetCorrelationRouteIdentifierGetFlagGetContent() throws Exception {
-		a_mLogManager.Test("[PackageTest.testGetCorrelationRouteIdentifierGetFlagGetContent] begin",0);
+		a_mLogManager.Test("begin",0);
 		UUID iCorrelationIdentifier = UUID.randomUUID();
 		UUID iRouteIdentifier = UUID.randomUUID();
 		int nFlag = 2;
@@ -41,6 +41,6 @@ public class PackageTest implements ITestCase {
 		assertEquals(iRouteIdentifier,oPackage.GetRoutIdentifier());
 		assertEquals(nFlag,oPackage.GetFlag());
 		assertEquals(oContent,oPackage.GetContent());
-		a_mLogManager.Test("[PackageTest.testGetCorrelationRouteIdentifierGetFlagGetContent] end",0);
+		a_mLogManager.Test("end",0);
 	}
 }

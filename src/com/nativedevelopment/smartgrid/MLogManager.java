@@ -34,6 +34,8 @@ public class MLogManager {
 	private static final long LOG_WARNING_USLEEP_TIME = (long)(2*1e+6);
 	private static final long LOG_FILE_FLUSHRATE = 32;
 	private static final long LOG_TYPE_COUNT = 6;
+	private static final int LOG_STACKTRACE_SELF_INDEX = 2;
+	private static final int LOG_STACKTRACE_INDEX = 3;
 
 	private static MLogManager a_oInstance = null;
 	private boolean a_bIsSetUp = false;
@@ -56,7 +58,7 @@ public class MLogManager {
 
 	public void SetUp() {
 		if(a_bIsSetUp) {
-			Warning("[MLogManager.SetUp] setup already.",0);
+			Warning("setup already.",0);
 			return; 
 		}
 		a_bIsShutDown = false;
@@ -64,12 +66,12 @@ public class MLogManager {
 		a_lLogQueue = new ConcurrentLinkedQueue<>();
 
 		a_bIsSetUp = true;
-		Success("[MLogManager.SetUp]",0);
+		Success("",0);
 	}
 
 	public void ShutDown() {
 		if(a_bIsShutDown) {
-			System.out.printf("_" + LOG_WARNING_STR + "[MLogManager.ShutDown] already shutdown.\n");
+			System.out.printf("_" + LOG_WARNING_STR + MethodName() + "already shutdown.\n");
 			return;
 		}
 		a_bIsSetUp = false;
@@ -77,7 +79,7 @@ public class MLogManager {
 		// TODO MLogManager ShutDown
 
 		a_bIsShutDown = true;
-		System.out.printf("_" + LOG_SUCCESS_STR + "[MLogManager.ShutDown].\n");
+		System.out.printf("_" + LOG_SUCCESS_STR + MethodName() + ".\n");
 	}
 
 	public void SetLogFile(String sFilePath) {
@@ -102,7 +104,7 @@ public class MLogManager {
 	}
 
 	public void Success(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_SUCCESS_COL + LOG_SUCCESS_STR + sFormat, olArgs);
+		String sString = String.format(LOG_SUCCESS_COL + LOG_SUCCESS_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,1,iCode)
@@ -111,7 +113,7 @@ public class MLogManager {
 	}
 
 	public void Info(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_INFO_COL + LOG_INFO_STR + sFormat, olArgs);
+		String sString = String.format(LOG_INFO_COL + LOG_INFO_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,2,iCode)
@@ -120,7 +122,7 @@ public class MLogManager {
 	}
 
 	public void Warning(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_WARNING_COL + LOG_WARNING_STR + sFormat, olArgs);
+		String sString = String.format(LOG_WARNING_COL + LOG_WARNING_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,3,iCode)
@@ -129,7 +131,7 @@ public class MLogManager {
 	}
 
 	public void Error(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_ERROR_COL + LOG_ERROR_STR + sFormat, olArgs);
+		String sString = String.format(LOG_ERROR_COL + LOG_ERROR_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,4,iCode)
@@ -141,7 +143,7 @@ public class MLogManager {
 	}
 
 	public void Debug(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_DEBUG_COL + LOG_DEBUG_STR + sFormat, olArgs);
+		String sString = String.format(LOG_DEBUG_COL + LOG_DEBUG_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,5,iCode)
@@ -150,7 +152,7 @@ public class MLogManager {
 	}
 
 	public void Test(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_TEST_COL + LOG_TEST_STR + sFormat, olArgs);
+		String sString = String.format(LOG_TEST_COL + LOG_TEST_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,5,iCode)
@@ -166,5 +168,17 @@ public class MLogManager {
 		/*TODO make threat prove*/
 		Timestamp oTimeStamp = new Timestamp(System.currentTimeMillis());
 		System.out.print(sMessage + LOG_RESET_COL + " - " + oTimeStamp + "\n");
+	}
+
+	public static String MethodName() {
+		StackTraceElement oMethod = Thread.currentThread().getStackTrace()[LOG_STACKTRACE_SELF_INDEX];
+		String sMethod = String.format("[%s.%s] ", oMethod.getClassName(),oMethod.getMethodName());
+		return sMethod;
+	}
+
+	private static String Fx_MethodName() {
+		StackTraceElement oMethod = Thread.currentThread().getStackTrace()[LOG_STACKTRACE_INDEX];
+		String sMethod = String.format("[%s.%s] ", oMethod.getClassName(),oMethod.getMethodName());
+		return sMethod;
 	}
 }

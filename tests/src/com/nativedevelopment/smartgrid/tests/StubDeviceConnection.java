@@ -3,6 +3,7 @@ package com.nativedevelopment.smartgrid.tests;
 import com.nativedevelopment.smartgrid.Data;
 import com.nativedevelopment.smartgrid.IAction;
 import com.nativedevelopment.smartgrid.IData;
+import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.connection.CommDeviceConnection;
 import java.io.Serializable;
 import java.util.AbstractMap;
@@ -34,7 +35,8 @@ public class StubDeviceConnection extends CommDeviceConnection{
 								Queue<Serializable> lToLogQueue, Queue<Serializable> lQueue) {
 		super(oIdentifier, iDevice, lAttributes, lActionMap, a_lToQueue, a_lFromQueue, lToLogQueue);
 		a_lQueue = lQueue;
-		System.out.printf("_INFO: [StubDeviceConnection] IntervalBound %d, ActivityBound %f, ActivitySign %f.\n"
+		System.out.printf("_INFO: %sIntervalBound %d, ActivityBound %f, ActivitySign %f.\n"
+				,MLogManager.MethodName()
 				,a_nIntervalBound,a_dActivityBound,a_dActivitySign);
 	}
 
@@ -46,7 +48,8 @@ public class StubDeviceConnection extends CommDeviceConnection{
 		lTuples[0][1] = a_tCurrentTimeMillis - a_tPreviousTimeMillis;
 		lTuples[0][2] = a_oRandom.nextFloat() * a_dActivityBound * a_dActivitySign;
 
-		System.out.printf("_DEBUG: [StubDeviceConnection.Fx_ProduceData] data (%d, %d, %f).\n"
+		System.out.printf("_DEBUG: %sdata (%d, %d, %f).\n"
+				,MLogManager.MethodName()
 				,lTuples[0][0],lTuples[0][1],lTuples[0][2]);
 		return new Data(a_iDevice, lTuples, a_lAttributes);
 	}
@@ -54,10 +57,12 @@ public class StubDeviceConnection extends CommDeviceConnection{
 	private void Fx_PerformAction(IAction oAction) {
 		if (a_lActionMap.containsKey(oAction.GetIdentifier())) {
 			a_lQueue.offer(oAction.GetIdentifier());
-			System.out.printf("_DEBUG: [StubDeviceConnection.Fx_PerformAction] action %s \"%s\"\n"
+			System.out.printf("_DEBUG: %saction %s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oAction.GetIdentifier(),a_lActionMap.get(oAction.GetIdentifier()));
 		} else {
-			System.out.printf("_DEBUG: [StubDeviceConnection.Fx_PerformAction] action %s not available.\n"
+			System.out.printf("_DEBUG: %saction %s not available.\n"
+					,MLogManager.MethodName()
 					,oAction.GetIdentifier());
 		}
 	}
@@ -79,7 +84,8 @@ public class StubDeviceConnection extends CommDeviceConnection{
 				}
 			}
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: [StubDeviceConnection.Run] %s \"%s\"\n"
+			System.out.printf("_WARNING: %s%s \"%s\"\n"
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
