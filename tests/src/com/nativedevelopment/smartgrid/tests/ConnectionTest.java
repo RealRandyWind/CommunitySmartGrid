@@ -30,8 +30,8 @@ public class ConnectionTest implements ITestCase {
 	public void testGetIdentifier() throws Exception {
 		a_mLogManager.Test("begin",0);
 		UUID iConnection2 = UUID.randomUUID();
-		IConnection oConnection1 = new Connection(null,null);
-		IConnection oConnection2 = new Connection(iConnection2,null);
+		IConnection oConnection1 = new Connection(null);
+		IConnection oConnection2 = new Connection(iConnection2);
 
 		assertNotNull(oConnection1.GetIdentifier());
 		assertEquals(iConnection2,oConnection2.GetIdentifier());
@@ -41,7 +41,7 @@ public class ConnectionTest implements ITestCase {
 	@Test
 	public void testOpenIsActiveCloseForceClose() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oConnection = new Connection(null,null);
+		IConnection oConnection = new Connection(null);
 		assertFalse(oConnection.IsActive());
 		oConnection.Open();
 		assertTrue(oConnection.IsActive());

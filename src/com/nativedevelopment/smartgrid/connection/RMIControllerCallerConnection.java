@@ -24,8 +24,8 @@ public class RMIControllerCallerConnection extends Connection {
 	private String a_sRemoteAddress = null;
 	private boolean a_bIsRebind = false;
 
-	public RMIControllerCallerConnection(UUID oIdentifier, Queue<Serializable> lToLogQueue, IPromise oPromise) {
-		super(oIdentifier, lToLogQueue);
+	public RMIControllerCallerConnection(UUID oIdentifier, IPromise oPromise) {
+		super(oIdentifier);
 		// TODO replace oPromise by a Queue of Promises, create Fx_UpdatePromises function.
 		a_oPromise = oPromise;
 	}

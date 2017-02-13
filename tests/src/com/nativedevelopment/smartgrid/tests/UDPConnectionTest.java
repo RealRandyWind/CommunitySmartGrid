@@ -82,9 +82,16 @@ public class UDPConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oProducer = new UDPProducerConnection(null,a_oFromQueue,a_oLogQueue,a_lReceivers);
-		IConnection oConsumer1 = new UDPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders1);
-		IConnection oConsumer2 = new UDPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders2);
+		IConnection oProducer = new UDPProducerConnection(null,a_lReceivers);
+		IConnection oConsumer1 = new UDPConsumerConnection(null,a_lSenders1);
+		IConnection oConsumer2 = new UDPConsumerConnection(null,a_lSenders2);
+
+		oProducer.SetToLogQueue(a_oLogQueue);
+		oConsumer1.SetToLogQueue(a_oLogQueue);
+		oConsumer2.SetToLogQueue(a_oLogQueue);
+		oProducer.SetFromQueue(a_oFromQueue);
+		oConsumer1.SetToQueue(a_oToQueue);
+		oConsumer2.SetToQueue(a_oToQueue);
 
 		a_mLogManager.Test("Configure",0);
 		oProducer.Configure(a_oProducerConfiguration);

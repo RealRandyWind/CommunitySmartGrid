@@ -61,7 +61,11 @@ public class StubDeviceConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oConnection = new StubDeviceConnection(null, a_iDevice, a_lAttributes, a_lActionMap, a_lToQueue, a_lFromQueue, a_lToLogQueue, a_lQueue);
+		IConnection oConnection = new StubDeviceConnection(null, a_iDevice, a_lAttributes, a_lActionMap, a_lQueue);
+
+		oConnection.SetToLogQueue(a_lToLogQueue);
+		oConnection.SetFromQueue(a_lFromQueue);
+		oConnection.SetToQueue(a_lToQueue);
 
 		assertTrue(a_lToQueue.isEmpty());
 		a_mLogManager.Test("Open",0);

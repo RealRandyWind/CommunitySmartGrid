@@ -34,8 +34,8 @@ public class RMIControllerListenerConnection extends Connection{
 	private boolean a_bIsRebind = false;
 	private boolean a_bIsForceUnExport = false;
 
-	public RMIControllerListenerConnection(UUID oIdentifier, IController oRemote, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier, lToLogQueue);
+	public RMIControllerListenerConnection(UUID oIdentifier, IController oRemote) {
+		super(oIdentifier);
 		a_oRemote = oRemote;
 	}
 

@@ -13,12 +13,8 @@ public class CommDeviceConnection extends Connection{
 	protected String a_lAttributes[] = null;
 
 	public CommDeviceConnection(UUID oIdentifier, UUID iDevice, String[] lAttributes,
-								AbstractMap<UUID, Serializable> lActionMap,
-								Queue<Serializable> lToQueue, Queue<Serializable> lFromQueue,
-								Queue<Serializable> lToLogQueue) {
-		super(oIdentifier, lToLogQueue);
-		a_lToQueue = lToQueue;
-		a_lFromQueue = lFromQueue;
+								AbstractMap<UUID, Serializable> lActionMap) {
+		super(oIdentifier);
 		a_lActionMap = lActionMap;
 		a_iDevice = iDevice;
 		a_lAttributes = lAttributes;

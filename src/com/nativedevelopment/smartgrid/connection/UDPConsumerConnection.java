@@ -23,15 +23,16 @@ public class UDPConsumerConnection extends Connection {
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
-	public UDPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue,
-								 Queue<SocketAddress> lRemotes) {
-		super(oIdentifier, lToLogQueue);
-		a_lToQueue = lToQueue;
+	public UDPConsumerConnection(UUID oIdentifier, Queue<SocketAddress> lRemotes) {
+		super(oIdentifier);
 		a_lRemotes = lRemotes;
 		a_lChannels = new HashSet<>();
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
+		if(a_lToQueue == null) {
+			return;
+		}
 		a_lToQueue.offer(Serializer.Deserialize(rawBytes,a_nBufferCapacity));
 	}
 

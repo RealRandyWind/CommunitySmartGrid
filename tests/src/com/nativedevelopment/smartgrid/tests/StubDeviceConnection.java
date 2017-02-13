@@ -30,10 +30,8 @@ public class StubDeviceConnection extends CommDeviceConnection{
 	private Queue<Serializable> a_lQueue = null;
 
 	public StubDeviceConnection(UUID oIdentifier, UUID iDevice, String[] lAttributes,
-								AbstractMap<UUID, Serializable> lActionMap,
-								Queue<Serializable> a_lToQueue, Queue<Serializable> a_lFromQueue,
-								Queue<Serializable> lToLogQueue, Queue<Serializable> lQueue) {
-		super(oIdentifier, iDevice, lAttributes, lActionMap, a_lToQueue, a_lFromQueue, lToLogQueue);
+								AbstractMap<UUID, Serializable> lActionMap, Queue<Serializable> lQueue) {
+		super(oIdentifier, iDevice, lAttributes, lActionMap);
 		a_lQueue = lQueue;
 		System.out.printf("_INFO: %sIntervalBound %d, ActivityBound %f, ActivitySign %f.\n"
 				,MLogManager.MethodName()

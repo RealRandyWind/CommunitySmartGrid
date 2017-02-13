@@ -28,13 +28,8 @@ public class UDPProducerConnection extends Connection{
 
 	private int a_nDeltaConnections = 0;
 
-	public UDPProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue,
-								 Queue<SocketAddress> lRemotes) {
-		super(oIdentifier, lToLogQueue);
-		if(lFromQueue == null) {
-			System.out.printf("_WARNING: %sno queue to produce from\n", MLogManager.MethodName());
-		}
-		a_lFromQueue = lFromQueue;
+	public UDPProducerConnection(UUID oIdentifier, Queue<SocketAddress> lRemotes) {
+		super(oIdentifier);
 		a_lRemotes = lRemotes;
 		a_lChannels = new HashSet<>();
 	}
@@ -67,6 +62,9 @@ public class UDPProducerConnection extends Connection{
 	}
 
 	private byte[] Fx_Produce() throws Exception {
+		if(a_lFromQueue == null) {
+			return null;
+		}
 		Serializable oSerializable = a_lFromQueue.poll();
 		if(TimeOutRoutine(oSerializable==null)) {
 			return null;

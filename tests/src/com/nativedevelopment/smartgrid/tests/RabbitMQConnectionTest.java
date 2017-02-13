@@ -77,8 +77,13 @@ public class RabbitMQConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oProducer = new RabbitMQProducerConnection(null,a_oFromQueue,a_oLogQueue);
-		IConnection oConsumer = new RabbitMQConsumerConnection(null,a_oToQueue,a_oLogQueue);
+		IConnection oProducer = new RabbitMQProducerConnection(null);
+		IConnection oConsumer = new RabbitMQConsumerConnection(null);
+
+		oProducer.SetToLogQueue(a_oLogQueue);
+		oConsumer.SetToLogQueue(a_oLogQueue);
+		oProducer.SetFromQueue(a_oFromQueue);
+		oConsumer.SetToQueue(a_oToQueue);
 
 		oProducer.Configure(a_oProducerConfiguration);
 		oConsumer.Configure(a_oConsumerConfiguration);

@@ -35,16 +35,15 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	private Channel a_oRabbitMQChannel = null;
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
 
-	public RabbitMQConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier, lToLogQueue);
-		if(lToQueue == null) {
-			System.out.printf("_WARNING: %sno queue to consume to\n",MLogManager.MethodName());
-		}
-		a_lToQueue = lToQueue;
+	public RabbitMQConsumerConnection(UUID oIdentifier) {
+		super(oIdentifier);
 		a_bIsHandshake = true;
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
+		if(a_lToQueue == null) {
+			return;
+		}
 		a_lToQueue.offer(Serializer.Deserialize(rawBytes,0));
 	}
 

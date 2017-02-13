@@ -20,12 +20,8 @@ public class LocalStorageConnection extends Connection {
 
 	private RandomAccessFile a_oFile = null;
 
-	public LocalStorageConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue) {
-		super(oIdentifier, lToLogQueue);
-		if(lFromQueue == null) {
-			System.out.printf("_WARNING: %sno queue to produce from\n", MLogManager.MethodName());
-		}
-		a_lFromQueue = lFromQueue;
+	public LocalStorageConnection(UUID oIdentifier) {
+		super(oIdentifier);
 	}
 
 	private void Fx_Store(Serializable oSerializable) {

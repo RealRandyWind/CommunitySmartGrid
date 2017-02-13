@@ -42,16 +42,14 @@ public class RabbitMQProducerConnection extends Connection {
 	private Channel a_oRabbitMQChannel = null;
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
 
-	public RabbitMQProducerConnection(UUID oIdentifier, Queue<Serializable> lFromQueue,
-									  Queue<Serializable> lToLogQueue) {
-		super(oIdentifier, lToLogQueue);
-		if(lFromQueue == null) {
-			System.out.printf("_WARNING: [RabbitMQProducerConnection] no queue to produce from\n");
-		}
-		a_lFromQueue = lFromQueue;
+	public RabbitMQProducerConnection(UUID oIdentifier) {
+		super(oIdentifier);
 	}
 
 	private byte[] Fx_Produce() throws Exception {
+		if(a_lFromQueue == null) {
+			return null;
+		}
 		Serializable oSerializable = a_lFromQueue.poll();
 		if(TimeOutRoutine(oSerializable==null))
 		{

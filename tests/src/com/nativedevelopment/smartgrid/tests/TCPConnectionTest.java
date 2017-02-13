@@ -79,9 +79,16 @@ public class TCPConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oProducer = new TCPProducerConnection(null,a_oFromQueue,a_oLogQueue,a_lReceivers);
-		IConnection oConsumer1 = new TCPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders);
-		IConnection oConsumer2 = new TCPConsumerConnection(null,a_oToQueue,a_oLogQueue,a_lSenders);
+		IConnection oProducer = new TCPProducerConnection(null,a_lReceivers);
+		IConnection oConsumer1 = new TCPConsumerConnection(null,a_lSenders);
+		IConnection oConsumer2 = new TCPConsumerConnection(null,a_lSenders);
+
+		oProducer.SetToLogQueue(a_oLogQueue);
+		oConsumer1.SetToLogQueue(a_oLogQueue);
+		oConsumer2.SetToLogQueue(a_oLogQueue);
+		oProducer.SetFromQueue(a_oFromQueue);
+		oConsumer1.SetToQueue(a_oToQueue);
+		oConsumer2.SetToQueue(a_oToQueue);
 
 		a_mLogManager.Test("Configure",0);
 		oProducer.Configure(a_oProducerConfiguration);

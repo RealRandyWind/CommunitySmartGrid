@@ -18,11 +18,10 @@ public class Connection implements IConnection {
     protected int a_nCheckTimeUpperBound = 0;
     protected int a_nDeltaCheckTime = 0;
 
-    public Connection(UUID oIdentifier, Queue<Serializable> lToLogQueue) {
+    public Connection(UUID oIdentifier) {
         a_oThread = new Thread(this);
         if(oIdentifier == null) { oIdentifier = UUID.randomUUID(); }
         a_oIdentifier = oIdentifier;
-        a_lToLogQueue = lToLogQueue;
     }
 
     @Override
@@ -92,5 +91,20 @@ public class Connection implements IConnection {
     @Override
     public void Configure(ISettings oConfigurations) {
         System.out.printf("_WARNING: %snothing to configure\n",MLogManager.MethodName());
+    }
+
+    @Override
+    public void SetFromQueue(Queue<Serializable> lFromQueue) {
+        a_lFromQueue = lFromQueue;
+    }
+
+    @Override
+    public void SetToQueue(Queue<Serializable> lToQueue) {
+        a_lToQueue = lToQueue;
+    }
+
+    @Override
+    public void SetToLogQueue(Queue<Serializable> lToLogQueue) {
+        a_lToLogQueue = lToLogQueue;
     }
 }
