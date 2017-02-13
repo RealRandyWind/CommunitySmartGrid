@@ -23,18 +23,12 @@ public class TCPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
-	private Queue<Serializable> a_lToQueue = null;
 	private Queue<SocketAddress> a_lRemotes = null;
 	private Set<SocketChannel> a_lChannels = null;
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
-
-	private int a_nCheckTime = 0;
-	private int a_nCheckTimeLowerBound = 0;
-	private int a_nCheckTimeUpperBound = 0;
-	private int a_nDeltaCheckTime = 0;
 
 	public TCPConsumerConnection(UUID oIdentifier, Queue<Serializable> lToQueue, Queue<Serializable> lToLogQueue,
 								 Queue<SocketAddress> lRemotes) {
@@ -106,14 +100,11 @@ public class TCPConsumerConnection extends Connection {
 					if(!Fx_CheckConnection(oChannel)) { continue; }
 					oByteBuffer.clear();
 					oChannel.read(oByteBuffer);
+					// TODO problem sometimes receive multiple at once or temporary incomplete objects in byte buffer.
 					oByteBuffer.flip();
 					if(!oByteBuffer.hasRemaining()) { continue; }
 					byte[] rawBytes = new byte[oByteBuffer.remaining()];
 					oByteBuffer.get(rawBytes,0,rawBytes.length);
-					System.out.printf("_DEBUG: %sconsume \"%s\" by \"%s\"\n"
-							,MLogManager.MethodName()
-							,Arrays.toString(rawBytes)
-							,String.valueOf(oChannel.getLocalAddress()));
 					Fx_Consume(rawBytes);
 				}
 			}
@@ -125,7 +116,7 @@ public class TCPConsumerConnection extends Connection {
 			a_lChannels.clear();
 		} catch (Exception oException) {
 			System.out.printf("_WARNING: %s%s \"%s\"\n"
-					, MLogManager.MethodName()
+					,MLogManager.MethodName()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

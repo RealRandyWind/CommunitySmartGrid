@@ -23,7 +23,6 @@ public class TCPProducerConnection extends Connection {
 
 	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
-	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<SocketAddress> a_lRemotes = null;
 	private Set<SocketChannel> a_lChannels = null;
 
@@ -96,16 +95,17 @@ public class TCPProducerConnection extends Connection {
 		try {
 			ByteBuffer oByteBuffer = ByteBuffer.allocate(a_nBufferCapacity);
 
-			while(!IsClose()) {
+			while (!IsClose()) {
 				Fx_EstablishConnections();
+
 				byte[] rawBytes = Fx_Produce();
 				if(rawBytes == null) { continue; }
-				System.out.printf("_DEBUG: %sproduce \"%s\"\n",MLogManager.MethodName(),Arrays.toString(rawBytes));
 				oByteBuffer.clear();
 				oByteBuffer.put(rawBytes,0,rawBytes.length);
-				oByteBuffer.flip();
+
 				for (SocketChannel oChannel: a_lChannels) {
 					if(!Fx_CheckConnection(oChannel)) { continue; }
+					oByteBuffer.flip();
 					oChannel.write(oByteBuffer);
 				}
 			}

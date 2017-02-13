@@ -18,8 +18,6 @@ public class LocalStorageConnection extends Connection {
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
-	private Queue<Serializable> a_lFromQueue = null;
-
 	private RandomAccessFile a_oFile = null;
 
 	public LocalStorageConnection(UUID oIdentifier, Queue<Serializable> lFromQueue, Queue<Serializable> lToLogQueue) {

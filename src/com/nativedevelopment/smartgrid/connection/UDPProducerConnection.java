@@ -21,7 +21,6 @@ public class UDPProducerConnection extends Connection{
 
 	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
-	private Queue<Serializable> a_lFromQueue = null;
 	private Queue<SocketAddress> a_lRemotes = null;
 	private Set<DatagramChannel> a_lChannels = null;
 
@@ -94,9 +93,9 @@ public class UDPProducerConnection extends Connection{
 			while (!IsClose()) {
 				Fx_EstablishConnections();
 
-				oByteBuffer.clear();
 				byte[] rawBytes = Fx_Produce();
 				if(rawBytes == null) { continue; }
+				oByteBuffer.clear();
 				oByteBuffer.put(rawBytes,0,rawBytes.length);
 
 				for (DatagramChannel oChannel: a_lChannels) {

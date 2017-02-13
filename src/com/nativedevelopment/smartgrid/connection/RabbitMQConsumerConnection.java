@@ -21,8 +21,6 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
-	private Queue<Serializable> a_lToQueue = null;
-
 	private String a_sFromHost = null;
 	private int a_nThroughPort = 0;
 	private String a_sFromExchange = null;

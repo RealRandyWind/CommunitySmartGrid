@@ -17,8 +17,6 @@ public class MongoDBStorageConnection extends Connection {
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
-	private Queue<Serializable> a_lFromQueue = null;
-
 	public MongoDBStorageConnection(UUID oIdentifier, Queue<Serializable> lFromQueue,
 									Queue<Serializable> lToLogQueue) {
 		super(oIdentifier, lToLogQueue);

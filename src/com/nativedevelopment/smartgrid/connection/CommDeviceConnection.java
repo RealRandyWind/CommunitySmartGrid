@@ -8,8 +8,6 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class CommDeviceConnection extends Connection{
-	protected Queue<Serializable> a_lToQueue = null;
-	protected Queue<Serializable> a_lFromQueue = null;
 	protected AbstractMap<UUID,Serializable> a_lActionMap = null;
 	protected UUID a_iDevice = null;
 	protected String a_lAttributes[] = null;

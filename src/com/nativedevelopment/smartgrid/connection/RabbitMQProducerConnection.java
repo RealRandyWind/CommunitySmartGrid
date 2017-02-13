@@ -25,8 +25,6 @@ public class RabbitMQProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
-	private Queue<Serializable> a_lFromQueue = null;
-
 	private String a_sToHost = null;
 	private int a_nThroughPort = 0;
 	private String a_sToExchange = null;

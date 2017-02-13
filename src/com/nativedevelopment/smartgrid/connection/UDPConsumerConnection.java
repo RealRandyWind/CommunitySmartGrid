@@ -16,7 +16,6 @@ public class UDPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_LOCALPORT = "local.port";
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
 
-	private Queue<Serializable> a_lToQueue = null;
 	private Queue<SocketAddress> a_lRemotes = null;
 	private Set<DatagramChannel> a_lChannels = null;
 
