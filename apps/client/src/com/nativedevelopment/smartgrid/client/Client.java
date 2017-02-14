@@ -1,7 +1,10 @@
 package com.nativedevelopment.smartgrid.client;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
+import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -26,9 +29,9 @@ public class Client extends Main {
 	private Map<UUID, IDevice> a_lDevices = null;
 	private UUID a_oIdentifier = null;
 
-	private Queue<IData> a_lDeviceData = null;
-	private Queue<IAction> a_lDeviceActions = null;
-	private Queue<IAction> a_lActions = null;
+	private Queue<Serializable> a_lDeviceData = null;  // TODO IData
+	private Queue<Serializable> a_lDeviceActions = null; // TODO IAction
+	private Queue<Serializable> a_lActions = null;  // TODO IAction
 
 	protected Client() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -60,13 +63,7 @@ public class Client extends Main {
 		a_mLogManager.SetLogFile(lClientSettings.GetString(SETTINGS_KEY_LOGFILE));
 		a_oIdentifier = UUID.fromString(lClientSettings.GetString(SETTINGS_KEY_IDENTIFIER));
 
-		// TODO subscription validation token
-		// TODO establish main connection
-		// TODO establish action control connection
-		// TODO establish (await) dens data connection (request)
-		// TODO establish (await) realtime data connection
-		// TODO setup device listeners
-		// TODO establish device connections
+		Fx_EstablishMainConnection(null);
 		/* configure client end */
 
 		a_mLogManager.Success("",0);
@@ -86,26 +83,13 @@ public class Client extends Main {
 	}
 
 	private UUID Fx_EstablishConnection(IConnection oConnection) {
+		oConnection.SetToLogQueue(a_mLogManager.GetLogQueue());
 		a_mConnectionManager.AddConnection(oConnection);
 		return oConnection.GetIdentifier();
 	}
 
-	private UUID Fx_EstablishSubscriptionConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
 	private void Fx_TerminateConnection(UUID iConnection) {
 		a_mConnectionManager.RemoveConnection(iConnection);
-	}
-
-	private UUID Fx_EstablishMonitoringConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
 	}
 
 	private IDevice Fx_CompileDevice(String sSource) {
@@ -138,45 +122,6 @@ public class Client extends Main {
 
 	public Iterable<IDevice> GetAllDevices() {
 		return a_lDevices.values();
-	}
-
-	public UUID EstablishActionControlConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	public UUID EstablishDensDataConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	public UUID EstablishRealtimeDataConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	public UUID EstablishControllerConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	public UUID EstablishSubscriptionConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	public UUID EstablishDeviceConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
 	}
 
 	public static void main(String[] arguments)

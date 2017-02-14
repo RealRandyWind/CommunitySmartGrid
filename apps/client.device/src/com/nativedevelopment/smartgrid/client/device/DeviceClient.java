@@ -1,6 +1,8 @@
 package com.nativedevelopment.smartgrid.client.device;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
+import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
@@ -53,10 +55,14 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		ISettings oDeviceClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
 		Configure(oDeviceClientSettings);
 
+		// TODO establish controll connection
+		Fx_EstablishActionControlConnection(null);
 		// TODO establish device connection
 		// TODO establish realtime data connection
+		Fx_EstablishRealTimeDataConnection(null);
 		// TODO establish monitoring connection
-		// TODO establish broadcast connection
+		Fx_EstablishMonitoringConnection(null);
+
 
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
@@ -73,6 +79,27 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		return a_oInstance;
 	}
 
+	private UUID Fx_EstablishMonitoringConnection(UUID iConnection) {
+		IConnection oConnection = null;
+		// TODO
+		a_mLogManager.Warning("not yet implemented",0);
+		return Fx_EstablishConnection(oConnection);
+	}
+
+	private UUID Fx_EstablishRealTimeDataConnection(UUID iConnection) {
+		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
+		oConnection.SetFromQueue(a_lDataQueue);
+		a_mLogManager.Warning("not yet implemented",0);
+		return Fx_EstablishConnection(oConnection);
+	}
+
+	private UUID Fx_EstablishActionControlConnection(UUID iConnection) {
+		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+		oConnection.SetToQueue(a_lActionQueue);
+		a_mLogManager.Warning("not yet implemented",0);
+		return Fx_EstablishConnection(oConnection);
+	}
+
 	private UUID Fx_EstablishMainConnection(UUID iConnection) {
 		IConnection oConnection = null;
 
@@ -81,6 +108,10 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	}
 
 	private UUID Fx_EstablishConnection(IConnection oConnection) {
+		if(oConnection == null) {
+			a_mLogManager.Warning("attempt of a null connection",0);
+			return null;
+		}
 		a_mConnectionManager.AddConnection(oConnection);
 		return oConnection.GetIdentifier();
 	}
