@@ -5,8 +5,6 @@ import com.nativedevelopment.smartgrid.ISettings;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -23,16 +21,14 @@ public class TCPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
-	private Queue<SocketAddress> a_lRemotes = null;
 	private Set<SocketChannel> a_lChannels = null;
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
-	public TCPConsumerConnection(UUID oIdentifier, Queue<SocketAddress> lRemotes) {
+	public TCPConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);
-		a_lRemotes = lRemotes;
 		a_lChannels = new HashSet<>();
 	}
 

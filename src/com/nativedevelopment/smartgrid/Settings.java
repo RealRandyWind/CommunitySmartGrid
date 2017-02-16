@@ -51,7 +51,7 @@ public class Settings implements ISettings {
     }
 
     public void SetSpecial(String sSetting, String sValue) {
-        //TODO dirty and lazy way, improve to be proper use a automata mannager
+        //TODO dirty and lazy way, improve to be proper move to Compiler final class
         Matcher oStringMatcher = a_oStringPattern.matcher(sValue);
         Matcher oIntegerMatcher = a_oIntegerPattern.matcher(sValue);
         Matcher oRealMatcher = a_oRealPattern.matcher(sValue);

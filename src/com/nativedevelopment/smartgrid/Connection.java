@@ -10,7 +10,7 @@ public class Connection implements IConnection {
     protected Queue<Serializable> a_lToQueue = null;
     protected Queue<Serializable> a_lFromQueue = null;
     protected Queue<Serializable> a_lToLogQueue = null;
-    //protected Queue<Serializable> a_lRemote = null;
+    protected Queue<Serializable> a_lRemoteQueue = null;
     private UUID a_oIdentifier = null;
     volatile private boolean a_isClose = false;
 
@@ -107,5 +107,10 @@ public class Connection implements IConnection {
     @Override
     public void SetToLogQueue(Queue<Serializable> lToLogQueue) {
         a_lToLogQueue = lToLogQueue;
+    }
+
+    @Override
+    public void SetRemoteQueue(Queue<Serializable> lRemoteQueue) {
+        a_lRemoteQueue = lRemoteQueue;
     }
 }

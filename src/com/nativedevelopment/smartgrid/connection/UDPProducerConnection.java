@@ -6,7 +6,6 @@ import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -21,27 +20,26 @@ public class UDPProducerConnection extends Connection{
 
 	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
-	private Queue<SocketAddress> a_lRemotes = null;
 	private Set<DatagramChannel> a_lChannels = null;
 
 	private int a_nBufferCapacity = 0;
 
 	private int a_nDeltaConnections = 0;
 
-	public UDPProducerConnection(UUID oIdentifier, Queue<SocketAddress> lRemotes) {
+	public UDPProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
-		a_lRemotes = lRemotes;
 		a_lChannels = new HashSet<>();
 	}
 
 	private void Fx_EstablishConnections() throws Exception {
-		SocketAddress oRemote = a_lRemotes.poll();
+		Serializable ptrRemote =  a_lRemoteQueue.poll();
 		int iRemote = a_nDeltaConnections;
-		while (oRemote!=null && 0 < iRemote) {
+		while (ptrRemote!=null && 0 < iRemote) {
+			SocketAddress oRemote = (SocketAddress) ptrRemote;
 			DatagramChannel oChannel = DatagramChannel.open();
 			oChannel.connect(oRemote);
 			a_lChannels.add(oChannel);
-			oRemote = a_lRemotes.poll();
+			ptrRemote = a_lRemoteQueue.poll();
 			iRemote--;
 			System.out.printf("_DEBUG: %snew connection to \"%s\" through \"%s\"\n"
 					,MLogManager.MethodName()

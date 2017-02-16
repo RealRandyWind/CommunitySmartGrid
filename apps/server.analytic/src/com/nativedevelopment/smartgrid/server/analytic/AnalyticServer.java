@@ -1,6 +1,9 @@
 package com.nativedevelopment.smartgrid.server.analytic;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.connection.MongoDBStorageConnection;
+import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
+import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 
 import java.io.Serializable;
 import java.util.Queue;
@@ -74,47 +77,33 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_mConnectionManager.RemoveConnection(iConnection);
 	}
 
-	private UUID Fx_EstablishMonitoringConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
 	public UUID EstablishActionControlConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	public UUID EstablishDensDataConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
+		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
+		oConnection.SetFromQueue(a_lActionQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishRealtimeDataConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
+		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+		oConnection.SetToQueue(a_lDataQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	public UUID EstablishResultsConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
+		IConnection oConnection = new MongoDBStorageConnection(iConnection);
+		oConnection.SetFromQueue(a_lResultQueue);
+		a_mLogManager.Warning("not yet implemented",0); // TODO MongoDBConnection
 		return Fx_EstablishConnection(oConnection);
 	}
 
 	private void Fx_ConfigureConnection() {
-		Serializable oSerializable =  a_lConfigureConnectionQueue.poll();
-		if(oSerializable == null) {
+		Serializable ptrConfigureConnection =  a_lConfigureConnectionQueue.poll();
+		if(ptrConfigureConnection == null) {
 			return;
 		}
-		IConfigureConnection oSettingsMap = (IConfigureConnection) oSerializable;
+		IConfigureConnection oConfigureConnection = (IConfigureConnection) ptrConfigureConnection;
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
 	}
@@ -136,8 +125,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		while(!IsClosing()) {
 			// Timer.TimeOutProcedure(a_bIsIdle);
 			a_bIsIdle = true;
-			Fx_Analyze();
 			Fx_ConfigureConnection();
+			Fx_Analyze();
 			Exit();
 		}
 	}

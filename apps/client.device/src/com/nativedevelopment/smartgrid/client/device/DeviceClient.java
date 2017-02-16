@@ -70,20 +70,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		return a_oInstance;
 	}
 
-	private UUID Fx_EstablishRealTimeDataConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
-		oConnection.SetFromQueue(a_lDataQueue);
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
-	private UUID Fx_EstablishActionControlConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
-		oConnection.SetToQueue(a_lActionQueue);
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
-	}
-
 	private UUID Fx_EstablishConnection(IConnection oConnection) {
 		if(oConnection == null) {
 			a_mLogManager.Warning("attempt of a null connection",0);
@@ -99,22 +85,43 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mConnectionManager.RemoveConnection(iConnection);
 	}
 
+	private UUID Fx_EstablishRealTimeDataConnection(UUID iConnection) {
+		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
+		oConnection.SetFromQueue(a_lDataQueue);
+		a_mLogManager.Warning("not yet implemented",0);
+		return Fx_EstablishConnection(oConnection);
+	}
+
+	private UUID Fx_EstablishActionControlConnection(UUID iConnection) {
+		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+		oConnection.SetToQueue(a_lActionQueue);
+		a_mLogManager.Warning("not yet implemented",0);
+		return Fx_EstablishConnection(oConnection);
+	}
+
+	private UUID Fx_EstablishConfigureConnectionConnection(UUID iConnection) {
+		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+		oConnection.SetToQueue(a_lConfigureConnectionQueue);
+		a_mLogManager.Warning("not yet implemented",0);
+		return Fx_EstablishConnection(oConnection);
+	}
+
 	private void Fx_ConfigureConnection() {
-		Serializable oSerializable =  a_lConfigureConnectionQueue.poll();
-		if(oSerializable == null) {
+		Serializable ptrConfigureConnection =  a_lConfigureConnectionQueue.poll();
+		if(ptrConfigureConnection == null) {
 			return;
 		}
-		IConfigureConnection oSettingsMap = (IConfigureConnection) oSerializable;
+		IConfigureConnection oConfigureConnection = (IConfigureConnection) ptrConfigureConnection;
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
 	}
 
 	private void Fx_PerformAction() {
-		Serializable oSerializable = a_lActionQueue.poll();
-		if(oSerializable == null) {
+		Serializable ptrAction = a_lActionQueue.poll();
+		if(ptrAction == null) {
 			return;
 		}
-		IAction oAction = (IAction) oSerializable;
+		IAction oAction = (IAction) ptrAction;
 		// TODO invoke at main loop
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;

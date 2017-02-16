@@ -18,4 +18,5 @@ public interface IConnection extends Runnable, IConfigurable {
     public void SetFromQueue(Queue<Serializable> lFromQueue);
     public void SetToQueue(Queue<Serializable> lToQueue);
     public void SetToLogQueue(Queue<Serializable> lToLogQueue);
+    public void SetRemoteQueue(Queue<Serializable> lRemoteQueue);
 }

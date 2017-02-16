@@ -32,8 +32,8 @@ public class TCPConnectionTest implements ITestCase {
 	Queue<Serializable> a_oFromQueue = null;
 	Queue<Serializable> a_oToQueue = null;
 	Queue<Serializable> a_oLogQueue = null;
-	Queue<SocketAddress> a_lReceivers = null;
-	Queue<SocketAddress> a_lSenders = null;
+	Queue<Serializable> a_lReceivers = null;
+	Queue<Serializable> a_lSenders = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -79,10 +79,13 @@ public class TCPConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oProducer = new TCPProducerConnection(null,a_lReceivers);
-		IConnection oConsumer1 = new TCPConsumerConnection(null,a_lSenders);
-		IConnection oConsumer2 = new TCPConsumerConnection(null,a_lSenders);
+		IConnection oProducer = new TCPProducerConnection(null);
+		IConnection oConsumer1 = new TCPConsumerConnection(null);
+		IConnection oConsumer2 = new TCPConsumerConnection(null);
 
+		oProducer.SetRemoteQueue(a_lReceivers);
+		oConsumer1.SetRemoteQueue(a_lSenders);
+		oConsumer2.SetRemoteQueue(a_lSenders);
 		oProducer.SetToLogQueue(a_oLogQueue);
 		oConsumer1.SetToLogQueue(a_oLogQueue);
 		oConsumer2.SetToLogQueue(a_oLogQueue);
