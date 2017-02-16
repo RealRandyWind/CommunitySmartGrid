@@ -15,7 +15,6 @@ public class Settings implements ISettings {
     protected static final String REGX_NULL = "(null)\\s*";
     private static final int MATCH_GROUP = 1;
 
-
     protected static final Pattern a_oStringPattern =  Pattern.compile(REGX_STRING);
     protected static final Pattern a_oIntegerPattern =  Pattern.compile(REGX_INTEGER);
     protected static final Pattern a_oRealPattern =  Pattern.compile(REGX_REAL);

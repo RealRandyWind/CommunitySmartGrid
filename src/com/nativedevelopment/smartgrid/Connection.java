@@ -10,6 +10,7 @@ public class Connection implements IConnection {
     protected Queue<Serializable> a_lToQueue = null;
     protected Queue<Serializable> a_lFromQueue = null;
     protected Queue<Serializable> a_lToLogQueue = null;
+    //protected Queue<Serializable> a_lRemote = null;
     private UUID a_oIdentifier = null;
     volatile private boolean a_isClose = false;
 

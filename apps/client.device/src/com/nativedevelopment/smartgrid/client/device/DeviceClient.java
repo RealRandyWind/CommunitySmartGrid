@@ -8,6 +8,7 @@ import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 import java.io.Serializable;
 import java.net.SocketAddress;
 import java.util.AbstractMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,8 +19,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	public static final String SETTINGS_KEYPREFIX_DATAREALTIME = "data.realtime.";
 	public static final String SETTINGS_KEYPREFIX_ACTIONCONTROLL = "action.control.";
-	public static final String SETTINGS_KEYPREFIX_MONITORING = "monitoring.";
-	public static final String SETTINGS_KEYPREFIX_BROADCAST = "broadcast.";
+	public static final String SETTINGS_KEYPREFIX_HEARTBEATMONITOR = "heartbeat.monitor.";
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
 
@@ -29,9 +29,10 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	private UUID a_oIdentifier = null;
 
-	private Queue<Serializable> a_lDataQueue = null;
-	private Queue<Serializable> a_lActionQueue = null;
-	private AbstractMap<Serializable,SocketAddress> a_lConnectionRegistry = null;
+	private Queue<Serializable> a_lDataQueue = null; // TODO IData
+	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
+	private Queue<Serializable> a_lConfigureConnectionQueue = null; // TODO ISettingsMap ? currently just a string
+	private Map<UUID, Serializable> a_lActionMap = null;
 
 	protected DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -58,6 +59,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		// TODO establish controll connection
 		Fx_EstablishActionControlConnection(null);
 		// TODO establish device connection
+
 		// TODO establish realtime data connection
 		Fx_EstablishRealTimeDataConnection(null);
 		// TODO establish monitoring connection
@@ -66,7 +68,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
-		a_lConnectionRegistry = new ConcurrentHashMap<>();
+		a_lConfigureConnectionQueue = new ConcurrentLinkedQueue<>();
+		a_lActionMap = new ConcurrentHashMap<>(); // TODO maybe not concurrent actions are fixed
 
 		Fx_EstablishMainConnection(null);
 
@@ -112,12 +115,38 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 			a_mLogManager.Warning("attempt of a null connection",0);
 			return null;
 		}
+		// TODO configure connections
+		//oConnection.Configure(oSettings);
 		a_mConnectionManager.AddConnection(oConnection);
 		return oConnection.GetIdentifier();
 	}
 
 	private void Fx_TerminateConnection(UUID iConnection) {
 		a_mConnectionManager.RemoveConnection(iConnection);
+	}
+
+	private void Fx_SetUpConnection() {
+		ISettingsMap oSettingsMap = (ISettingsMap) a_lConfigureConnectionQueue.poll();
+		if(oSettingsMap == null) {
+			return;
+		}
+		a_mLogManager.Warning("not yet implemented",0);
+	}
+
+	private void Fx_PerformAction() {
+		IAction oAction = (IAction) a_lActionQueue.poll();
+		if(oAction == null) {
+			return;
+		}
+		// TODO invoke at main loop
+		a_mLogManager.Warning("not yet implemented",0);
+	}
+
+	private void Fx_ProduceData() {
+		IData oData = null;
+		// TODO invoke at main loop
+		a_mLogManager.Warning("not yet implemented",0);
+		a_lDataQueue.add(oData);
 	}
 
 	@Override
