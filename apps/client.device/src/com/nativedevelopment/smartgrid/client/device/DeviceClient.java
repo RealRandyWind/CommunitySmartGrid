@@ -3,11 +3,8 @@ package com.nativedevelopment.smartgrid.client.device;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
-import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
-import java.net.SocketAddress;
-import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
@@ -31,7 +28,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
-	private Queue<Serializable> a_lConfigureConnectionQueue = null; // TODO ISettingsMap ? currently just a string
+	private Queue<Serializable> a_lConfigureConnectionQueue = null; // TODO IConfigureConnection
 	private Map<UUID, Serializable> a_lActionMap = null;
 
 	protected DeviceClient() {
@@ -126,7 +123,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	}
 
 	private void Fx_SetUpConnection() {
-		ISettingsMap oSettingsMap = (ISettingsMap) a_lConfigureConnectionQueue.poll();
+		IConfigureConnection oSettingsMap = (IConfigureConnection) a_lConfigureConnectionQueue.poll();
 		if(oSettingsMap == null) {
 			return;
 		}
