@@ -12,4 +12,5 @@ public interface ISettings {
     public void SetSpecial(String sSetting, String sValue);
     public void SetKeyPrefix(String sKeyPrefix);
     public Iterable<Map.Entry<String,Serializable>> GetAll();
+    // public ISetting[] ToSettings();
 }
