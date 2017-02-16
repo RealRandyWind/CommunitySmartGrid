@@ -12,9 +12,9 @@ public final class Serializer {
 	public static Serializable Deserialize(byte[] rawBytes, int nBufferCapacity) throws Exception {
 		ByteArrayInputStream oByteArray = new ByteArrayInputStream(rawBytes);
 		ObjectInput oObjectInput = new ObjectInputStream(oByteArray);
-		Serializable oSerializable = (Serializable)oObjectInput.readObject();
+		Serializable ptrSerializable = (Serializable)oObjectInput.readObject();
 		oObjectInput.close();
-		return oSerializable;
+		return ptrSerializable;
 	}
 
 	public static byte[] Serialize(Serializable oSerializable, int nBufferCapacity) throws Exception {

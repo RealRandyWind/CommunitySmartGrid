@@ -85,21 +85,21 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mConnectionManager.RemoveConnection(iConnection);
 	}
 
-	private UUID Fx_EstablishRealTimeDataConnection(UUID iConnection) {
+	private UUID EstablishRealTimeDataConnection(UUID iConnection) {
 		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
 		oConnection.SetFromQueue(a_lDataQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
-	private UUID Fx_EstablishActionControlConnection(UUID iConnection) {
+	private UUID EstablishActionControlConnection(UUID iConnection) {
 		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
 		oConnection.SetToQueue(a_lActionQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
-	private UUID Fx_EstablishConfigureConnectionConnection(UUID iConnection) {
+	private UUID EstablishConfigureConnectionConnection(UUID iConnection) {
 		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
 		oConnection.SetToQueue(a_lConfigureConnectionQueue);
 		a_mLogManager.Warning("not yet implemented",0);

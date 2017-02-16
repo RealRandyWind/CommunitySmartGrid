@@ -1,5 +1,6 @@
 package com.nativedevelopment.smartgrid.tests;
 
+import com.nativedevelopment.smartgrid.IAction;
 import com.nativedevelopment.smartgrid.IData;
 import com.nativedevelopment.smartgrid.MLogManager;
 import org.junit.After;
@@ -34,8 +35,10 @@ public class GeneratorTest implements ITestCase {
 		for (int iSample = 0; iSample < nSamples; ++iSample) {
 			IData oData = Generator.GenerateDataSensor(UUID.randomUUID(),iSample);
 			for (int iTuple = 0; iTuple < iSample; ++iTuple) {
-				System.out.printf("_DEBUG: %sdata %s.\n"
+				System.out.printf("_DEBUG: %sdata(%d,%d) %s.\n"
 						,MLogManager.MethodName()
+						,iSample
+						,iTuple
 						,Arrays.toString(oData.GetTuple(iTuple)));
 			}
 		}
@@ -62,28 +65,40 @@ public class GeneratorTest implements ITestCase {
 	@Test
 	public void testGenerateResult() throws Exception {
 		a_mLogManager.Test("begin",0);
-		fail("not yet implemented");
+		UUID[] lActions = new UUID[5];
+		for(int iAction = 0; iAction < lActions.length; ++iAction) {
+			lActions[iAction] = UUID.randomUUID();
+		}
+		int nSamples = 5;
+		for (int iSample = 0; iSample < nSamples; ++iSample) {
+			IData oData = Generator.GenerateResult(UUID.randomUUID(),iSample + 1, lActions);
+			for (int iTuple = 0; iTuple < iSample; ++iTuple) {
+				System.out.printf("_DEBUG: %sdata(%d,%d) %s.\n"
+						,MLogManager.MethodName()
+						,iSample
+						,iTuple
+						,Arrays.toString(oData.GetTuple(iTuple)));
+			}
+		}
 		a_mLogManager.Test("end",0);
 	}
 
 	@Test
-	public void testGenerateActionSensor() throws Exception {
+	public void testGenerateActionSensorMachineServer() throws Exception {
 		a_mLogManager.Test("begin",0);
-		fail("not yet implemented");
-		a_mLogManager.Test("end",0);
-	}
-
-	@Test
-	public void testGenerateActionMachine() throws Exception {
-		a_mLogManager.Test("begin",0);
-		fail("not yet implemented");
-		a_mLogManager.Test("end",0);
-	}
-
-	@Test
-	public void testGenerateActionServer() throws Exception {
-		a_mLogManager.Test("begin",0);
-		fail("not yet implemented");
+		UUID[] lActions = new UUID[5];
+		for(int iAction = 0; iAction < lActions.length; ++iAction) {
+			lActions[iAction] = UUID.randomUUID();
+		}
+		int nSamples = 5;
+		for (int iSample = 0; iSample < nSamples; ++iSample) {
+			IAction oAction = Generator.GenerateActionMachine(lActions);
+			System.out.printf("_DEBUG: %saction(%d) %s%s.\n"
+					,MLogManager.MethodName()
+					,iSample
+					,oAction.GetIdentifier()
+					,Arrays.toString(oAction.GetParameters()));
+		}
 		a_mLogManager.Test("end",0);
 	}
 }
