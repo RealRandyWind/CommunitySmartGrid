@@ -3,6 +3,7 @@ package com.nativedevelopment.smartgrid.client.device;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
+import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -60,8 +61,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_lConfigureConnectionQueue = new ConcurrentLinkedQueue<>();
 		a_lActionMap = new ConcurrentHashMap<>(); // TODO maybe not concurrent actions are fixed
 
-		Fx_EstablishMainConnection(null);
-
 		a_mLogManager.Success("",0);
 	}
 
@@ -69,13 +68,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		if(a_oInstance != null) { return a_oInstance; }
 		a_oInstance = new DeviceClient();
 		return a_oInstance;
-	}
-
-	private UUID Fx_EstablishMonitoringConnection(UUID iConnection) {
-		IConnection oConnection = null;
-		// TODO
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
 	}
 
 	private UUID Fx_EstablishRealTimeDataConnection(UUID iConnection) {
@@ -90,13 +82,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		oConnection.SetToQueue(a_lActionQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
-	}
-
-	private UUID Fx_EstablishMainConnection(UUID iConnection) {
-		IConnection oConnection = null;
-
-		a_mLogManager.Warning("not yet implemented",0);
-		return null; //oConnection.GetIdentifier();
 	}
 
 	private UUID Fx_EstablishConnection(IConnection oConnection) {
@@ -115,19 +100,21 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	}
 
 	private void Fx_ConfigureConnection() {
-		IConfigureConnection oSettingsMap = (IConfigureConnection) a_lConfigureConnectionQueue.poll();
-		if(oSettingsMap == null) {
+		Serializable oSerializable =  a_lConfigureConnectionQueue.poll();
+		if(oSerializable == null) {
 			return;
 		}
+		IConfigureConnection oSettingsMap = (IConfigureConnection) oSerializable;
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
 	}
 
 	private void Fx_PerformAction() {
-		IAction oAction = (IAction) a_lActionQueue.poll();
-		if(oAction == null) {
+		Serializable oSerializable = a_lActionQueue.poll();
+		if(oSerializable == null) {
 			return;
 		}
+		IAction oAction = (IAction) oSerializable;
 		// TODO invoke at main loop
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
@@ -151,15 +138,11 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	@Override
 	public void Run() {
 		while(!IsClosing()) {
-			if(a_bIsIdle) {
-				// TODO move TimeOutProcedure to abstract object Timer
-				// Timer.TimeOutProcedure();
-			}
+			// Timer.TimeOutProcedure(a_bIsIdle);
 			a_bIsIdle = true;
 			Fx_ProduceData();
 			Fx_PerformAction();
 			Fx_ConfigureConnection();
-
 			Exit();
 		}
 	}
