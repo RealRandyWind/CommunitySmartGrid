@@ -47,6 +47,8 @@
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/slf4j-api-1.7.21.jar!/" />
         </CLASSES>
         <JAVADOC>
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-javadoc.jar!/" />
@@ -67,8 +69,10 @@
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
+          <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/amqp-client-4.0.2-sources.jar!/" />
@@ -151,6 +155,9 @@
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/bson-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-core-3.4.2.jar!/" />
         </CLASSES>
         <JAVADOC>
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-javadoc.jar!/" />
@@ -171,8 +178,10 @@
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
+          <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/mongodb-driver-3.4.2-sources.jar!/" />
@@ -206,14 +215,18 @@
           <root url="jar://$MODULE_DIR$/deps/slf4j-api-1.7.23.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-api-1.7.23.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/slf4j-api-1.7.23.jar!/" />
         </CLASSES>
         <JAVADOC>
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-javadoc.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-javadoc.jar!/" />
+          <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
+          <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-sources.jar!/" />
           <root url="jar://$MODULE_DIR$/deps/slf4j-simple-1.7.23-sources.jar!/" />

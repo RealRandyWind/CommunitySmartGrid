@@ -14,22 +14,20 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
 
-	public static final String SETTINGS_KEYPREFIX_DATAREALTIME = "data.realtime.";
-	public static final String SETTINGS_KEYPREFIX_ACTIONCONTROLL = "action.control.";
-	public static final String SETTINGS_KEYPREFIX_HEARTBEATMONITOR = "heartbeat.monitor.";
-
 	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
+	public static final String APP_SETTINGS_RECOVERY_DEFAULT_PATH = "client.device.recovery.dump";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
 	private MConnectionManager a_mConnectionManager = null;
 
 	private UUID a_oIdentifier = null;
+	private boolean a_bIsIdle = true;
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
 	private Queue<Serializable> a_lConfigureConnectionQueue = null; // TODO IConfigureConnection
-	private Map<UUID, Serializable> a_lActionMap = null;
+	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> iInstruction
 
 	protected DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -53,15 +51,9 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		ISettings oDeviceClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
 		Configure(oDeviceClientSettings);
 
-		// TODO establish controll connection
-		Fx_EstablishActionControlConnection(null);
-		// TODO establish device connection
+		/* temporary configuration begin */
 
-		// TODO establish realtime data connection
-		Fx_EstablishRealTimeDataConnection(null);
-		// TODO establish monitoring connection
-		Fx_EstablishMonitoringConnection(null);
-
+		/* temporary configuration end */
 
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
@@ -122,12 +114,13 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mConnectionManager.RemoveConnection(iConnection);
 	}
 
-	private void Fx_SetUpConnection() {
+	private void Fx_ConfigureConnection() {
 		IConfigureConnection oSettingsMap = (IConfigureConnection) a_lConfigureConnectionQueue.poll();
 		if(oSettingsMap == null) {
 			return;
 		}
 		a_mLogManager.Warning("not yet implemented",0);
+		a_bIsIdle = false;
 	}
 
 	private void Fx_PerformAction() {
@@ -137,6 +130,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		}
 		// TODO invoke at main loop
 		a_mLogManager.Warning("not yet implemented",0);
+		a_bIsIdle = false;
 	}
 
 	private void Fx_ProduceData() {
@@ -144,6 +138,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		// TODO invoke at main loop
 		a_mLogManager.Warning("not yet implemented",0);
 		a_lDataQueue.add(oData);
+		a_bIsIdle = false;
 	}
 
 	@Override
@@ -156,7 +151,15 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	@Override
 	public void Run() {
 		while(!IsClosing()) {
-			// TODO handel incoming actions for the server itself.
+			if(a_bIsIdle) {
+				// TODO move TimeOutProcedure to abstract object Timer
+				// Timer.TimeOutProcedure();
+			}
+			a_bIsIdle = true;
+			Fx_ProduceData();
+			Fx_PerformAction();
+			Fx_ConfigureConnection();
+
 			Exit();
 		}
 	}
