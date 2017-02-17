@@ -138,14 +138,13 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		}
 		IAction oAction = (IAction) ptrAction;
 		// TODO sub implementation
-		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
 	}
 
 	private void Fx_ProduceData() {
-		IData oData = Generator.GenerateDataSensor(a_oIdentifier, 1);
+		int nTuples = 1;
+		IData oData = Generator.GenerateDataSensor(a_oIdentifier, nTuples);
 		// TODO sub implementation
-		a_mLogManager.Warning("not yet implemented",0);
 		a_lDataQueue.add(oData);
 		a_bIsIdle = false;
 	}

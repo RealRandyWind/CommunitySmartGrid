@@ -6,6 +6,7 @@ import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -110,7 +111,20 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	}
 
 	private void Fx_Analyze() {
-		// TODO do shit
+		Serializable ptrData = a_lDataQueue.poll();
+		if(ptrData == null) {
+			return;
+		}
+		IData oData = (IData) ptrData;
+		// TODO stub implementation
+		//IAction oAction = Generator.GenerateActionSensor(null);
+		IAction oAction = Generator.GenerateActionMachine(null);
+		UUID[] lActions = new UUID[1];
+		lActions[0] = oAction.GetIdentifier();
+		int nTuple = 1;
+		IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
+		a_lActionQueue.add(oAction);
+		a_lResultQueue.add(oResult);
 		a_bIsIdle = false;
 	}
 

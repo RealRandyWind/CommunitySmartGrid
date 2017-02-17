@@ -90,6 +90,7 @@ public class RabbitMQProducerConnection extends Connection {
 			while(!IsClose()){
 				byte[] rawBytes = Fx_Produce();
 				if(rawBytes == null) { continue; }
+				//TODO allowe variable routing key
 				a_oRabbitMQChannel.basicPublish(a_sToExchange, a_sRoutingKey, null, rawBytes);
 			}
 		} catch (Exception oException) {
