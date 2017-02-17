@@ -69,6 +69,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	}
 
 	private UUID Fx_EstablishConnection(IConnection oConnection) {
+
 		a_mConnectionManager.AddConnection(oConnection);
 		return oConnection.GetIdentifier();
 	}
@@ -77,22 +78,22 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_mConnectionManager.RemoveConnection(iConnection);
 	}
 
-	public UUID EstablishActionControlConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
+	public UUID EstablishActionControlConnection(IConfigureConnection oConfigure) {
+		IConnection oConnection = new RabbitMQProducerConnection(oConfigure.GetIdentifier());
 		oConnection.SetFromQueue(a_lActionQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
-	public UUID EstablishRealtimeDataConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+	public UUID EstablishRealtimeDataConnection(IConfigureConnection oConfigure) {
+		IConnection oConnection = new RabbitMQConsumerConnection(oConfigure.GetIdentifier());
 		oConnection.SetToQueue(a_lDataQueue);
 		a_mLogManager.Warning("not yet implemented",0);
 		return Fx_EstablishConnection(oConnection);
 	}
 
-	public UUID EstablishResultsConnection(UUID iConnection) {
-		IConnection oConnection = new MongoDBStorageConnection(iConnection);
+	public UUID EstablishResultsConnection(IConfigureConnection oConfigure) {
+		IConnection oConnection = new MongoDBStorageConnection(oConfigure.GetIdentifier());
 		oConnection.SetFromQueue(a_lResultQueue);
 		a_mLogManager.Warning("not yet implemented",0); // TODO MongoDBConnection
 		return Fx_EstablishConnection(oConnection);

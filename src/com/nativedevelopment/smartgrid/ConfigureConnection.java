@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class ConfigureConnection implements IConfigureConnection {
 	private UUID a_oTypeIdentifier = null;
+	private UUID a_oConnectionIdentifier = null;
 	private ISetting[] a_lSettings = null;
 
 	public ConfigureConnection(UUID oTypeIdentifier, ISetting[] lSettings) {
@@ -15,6 +16,11 @@ public class ConfigureConnection implements IConfigureConnection {
 	@Override
 	public UUID GetTypeIdentifier() {
 		return a_oTypeIdentifier;
+	}
+
+	@Override
+	public UUID GetIdentifier() {
+		return a_oConnectionIdentifier;
 	}
 
 	@Override

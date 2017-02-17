@@ -3,7 +3,6 @@ package com.nativedevelopment.smartgrid.client.device;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
-import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -23,6 +22,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private MConnectionManager a_mConnectionManager = null;
 
 	private UUID a_oIdentifier = null;
+	private UUID a_iSettings = null;
+	private UUID a_iRecovery = null;
 	private boolean a_bIsIdle = true;
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
@@ -50,6 +51,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mConnectionManager.SetUp();
 
 		ISettings oDeviceClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
+		a_iSettings = oDeviceClientSettings.GetIdentifier();
 		Configure(oDeviceClientSettings);
 
 		/* temporary configuration begin */
@@ -70,13 +72,12 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		return a_oInstance;
 	}
 
-	private UUID Fx_EstablishConnection(IConnection oConnection) {
+	private UUID Fx_EstablishConnection(IConnection oConnection, ISettings oConfigure) {
 		if(oConnection == null) {
 			a_mLogManager.Warning("attempt of a null connection",0);
 			return null;
 		}
-		// TODO configure connections
-		//oConnection.Configure(oSettings);
+		oConnection.Configure(oConfigure);
 		a_mConnectionManager.AddConnection(oConnection);
 		return oConnection.GetIdentifier();
 	}
@@ -85,25 +86,22 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mConnectionManager.RemoveConnection(iConnection);
 	}
 
-	private UUID EstablishRealTimeDataConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQProducerConnection(iConnection);
+	private UUID EstablishRealTimeDataConnection(ISettings oConfigure) {
+		IConnection oConnection = new RabbitMQProducerConnection(oConfigure.GetIdentifier());
 		oConnection.SetFromQueue(a_lDataQueue);
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
+		return Fx_EstablishConnection(oConnection, oConfigure);
 	}
 
-	private UUID EstablishActionControlConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+	private UUID EstablishActionControlConnection(ISettings oConfigure) {
+		IConnection oConnection = new RabbitMQConsumerConnection(oConfigure.GetIdentifier());
 		oConnection.SetToQueue(a_lActionQueue);
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
+		return Fx_EstablishConnection(oConnection, oConfigure);
 	}
 
-	private UUID EstablishConfigureConnectionConnection(UUID iConnection) {
-		IConnection oConnection = new RabbitMQConsumerConnection(iConnection);
+	private UUID EstablishConfigureConnectionConnection(ISettings oConfigure) {
+		IConnection oConnection = new RabbitMQConsumerConnection(oConfigure.GetIdentifier());
 		oConnection.SetToQueue(a_lConfigureConnectionQueue);
-		a_mLogManager.Warning("not yet implemented",0);
-		return Fx_EstablishConnection(oConnection);
+		return Fx_EstablishConnection(oConnection, oConfigure);
 	}
 
 	private void Fx_ConfigureConnection() {
@@ -112,8 +110,25 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 			return;
 		}
 		IConfigureConnection oConfigureConnection = (IConfigureConnection) ptrConfigureConnection;
+
+		// TODO check if type connection exists than execute.
+
+		ISettings oConfigure = Fx_CreateConnectionSettings(oConfigureConnection);
+		//EstablishConfigureConnectionConnection(oConfigure);
+		//EstablishActionControlConnection(oConfigure);
+		//EstablishRealTimeDataConnection(oConfigure);
+
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
+	}
+
+	private ISettings Fx_CreateConnectionSettings(IConfigureConnection oConfigure) {
+		ISettings oSettings = new Settings(oConfigure.GetIdentifier());
+		for (ISetting oSetting : oConfigure.GetSettings()) {
+			oSettings.Set(oSetting.GetKey(), oSetting.GetValue());
+		}
+		a_mSettingsManager.AddSettings(oSettings);
+		return oSettings;
 	}
 
 	private void Fx_PerformAction() {
@@ -122,14 +137,14 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 			return;
 		}
 		IAction oAction = (IAction) ptrAction;
-		// TODO invoke at main loop
+		// TODO sub implementation
 		a_mLogManager.Warning("not yet implemented",0);
 		a_bIsIdle = false;
 	}
 
 	private void Fx_ProduceData() {
-		IData oData = null;
-		// TODO invoke at main loop
+		IData oData = Generator.GenerateDataSensor(a_oIdentifier, 1);
+		// TODO sub implementation
 		a_mLogManager.Warning("not yet implemented",0);
 		a_lDataQueue.add(oData);
 		a_bIsIdle = false;

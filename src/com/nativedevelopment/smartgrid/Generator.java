@@ -1,4 +1,4 @@
-package com.nativedevelopment.smartgrid.tests;
+package com.nativedevelopment.smartgrid;
 
 import com.nativedevelopment.smartgrid.Action;
 import com.nativedevelopment.smartgrid.Data;

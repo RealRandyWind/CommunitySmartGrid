@@ -1,5 +1,6 @@
 package com.nativedevelopment.smartgrid.tests;
 
+import com.nativedevelopment.smartgrid.Generator;
 import com.nativedevelopment.smartgrid.IAction;
 import com.nativedevelopment.smartgrid.IData;
 import com.nativedevelopment.smartgrid.MLogManager;
@@ -7,11 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.UUID;
-
-import static org.junit.Assert.*;
 
 public class GeneratorTest implements ITestCase {
 	MLogManager a_mLogManager = null;
