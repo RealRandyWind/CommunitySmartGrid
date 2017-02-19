@@ -22,6 +22,7 @@ public class RabbitMQProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
+	public static final String SETTINGS_KEY_ISAUTHENTICATE = "isauthenticate";
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
@@ -30,13 +31,9 @@ public class RabbitMQProducerConnection extends Connection {
 	private String a_sToExchange = null;
 	private String a_sTypeExchange = null;
 	private String a_sRoutingKey = null;
+	private boolean a_bIsAuthenticate = false;
 	private String a_sUserName = null;
 	private String a_sUserPassword = null;
-
-	private int a_nCheckTime = 0;
-	private int a_nCheckTimeLowerBound = 0;
-	private int a_nCheckTimeUpperBound = 0;
-	private int a_nDeltaCheckTime = 0;
 
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
 	private Channel a_oRabbitMQChannel = null;
@@ -68,6 +65,7 @@ public class RabbitMQProducerConnection extends Connection {
 		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
 		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
 		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
+		a_bIsAuthenticate = (boolean)oConfigurations.Get(SETTINGS_KEY_ISAUTHENTICATE);
 		a_sUserName = oConfigurations.GetString(SETTINGS_KEY_USERNAME);
 		a_sUserPassword = oConfigurations.GetString(SETTINGS_KEY_USERPASSWORD);
 
@@ -80,9 +78,10 @@ public class RabbitMQProducerConnection extends Connection {
 			a_oRabbitMQConnectionFactory = new ConnectionFactory();
 			a_oRabbitMQConnectionFactory.setHost(a_sToHost);
 			a_oRabbitMQConnectionFactory.setPort(a_nThroughPort);
-			// TODO fix support for authentication
-			//a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
-			//a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
+			if(a_bIsAuthenticate) {
+				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
+				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
+			}
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
 			a_oRabbitMQChannel.exchangeDeclare(a_sToExchange, a_sTypeExchange);

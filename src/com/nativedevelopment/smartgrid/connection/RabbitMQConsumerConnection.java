@@ -18,6 +18,7 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	public static final String SETTINGS_KEY_ROUTINGKEY = "routing.key";
 	public static final String SETTINGS_KEY_ISHANDSHAKE = "ishandshake";
 
+	public static final String SETTINGS_KEY_ISAUTHENTICATE = "isauthenticate";
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
@@ -28,6 +29,7 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 	private String a_sFromQueue = null;
 	private String a_sRoutingKey = null;
 	private boolean a_bIsHandshake = false;
+	private boolean a_bIsAuthenticate = false;
 	private String a_sUserName = null;
 	private String a_sUserPassword = null;
 
@@ -55,6 +57,7 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 		a_sTypeExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGETYPE);
 		a_sRoutingKey = oConfigurations.GetString(SETTINGS_KEY_ROUTINGKEY);
 		a_bIsHandshake = (boolean)oConfigurations.Get(SETTINGS_KEY_ISHANDSHAKE);
+		a_bIsAuthenticate = (boolean)oConfigurations.Get(SETTINGS_KEY_ISAUTHENTICATE);
 		a_sUserName = oConfigurations.GetString(SETTINGS_KEY_USERNAME);
 		a_sUserPassword = oConfigurations.GetString(SETTINGS_KEY_USERPASSWORD);
 	}
@@ -65,9 +68,10 @@ public class RabbitMQConsumerConnection extends Connection implements Consumer {
 			a_oRabbitMQConnectionFactory = new ConnectionFactory();
 			a_oRabbitMQConnectionFactory.setHost(a_sFromHost);
 			a_oRabbitMQConnectionFactory.setPort(a_nThroughPort);
-			// TODO fix support for authentication
-			//a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
-			//a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
+			if(a_bIsAuthenticate) {
+				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
+				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
+			}
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
 			a_oRabbitMQChannel.exchangeDeclare(a_sFromExchange, a_sTypeExchange);

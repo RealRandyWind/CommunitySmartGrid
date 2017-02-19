@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 public class RabbitMQConnectionTest implements ITestCase {
 	static final String SETTINGS_VALUE_HOST = "192.168.99.100";
 	static final int SETTINGS_VALUE_PORT = 5672;
-	static final String SETTINGS_VALUE_USER = "user";
-	static final String SETTINGS_VALUE_PASSWORD = "password";
+	static final String SETTINGS_VALUE_USER = "guest";
+	static final String SETTINGS_VALUE_PASSWORD = "guest";
 
 	public static final int TEST_MSG_COUNT = 20;
 
@@ -52,6 +52,7 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"test");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISHANDSHAKE,true);
+		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,"");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERNAME,SETTINGS_VALUE_USER);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,SETTINGS_VALUE_PASSWORD);
@@ -65,8 +66,9 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"test");
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTINGKEY,"");
-		a_oConsumerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERNAME,SETTINGS_VALUE_USER);
-		a_oConsumerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERPASSWORD,SETTINGS_VALUE_PASSWORD);
+		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
+		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERNAME,SETTINGS_VALUE_USER);
+		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERPASSWORD,SETTINGS_VALUE_PASSWORD);
 	}
 
 	@After
