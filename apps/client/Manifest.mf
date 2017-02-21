@@ -1,3 +1,0 @@
-Main-Class: com.nativedevelopment.smartgrid.client.Client
-Class-Path: smartgrid.jar
-Manifest-Version: 0.1.1

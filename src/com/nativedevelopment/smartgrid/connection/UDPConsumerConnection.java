@@ -12,10 +12,12 @@ public class UDPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_LOCALADDRESS = "local.address";
 	public static final String SETTINGS_KEY_LOCALPORT = "local.port";
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
+	public static final String SETTINGS_KEY_ISPACKAGEUNWRAP = "ispackageunwrap";
 
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
+	private boolean a_bIsPackageUnwrap = false;
 
 	protected Queue<Serializable> a_lToQueue = null;
 	private Set<DatagramChannel> a_lChannels = null;
@@ -30,14 +32,20 @@ public class UDPConsumerConnection extends Connection {
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
-		if(a_lToQueue == null) {
-			return;
+		if(a_lToQueue == null) { return; }
+		Serializable ptrSerializable = Serializer.Deserialize(rawBytes,0);
+		if(ptrSerializable == null) { return; }
+		if(a_bIsPackageUnwrap) {
+			IPackage oPackage = (IPackage)ptrSerializable;
+			a_lToQueue.offer(oPackage.GetContent());
+		} else {
+			a_lToQueue.offer(ptrSerializable);
 		}
-		a_lToQueue.offer(Serializer.Deserialize(rawBytes,a_nBufferCapacity));
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
+		a_bIsPackageUnwrap = (boolean)oConfigurations.Get(SETTINGS_KEY_ISPACKAGEUNWRAP);
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
 		a_sLocalAddress = oConfigurations.GetString(SETTINGS_KEY_LOCALADDRESS);
 		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);

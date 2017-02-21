@@ -1,9 +1,7 @@
 package com.nativedevelopment.smartgrid.connection;
 
+import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Serializer;
 import com.rabbitmq.client.*;
 
 import java.io.*;
@@ -17,7 +15,7 @@ public class RabbitMQConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_EXCHANGETYPE = "exchange.type";
 	public static final String SETTINGS_KEY_ROUTINGKEY = "routing.key";
 	public static final String SETTINGS_KEY_ISHANDSHAKE = "ishandshake";
-
+	public static final String SETTINGS_KEY_ISPACKAGEUNWRAP = "ispackageunwrap";
 	public static final String SETTINGS_KEY_ISAUTHENTICATE = "isauthenticate";
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
@@ -32,6 +30,7 @@ public class RabbitMQConsumerConnection extends Connection {
 	private boolean a_bIsAuthenticate = false;
 	private String a_sUserName = null;
 	private String a_sUserPassword = null;
+	private boolean a_bIsPackageUnwrap = false;
 
 	protected Queue<Serializable> a_lToQueue = null;
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
@@ -47,10 +46,15 @@ public class RabbitMQConsumerConnection extends Connection {
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
-		if(a_lToQueue == null) {
-			return;
+		if(a_lToQueue == null) { return; }
+		Serializable ptrSerializable = Serializer.Deserialize(rawBytes,0);
+		if(ptrSerializable == null) { return; }
+		if(a_bIsPackageUnwrap) {
+			IPackage oPackage = (IPackage)ptrSerializable;
+			a_lToQueue.offer(oPackage.GetContent());
+		} else {
+			a_lToQueue.offer(ptrSerializable);
 		}
-		a_lToQueue.offer(Serializer.Deserialize(rawBytes,0));
 	}
 
 	@Override
@@ -60,6 +64,7 @@ public class RabbitMQConsumerConnection extends Connection {
 		a_sFromExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sTypeExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGETYPE);
 		a_sRoutingKey = oConfigurations.GetString(SETTINGS_KEY_ROUTINGKEY);
+		a_bIsPackageUnwrap = (boolean)oConfigurations.Get(SETTINGS_KEY_ISPACKAGEUNWRAP);
 		a_bIsHandshake = (boolean)oConfigurations.Get(SETTINGS_KEY_ISHANDSHAKE);
 		a_bIsAuthenticate = (boolean)oConfigurations.Get(SETTINGS_KEY_ISAUTHENTICATE);
 		a_sUserName = oConfigurations.GetString(SETTINGS_KEY_USERNAME);

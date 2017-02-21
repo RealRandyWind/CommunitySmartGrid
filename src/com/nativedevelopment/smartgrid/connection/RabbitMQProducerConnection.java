@@ -14,11 +14,10 @@ public class RabbitMQProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_EXCHANGE= "exchange";
 	public static final String SETTINGS_KEY_EXCHANGETYPE = "exchange.type";
 	public static final String SETTINGS_KEY_ROUTINGKEY = "routing.key";
-
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
-
+	public static final String SETTINGS_KEY_ISPACKAGEWRAPPED = "ispackagewrapped";
 	public static final String SETTINGS_KEY_ISAUTHENTICATE = "isauthenticate";
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
@@ -32,6 +31,7 @@ public class RabbitMQProducerConnection extends Connection {
 	private String a_sUserName = null;
 	private String a_sUserPassword = null;
 	private int a_nBufferCapacity = 0;
+	private boolean a_bIsPackageWrapped = false;
 
 	protected TimeOut a_oTimeOut = null;
 	protected Queue<Serializable> a_lFromQueue = null;
@@ -46,9 +46,7 @@ public class RabbitMQProducerConnection extends Connection {
 	}
 
 	private Serializable Fx_Produce() throws Exception {
-		if(a_lFromQueue == null) {
-			return null;
-		}
+		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
 		a_oTimeOut.Routine(ptrSerializable==null);
 		return ptrSerializable;
@@ -65,6 +63,7 @@ public class RabbitMQProducerConnection extends Connection {
 		a_sToExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sTypeExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGETYPE);
 		a_sRoutingKey = oConfigurations.GetString(SETTINGS_KEY_ROUTINGKEY);
+		a_bIsPackageWrapped = (boolean)oConfigurations.Get(SETTINGS_KEY_ISPACKAGEWRAPPED);
 		a_bIsAuthenticate = (boolean)oConfigurations.Get(SETTINGS_KEY_ISAUTHENTICATE);
 		a_sUserName = oConfigurations.GetString(SETTINGS_KEY_USERNAME);
 		a_sUserPassword = oConfigurations.GetString(SETTINGS_KEY_USERPASSWORD);
@@ -95,7 +94,8 @@ public class RabbitMQProducerConnection extends Connection {
 				if(rawBytes == null) { continue; }
 				if(a_bIsPackageWrapped) {
 					IPackage oPackage = (IPackage) ptrSerializable;
-					String sRoutingKey = oPackage.GetRoutIdentifier().toString();
+					UUID iRoute = oPackage.GetRoutIdentifier();
+					String sRoutingKey = (iRoute == null ? a_sRoutingKey : iRoute.toString());
 					a_oRabbitMQChannel.basicPublish(a_sToExchange, sRoutingKey, null, rawBytes);
 				} else {
 					a_oRabbitMQChannel.basicPublish(a_sToExchange, a_sRoutingKey, null, rawBytes);

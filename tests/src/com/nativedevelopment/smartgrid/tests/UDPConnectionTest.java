@@ -21,6 +21,7 @@ public class UDPConnectionTest implements ITestCase {
 	static final int SETTINGS_VALUE_BUFFERCAPACITY = 32;
 	static final String SETTINGS_VALUE_HOST = "localhost";
 	static final int SETTINGS_VALUE_PORT = 55535;
+	static final boolean SETTINGS_VALUE_ISPACKAGEUNWRAP = false;
 
 	public static final int TEST_MSG_COUNT = 20;
 
@@ -53,13 +54,12 @@ public class UDPConnectionTest implements ITestCase {
 
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,55539);
-
 		//a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
+		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,SETTINGS_VALUE_ISPACKAGEUNWRAP);
 
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
-
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);

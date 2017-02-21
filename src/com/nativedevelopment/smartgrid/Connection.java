@@ -10,7 +10,6 @@ public class Connection implements IConnection {
     private UUID a_oIdentifier = null;
     protected Queue<Serializable> a_lToLogQueue = null;
     volatile private boolean a_bIsClose = false;
-    protected boolean a_bIsPackageWrapped = false;
 
     public Connection(UUID oIdentifier) {
         a_oThread = new Thread(this);

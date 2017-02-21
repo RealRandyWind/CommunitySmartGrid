@@ -3,7 +3,6 @@ package com.nativedevelopment.smartgrid.client.device;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
-import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -14,6 +13,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
+	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
+	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
+	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "client.device.dump";
@@ -32,7 +34,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
-	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> iInstruction
+	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> IInstruction
 
 	protected DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -113,6 +115,9 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public void Configure(ISettings oConfigurations) {
 		Serializable oIdentifier = oConfigurations.Get(SETTINGS_KEY_IDENTIFIER);
 		a_oIdentifier = oIdentifier == null ? UUID.randomUUID() : UUID.fromString((String)oIdentifier);
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 		a_mLogManager.Success("configured",0);
 	}
 

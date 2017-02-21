@@ -56,9 +56,7 @@ public class TCPProducerConnection extends Connection {
 	}
 
 	private boolean Fx_CheckConnection(SocketChannel oChannel) throws Exception {
-		if(oChannel.isConnected()) {
-			return true;
-		}
+		if(oChannel.isConnected()) { return true; }
 		a_lChannels.remove(oChannel);
 		System.out.printf("_WARNING: %slost connection \"%s\"\n"
 				, MLogManager.MethodName()
@@ -67,9 +65,7 @@ public class TCPProducerConnection extends Connection {
 	}
 
 	private Serializable Fx_Produce() throws Exception {
-		if(a_lFromQueue == null) {
-			return null;
-		}
+		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
 		a_oTimeOut.Routine(ptrSerializable==null);
 		return ptrSerializable;

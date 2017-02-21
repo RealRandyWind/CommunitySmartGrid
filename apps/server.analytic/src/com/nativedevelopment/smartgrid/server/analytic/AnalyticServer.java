@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AnalyticServer extends Main implements IAnalyticServer, IConfigurable {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
+	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
+	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
+	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "server.analytic.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "server.analytic.dump";
@@ -133,6 +136,9 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	public void Configure(ISettings oConfigurations) {
 		Serializable oIdentifier = oConfigurations.Get(SETTINGS_KEY_IDENTIFIER);
 		a_oIdentifier = oIdentifier == null ? UUID.randomUUID() : UUID.fromString((String)oIdentifier);
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 		a_mLogManager.Success("configured",0);
 	}
 

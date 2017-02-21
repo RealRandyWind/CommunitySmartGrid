@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 public class TCPConnectionTest implements ITestCase {
 	static final int SETTINGS_VALUE_BUFFERCAPACITY = 64;
 	static final String SETTINGS_VALUE_HOST = "localhost";
+	static final boolean SETTINGS_VALUE_ISPACKAGEUNWRAP = false;
 
 	public static final int TEST_MSG_COUNT = 20;
 
@@ -52,17 +53,16 @@ public class TCPConnectionTest implements ITestCase {
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,55539);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
-
-		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
-		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
-
-		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-
+		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,SETTINGS_VALUE_ISPACKAGEUNWRAP);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+
+		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
+		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
+		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 
 		SocketAddress oReceiverAddress1 = new InetSocketAddress(SETTINGS_VALUE_HOST,55539);
 		SocketAddress oReceiverAddress2 = new InetSocketAddress(SETTINGS_VALUE_HOST,55540);
