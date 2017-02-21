@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Serializer;
+import com.nativedevelopment.smartgrid.*;
 
 import java.io.*;
 import java.net.SocketAddress;
@@ -23,13 +20,15 @@ public class UDPProducerConnection extends Connection{
 	private int a_nBufferCapacity = 0;
 	private int a_nDeltaConnections = 0;
 
+	protected TimeOut a_oTimeOut = null;
+	protected Queue<Serializable> a_lRemoteQueue = null;
+	protected Queue<Serializable> a_lFromQueue = null;
 	private Set<DatagramChannel> a_lChannels = null;
-	private Queue<Serializable> a_lRemoteQueue = null;
-	private Queue<Serializable> a_lFromQueue = null;
 
 	public UDPProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_lChannels = new HashSet<>();
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void SetRemoteQueue(Queue<Serializable> lRemoteQueue) {
@@ -68,26 +67,23 @@ public class UDPProducerConnection extends Connection{
 		return false;
 	}
 
-	private byte[] Fx_Produce() throws Exception {
+	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) {
 			return null;
 		}
-		Serializable oSerializable = a_lFromQueue.poll();
-		if(TimeOutRoutine(oSerializable==null)) {
-			return null;
-		}
-		return Serializer.Serialize(oSerializable,a_nBufferCapacity);
+		Serializable ptrSerializable = a_lFromQueue.poll();
+		a_oTimeOut.Routine(ptrSerializable==null);
+		return ptrSerializable;
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
-		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
-		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
-		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
 		a_nDeltaConnections = (int)oConfigurations.Get(SETTINGS_KEY_DELTACONNECTIONS);
-		
-		a_nCheckTime = a_nCheckTimeLowerBound;
+
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override
@@ -97,8 +93,9 @@ public class UDPProducerConnection extends Connection{
 
 			while (!IsClose()) {
 				Fx_EstablishConnections();
-
-				byte[] rawBytes = Fx_Produce();
+				Serializable ptrSerializable = Fx_Produce();
+				if(ptrSerializable == null) { continue; }
+				byte[] rawBytes = Serializer.Serialize(ptrSerializable,a_nBufferCapacity);
 				if(rawBytes == null) { continue; }
 				oByteBuffer.clear();
 				oByteBuffer.put(rawBytes,0,rawBytes.length);

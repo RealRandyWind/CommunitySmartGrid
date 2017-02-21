@@ -33,10 +33,10 @@ public class RabbitMQConsumerConnection extends Connection {
 	private String a_sUserName = null;
 	private String a_sUserPassword = null;
 
+	protected Queue<Serializable> a_lToQueue = null;
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
 	private Channel a_oRabbitMQChannel = null;
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
-	private Queue<Serializable> a_lToQueue = null;
 
 	public RabbitMQConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);

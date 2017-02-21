@@ -18,6 +18,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "server.analytic.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "server.analytic.dump";
+	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCER_PREFIX = "action.control.producer.";
+	public static final String APP_CONNECTION_DATAREAILTIMECONSUMER_PREFIX = "data.realtime.consumer.";
+	public static final String APP_CONNECTION_RESULTSTORE_PREFIX = "result.store.";
+	public static final String APP_CONNECTION_STATUSMONITORPRODUCER_PREFIX = "status.monitor.producer.";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
@@ -26,6 +30,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	private UUID a_oIdentifier = null;
 	private UUID a_iSettings = null;
 	private boolean a_bIsIdle = true;
+
+	private TimeOut a_oTimeOut = null;
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
@@ -37,6 +43,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_mConnectionManager = MConnectionManager.GetInstance();
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void ShutDown() {
@@ -64,25 +71,35 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		/* temporary configuration begin */
 		RabbitMQConsumerConnection oDataRealtimeConsumer = new RabbitMQConsumerConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_DATAREAILTIMECONSUMER_PREFIX);
 		oDataRealtimeConsumer.SetToQueue(a_lDataQueue);
 		oDataRealtimeConsumer.Configure(oAnalyticServerSettings);
 		a_mConnectionManager.AddConnection(oDataRealtimeConsumer);
 
 		RabbitMQProducerConnection oActionControlProducer = new RabbitMQProducerConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLPRODUCER_PREFIX);
 		oActionControlProducer.SetFromQueue(a_lActionQueue);
 		oActionControlProducer.Configure(oAnalyticServerSettings);
 		a_mConnectionManager.AddConnection(oActionControlProducer);
 
-		MongoDBStorageConnection oResultStoreProducer = new MongoDBStorageConnection(null);
-		oResultStoreProducer.SetFromQueue(a_lResultQueue);
-		oResultStoreProducer.Configure(oAnalyticServerSettings);
-		a_mConnectionManager.AddConnection(oResultStoreProducer);
+		MongoDBStorageConnection oResultStore = new MongoDBStorageConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_RESULTSTORE_PREFIX);
+		oResultStore.SetFromQueue(a_lResultQueue);
+		oResultStore.Configure(oAnalyticServerSettings);
+		a_mConnectionManager.AddConnection(oResultStore);
 
 		UDPProducerConnection oStatusMonitorProducer = new UDPProducerConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_STATUSMONITORPRODUCER_PREFIX);
 		oStatusMonitorProducer.SetFromQueue(a_lStatusQueue);
 		oStatusMonitorProducer.SetRemoteQueue(a_lObserverQueue);
 		oStatusMonitorProducer.Configure(oAnalyticServerSettings);
 		a_mConnectionManager.AddConnection(oStatusMonitorProducer);
+
+		oAnalyticServerSettings.SetKeyPrefix("");
+		a_mConnectionManager.EstablishConnection(oDataRealtimeConsumer.GetIdentifier());
+		a_mConnectionManager.EstablishConnection(oActionControlProducer.GetIdentifier());
+		a_mConnectionManager.EstablishConnection(oResultStore.GetIdentifier());
+		a_mConnectionManager.EstablishConnection(oStatusMonitorProducer.GetIdentifier());
 		/* temporary configuration end */
 
 		a_mLogManager.Success("",0);
@@ -121,11 +138,17 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	@Override
 	public void Run() {
-		while(!IsClosing()) {
-			// Timer.TimeOutProcedure(a_bIsIdle);
-			a_bIsIdle = true;
-			Fx_Analyze();
-			Exit();
+		try {
+			while(!IsClosing()) {
+				a_oTimeOut.Routine(a_bIsIdle);
+				a_bIsIdle = true;
+				Fx_Analyze();
+				Exit();  // TODO remove
+			}
+		} catch (Exception oException) {
+			oException.printStackTrace();
+			a_mLogManager.Warning("%s \"%s\"\n",0
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 

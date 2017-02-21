@@ -21,11 +21,13 @@ public class RMIControllerCallerConnection extends Connection {
 	private String a_sRemoteAddress = null;
 	private boolean a_bIsRebind = false;
 
+	protected TimeOut a_oTimeOut = null;
 	private IController a_oRemote = null;
 	private IPromise a_oPromise = null;
 
 	public RMIControllerCallerConnection(UUID oIdentifier) {
 		super(oIdentifier);
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void SetPromise(IPromise oPromise) {
@@ -46,8 +48,9 @@ public class RMIControllerCallerConnection extends Connection {
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sRemoteAddress = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
-		a_nCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME);
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
+
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME));
 	}
 
 	@Override
@@ -61,7 +64,7 @@ public class RMIControllerCallerConnection extends Connection {
 			}
 
 			while (!IsClose()) {
-				TimeOut();
+				a_oTimeOut.Now();
 				if((a_oRemote == null || a_bIsRebind) && Fx_Contains(a_sExchange, oRegistry.list())) {
 					a_oRemote = (IController)oRegistry.lookup(a_sExchange);
 					a_oPromise.Set(a_oRemote);

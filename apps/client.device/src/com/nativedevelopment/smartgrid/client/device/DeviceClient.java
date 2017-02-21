@@ -17,6 +17,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "client.device.dump";
+	public static final String APP_CONNECTION_DATAREALTIMECONSUMER_PREFIX = "data.realtime.producer.";
+	public static final String APP_CONNECTION_ACTIONCONTROLCONSUMER_PREFIX = "action.control.consumer.";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
@@ -26,6 +28,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private UUID a_iSettings = null;
 	private boolean a_bIsIdle = true;
 
+	private TimeOut a_oTimeOut = null;
+
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
 	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> iInstruction
@@ -34,6 +38,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_mConnectionManager = MConnectionManager.GetInstance();
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void ShutDown() {
@@ -58,15 +63,23 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_lActionMap = new ConcurrentHashMap<>();
 
 		/* temporary configuration begin */
-		RabbitMQProducerConnection oRealtimeDataProducer = new RabbitMQProducerConnection(null);
-		oRealtimeDataProducer.SetFromQueue(a_lDataQueue);
-		oRealtimeDataProducer.Configure(oDeviceClientSettings);
-		a_mConnectionManager.AddConnection(oRealtimeDataProducer);
+		RabbitMQProducerConnection oDataRealtimeProducer = new RabbitMQProducerConnection(null);
+		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_DATAREALTIMECONSUMER_PREFIX);
+		oDataRealtimeProducer.SetFromQueue(a_lDataQueue);
+		oDataRealtimeProducer.Configure(oDeviceClientSettings);
+		a_mConnectionManager.AddConnection(oDataRealtimeProducer);
 
 		RabbitMQConsumerConnection oActionControlConsumer = new RabbitMQConsumerConnection(null);
+		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLCONSUMER_PREFIX);
 		oActionControlConsumer.SetToQueue(a_lActionQueue);
 		oActionControlConsumer.Configure(oDeviceClientSettings);
 		a_mConnectionManager.AddConnection(oActionControlConsumer);
+
+		// TODO store date to mongodb
+
+		oDeviceClientSettings.SetKeyPrefix("");
+		a_mConnectionManager.EstablishConnection(oDataRealtimeProducer.GetIdentifier());
+		a_mConnectionManager.EstablishConnection(oActionControlConsumer.GetIdentifier());
 		/* temporary configuration end */
 
 		a_mLogManager.Success("",0);
@@ -105,12 +118,18 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	@Override
 	public void Run() {
-		while(!IsClosing()) {
-			// Timer.TimeOutProcedure(a_bIsIdle);
-			a_bIsIdle = true;
-			Fx_ProduceData();
-			Fx_PerformAction();
-			Exit();
+		try {
+			while(!IsClosing()) {
+				a_oTimeOut.Routine(a_bIsIdle);
+				a_bIsIdle = true;
+				Fx_ProduceData();
+				Fx_PerformAction();
+				Exit(); // TODO remove
+			}
+		} catch (Exception oException) {
+			oException.printStackTrace();
+			a_mLogManager.Warning("%s \"%s\"\n",0
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 

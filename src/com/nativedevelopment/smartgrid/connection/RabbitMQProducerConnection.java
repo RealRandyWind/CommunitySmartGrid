@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Serializer;
+import com.nativedevelopment.smartgrid.*;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
 
@@ -34,26 +31,27 @@ public class RabbitMQProducerConnection extends Connection {
 	private boolean a_bIsAuthenticate = false;
 	private String a_sUserName = null;
 	private String a_sUserPassword = null;
+	private int a_nBufferCapacity = 0;
+
+	protected TimeOut a_oTimeOut = null;
+	protected Queue<Serializable> a_lFromQueue = null;
 
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
 	private Channel a_oRabbitMQChannel = null;
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
-	private Queue<Serializable> a_lFromQueue = null;
 
 	public RabbitMQProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
+		a_oTimeOut = new TimeOut();
 	}
 
-	private byte[] Fx_Produce() throws Exception {
+	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) {
 			return null;
 		}
-		Serializable oSerializable = a_lFromQueue.poll();
-		if(TimeOutRoutine(oSerializable==null))
-		{
-			return null;
-		}
-		return Serializer.Serialize(oSerializable, 0);
+		Serializable ptrSerializable = a_lFromQueue.poll();
+		a_oTimeOut.Routine(ptrSerializable==null);
+		return ptrSerializable;
 	}
 
 	public void SetFromQueue(Queue<Serializable> lFromQueue) {
@@ -67,14 +65,13 @@ public class RabbitMQProducerConnection extends Connection {
 		a_sToExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sTypeExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGETYPE);
 		a_sRoutingKey = oConfigurations.GetString(SETTINGS_KEY_ROUTINGKEY);
-		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
-		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
-		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
 		a_bIsAuthenticate = (boolean)oConfigurations.Get(SETTINGS_KEY_ISAUTHENTICATE);
 		a_sUserName = oConfigurations.GetString(SETTINGS_KEY_USERNAME);
 		a_sUserPassword = oConfigurations.GetString(SETTINGS_KEY_USERPASSWORD);
 
-		a_nCheckTime = a_nCheckTimeLowerBound;
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override
@@ -92,10 +89,17 @@ public class RabbitMQProducerConnection extends Connection {
 			a_oRabbitMQChannel.exchangeDeclare(a_sToExchange, a_sTypeExchange);
 
 			while(!IsClose()){
-				byte[] rawBytes = Fx_Produce();
+				Serializable ptrSerializable = Fx_Produce();
+				if(ptrSerializable == null) { continue; }
+				byte[] rawBytes = Serializer.Serialize(ptrSerializable, a_nBufferCapacity);
 				if(rawBytes == null) { continue; }
-				//TODO allowe variable routing key use IPackage
-				a_oRabbitMQChannel.basicPublish(a_sToExchange, a_sRoutingKey, null, rawBytes);
+				if(a_bIsPackageWrapped) {
+					IPackage oPackage = (IPackage) ptrSerializable;
+					String sRoutingKey = oPackage.GetRoutIdentifier().toString();
+					a_oRabbitMQChannel.basicPublish(a_sToExchange, sRoutingKey, null, rawBytes);
+				} else {
+					a_oRabbitMQChannel.basicPublish(a_sToExchange, a_sRoutingKey, null, rawBytes);
+				}
 			}
 		} catch (Exception oException) {
 			//TODO write errors to log queue

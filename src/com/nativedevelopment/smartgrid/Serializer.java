@@ -1,8 +1,6 @@
 package com.nativedevelopment.smartgrid;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 public final class Serializer {
 	private Serializer(){
@@ -17,10 +15,10 @@ public final class Serializer {
 		return ptrSerializable;
 	}
 
-	public static byte[] Serialize(Serializable oSerializable, int nBufferCapacity) throws Exception {
+	public static byte[] Serialize(Serializable ptrSerializable, int nBufferCapacity) throws Exception {
 		ByteArrayOutputStream oByteArray = new ByteArrayOutputStream(nBufferCapacity);
 		ObjectOutput oObjectOutput = new ObjectOutputStream(oByteArray);
-		oObjectOutput.writeObject(oSerializable);
+		oObjectOutput.writeObject(ptrSerializable);
 		oObjectOutput.flush();
 		byte[] rawBytes = oByteArray.toByteArray();
 		oByteArray.close();

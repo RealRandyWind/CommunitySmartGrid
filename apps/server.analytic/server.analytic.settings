@@ -1,0 +1,36 @@
+identifier = null
+directory.working = null
+action.control.producer.remote.address = "192.168.99.100"
+action.control.producer.remote.port = 5672
+action.control.producer.exchange = "action.control"
+action.control.producer.exchange.type = "fanout"
+action.control.producer.routing.key = ""
+action.control.producer.isauthenticate = true
+action.control.producer.user.name = "guest"
+action.control.producer.user.password = "guest"
+action.control.producer.checktime.lowerbound = 5
+action.control.producer.checktime.upperbound = 20000
+action.control.producer.checktime.delta = 500
+data.realtime.consumer.remote.address = "192.168.99.100"
+data.realtime.consumer.remote.port = 5672
+data.realtime.consumer.exchange = "data.realtime"
+data.realtime.consumer.exchange.type = "fanout"
+data.realtime.consumer.routing.key = ""
+data.realtime.consumer.ishandshake = true
+data.realtime.consumer.isauthenticate = true
+data.realtime.consumer.user.name = "guest"
+data.realtime.consumer.user.password = "guest"
+result.store.remote.address = "192.168.99.100"
+result.store.remote.port = 5673
+result.store.database = "8b9deeb8-ea9a-4a4e-93f3-a819b96c5620"
+result.store.collection = "results"
+result.store.checktime.lowerbound = 5
+result.store.checktime.upperbound = 20000
+result.store.checktime.delta = 500
+status.monitor.producer.buffer.capacity = 64
+status.monitor.producer.connections.delta = 16
+status.monitor.producer.checktime.lowerbound = 5
+status.monitor.producer.checktime.upperbound = 20000
+status.monitor.producer.checktime.delta = 500
+
+

@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Serializer;
+import com.nativedevelopment.smartgrid.*;
 
 import java.io.Serializable;
 import java.net.*;
@@ -20,8 +17,8 @@ public class UDPConsumerConnection extends Connection {
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
+	protected Queue<Serializable> a_lToQueue = null;
 	private Set<DatagramChannel> a_lChannels = null;
-	private Queue<Serializable> a_lToQueue = null;
 
 	public UDPConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);

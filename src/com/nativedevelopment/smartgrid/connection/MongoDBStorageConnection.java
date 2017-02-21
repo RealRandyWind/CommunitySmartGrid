@@ -3,10 +3,7 @@ package com.nativedevelopment.smartgrid.connection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.IPackage;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.*;
 import org.bson.Document;
 import org.bson.types.Binary;
 
@@ -29,10 +26,12 @@ public class MongoDBStorageConnection extends Connection {
 	private String a_sKeySpace = null;
 	private String a_sCollection = null;
 
-	private Queue<Serializable> a_lFromQueue = null;
+	protected TimeOut a_oTimeOut = null;
+	protected Queue<Serializable> a_lFromQueue = null;
 
 	public MongoDBStorageConnection(UUID oIdentifier) {
 		super(oIdentifier);
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void SetFromQueue(Queue<Serializable> lFromQueue) {
@@ -49,11 +48,10 @@ public class MongoDBStorageConnection extends Connection {
 		a_iThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_sKeySpace = oConfigurations.GetString(SETTINGS_KEY_DATABASE);
 		a_sCollection = oConfigurations.GetString(SETTINGS_KEY_COLLECTION);
-		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
-		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
-		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
 
-		a_nCheckTime = a_nCheckTimeLowerBound;
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override
@@ -64,7 +62,7 @@ public class MongoDBStorageConnection extends Connection {
 		MongoCollection<Document> oCollection = oKeySpace.getCollection(a_sCollection);
 		try {
 			while (!IsClose()) {
-				TimeOutRoutine(false);
+				a_oTimeOut.Routine(false);
 				/*Document oDocument = new Document()
 						.append("id", UUID.randomUUID().toString())
 						.append("timestamp", 29384)

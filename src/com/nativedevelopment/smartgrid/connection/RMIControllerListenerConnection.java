@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.IController;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.*;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -25,16 +22,17 @@ public class RMIControllerListenerConnection extends Connection{
 
 	private String a_sExchange = null;
 	private int a_nLocalPort = 0;
-	private int a_nCheckTime = 0;
 	private boolean a_bIsRebind = false;
 	private boolean a_bIsForceUnExport = false;
 
+	protected TimeOut a_oTimeOut = null;
 	private static Registry a_oRegistry = null;
 	private IController a_oRemote = null;
 	private AbstractMap<Object, Remote> a_lRemotes = null;
 
 	public RMIControllerListenerConnection(UUID oIdentifier) {
 		super(oIdentifier);
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void SetRemote(IController oRemote) {
@@ -50,9 +48,10 @@ public class RMIControllerListenerConnection extends Connection{
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
-		a_nCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME);
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 		a_bIsForceUnExport = (boolean)oConfigurations.Get(SETTING_KEY_ISFORCEUNEXPORT);
+
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME));
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class RMIControllerListenerConnection extends Connection{
 			}
 
 			while (!IsClose()) {
-				Thread.sleep(a_nCheckTime);
+				a_oTimeOut.Now();
 				if(a_bIsRebind || !Fx_Contains(a_sExchange,oRegistry.list())) {
 					oRegistry.rebind(a_sExchange, oStub);
 				}

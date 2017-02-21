@@ -1,9 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
-import com.nativedevelopment.smartgrid.Connection;
-import com.nativedevelopment.smartgrid.ISettings;
-import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Serializer;
+import com.nativedevelopment.smartgrid.*;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
@@ -26,12 +23,14 @@ public class TCPConsumerConnection extends Connection {
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
+	protected TimeOut a_oTimeOut = null;
 	protected Queue<Serializable> a_lToQueue = null;
 	private Set<SocketChannel> a_lChannels = null;
 
 	public TCPConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_lChannels = new HashSet<>();
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void SetToQueue(Queue<Serializable> lToQueue) {
@@ -44,7 +43,7 @@ public class TCPConsumerConnection extends Connection {
 			return;
 		}
 
-		TimeOutRoutine(a_lChannels.isEmpty());
+		a_oTimeOut.Routine(a_lChannels.isEmpty());
 
 		//TODO use lRemotes to set up connection requested by queue
 		oChannel.shutdownOutput();
@@ -80,11 +79,9 @@ public class TCPConsumerConnection extends Connection {
 		a_sLocalAddress = oConfigurations.GetString(SETTINGS_KEY_LOCALADDRESS);
 		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
 
-		a_nCheckTimeLowerBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND);
-		a_nCheckTimeUpperBound = (int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND);
-		a_nDeltaCheckTime = (int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND);
-
-		a_nCheckTime = a_nCheckTimeLowerBound;
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override

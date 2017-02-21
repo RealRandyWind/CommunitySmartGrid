@@ -13,7 +13,5 @@ public interface IConnection extends Runnable, IConfigurable {
     public boolean IsClose();
     public boolean IsActive();
     public void Run();
-    public boolean TimeOutRoutine(boolean condition) throws Exception;
-    public void TimeOut() throws Exception;
     public void SetToLogQueue(Queue<Serializable> lToLogQueue);
 }

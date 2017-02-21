@@ -34,13 +34,16 @@ public class PackageTest implements ITestCase {
 		UUID iCorrelationIdentifier = UUID.randomUUID();
 		UUID iRouteIdentifier = UUID.randomUUID();
 		int nFlag = 2;
+		long tTimeStamp = System.currentTimeMillis();
 		Serializable oContent = new SerializableObject("SerializableObject");
-		IPackage oPackage = new Package(oContent, iRouteIdentifier, iCorrelationIdentifier, nFlag);
+		IPackage oPackage = new Package(oContent, iRouteIdentifier, iCorrelationIdentifier, nFlag, tTimeStamp);
 
 		assertEquals(iCorrelationIdentifier,oPackage.GetCorrelationIdentifier());
 		assertEquals(iRouteIdentifier,oPackage.GetRoutIdentifier());
 		assertEquals(nFlag,oPackage.GetFlag());
+		assertEquals(tTimeStamp,oPackage.GetTimeStamp());
 		assertEquals(oContent,oPackage.GetContent());
+
 		a_mLogManager.Test("end",0);
 	}
 }

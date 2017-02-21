@@ -61,7 +61,6 @@ public class MConnectionManager {
             a_mLogManager.Warning("connection already active \"%s\".",0,iConnection);
             return;
         }
-
         oConnection.Open();
     }
 
@@ -73,7 +72,6 @@ public class MConnectionManager {
             a_mLogManager.Warning("connection already inactive \"%s\".",0,iConnection);
             return;
         }
-
         oConnection.Close();
     }
 

@@ -8,12 +8,14 @@ public class Package implements IPackage {
 	private UUID a_oRouteIdentifier = null;
 	private UUID a_oCorrelationIdentifier = null;
 	private int a_nFlag = 0;
+	private long a_tTimeStamp = 0;
 
-	public Package (Serializable oContent, UUID oRouteIdentifier, UUID oCorrelationIdentifier, int nFlag) {
+	public Package (Serializable oContent, UUID oRouteIdentifier, UUID oCorrelationIdentifier, int nFlag, long tTimeStamp) {
 		a_oContent = oContent;
 		a_oRouteIdentifier = oRouteIdentifier;
 		a_oCorrelationIdentifier = oCorrelationIdentifier;
 		a_nFlag = nFlag;
+		a_tTimeStamp = tTimeStamp;
 	}
 
 	@Override
@@ -29,6 +31,11 @@ public class Package implements IPackage {
 	@Override
 	public int GetFlag() {
 		return a_nFlag;
+	}
+
+	@Override
+	public long GetTimeStamp() {
+		return a_tTimeStamp;
 	}
 
 	@Override

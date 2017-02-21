@@ -6,14 +6,11 @@ import java.util.UUID;
 
 public class Connection implements IConnection {
     protected Thread a_oThread = null;
-    protected Queue<Serializable> a_lToLogQueue = null;
-    private UUID a_oIdentifier = null;
-    volatile private boolean a_isClose = false;
 
-    protected int a_nCheckTime = 0;
-    protected int a_nCheckTimeLowerBound = 0;
-    protected int a_nCheckTimeUpperBound = 0;
-    protected int a_nDeltaCheckTime = 0;
+    private UUID a_oIdentifier = null;
+    protected Queue<Serializable> a_lToLogQueue = null;
+    volatile private boolean a_bIsClose = false;
+    protected boolean a_bIsPackageWrapped = false;
 
     public Connection(UUID oIdentifier) {
         a_oThread = new Thread(this);
@@ -33,13 +30,13 @@ public class Connection implements IConnection {
 
     @Override
     public void Close() {
-        a_isClose = true;
+        a_bIsClose = true;
     }
 
     @Override
     public void ForceClose() {
         a_oThread.interrupt();
-        a_isClose = false;
+        a_bIsClose = false;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class Connection implements IConnection {
 
     @Override
     public boolean IsClose() {
-        return a_isClose;
+        return a_bIsClose;
     }
 
     @Override
@@ -65,24 +62,7 @@ public class Connection implements IConnection {
     @Override
     public void run() {
         Run();
-        a_isClose = false;
-    }
-
-    @Override
-    public boolean TimeOutRoutine(boolean condition) throws InterruptedException {
-        if (!condition) {
-            a_nCheckTime = a_nCheckTimeLowerBound;
-            return false;
-        }
-        TimeOut();
-        a_nCheckTime += a_nDeltaCheckTime;
-        a_nCheckTime = a_nCheckTime >= a_nCheckTimeUpperBound ? a_nCheckTimeUpperBound : a_nCheckTime;
-        return true;
-    }
-
-    @Override
-    public  void TimeOut() throws InterruptedException {
-        Thread.sleep(a_nCheckTime);
+        a_bIsClose = false;
     }
 
     @Override
