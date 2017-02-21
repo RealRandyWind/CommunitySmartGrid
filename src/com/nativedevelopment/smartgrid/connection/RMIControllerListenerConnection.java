@@ -23,19 +23,21 @@ public class RMIControllerListenerConnection extends Connection{
 
 	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
 
-	protected static Registry a_oRegistry = null;
-
-	private IController a_oRemote = null;
-	private AbstractMap<Object, Remote> a_lRemotes = null;
-
 	private String a_sExchange = null;
 	private int a_nLocalPort = 0;
 	private int a_nCheckTime = 0;
 	private boolean a_bIsRebind = false;
 	private boolean a_bIsForceUnExport = false;
 
-	public RMIControllerListenerConnection(UUID oIdentifier, IController oRemote) {
+	private static Registry a_oRegistry = null;
+	private IController a_oRemote = null;
+	private AbstractMap<Object, Remote> a_lRemotes = null;
+
+	public RMIControllerListenerConnection(UUID oIdentifier) {
 		super(oIdentifier);
+	}
+
+	public void SetRemote(IController oRemote) {
 		a_oRemote = oRemote;
 	}
 

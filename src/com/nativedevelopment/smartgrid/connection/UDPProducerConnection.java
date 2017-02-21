@@ -20,15 +20,24 @@ public class UDPProducerConnection extends Connection{
 
 	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
-	private Set<DatagramChannel> a_lChannels = null;
-
 	private int a_nBufferCapacity = 0;
-
 	private int a_nDeltaConnections = 0;
+
+	private Set<DatagramChannel> a_lChannels = null;
+	private Queue<Serializable> a_lRemoteQueue = null;
+	private Queue<Serializable> a_lFromQueue = null;
 
 	public UDPProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_lChannels = new HashSet<>();
+	}
+
+	public void SetRemoteQueue(Queue<Serializable> lRemoteQueue) {
+		a_lRemoteQueue = lRemoteQueue;
+	}
+
+	public void SetFromQueue(Queue<Serializable> lFromQueue) {
+		a_lFromQueue = lFromQueue;
 	}
 
 	private void Fx_EstablishConnections() throws Exception {

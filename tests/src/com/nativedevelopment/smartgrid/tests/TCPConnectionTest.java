@@ -79,13 +79,11 @@ public class TCPConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oProducer = new TCPProducerConnection(null);
-		IConnection oConsumer1 = new TCPConsumerConnection(null);
-		IConnection oConsumer2 = new TCPConsumerConnection(null);
+		TCPProducerConnection oProducer = new TCPProducerConnection(null);
+		TCPConsumerConnection oConsumer1 = new TCPConsumerConnection(null);
+		TCPConsumerConnection oConsumer2 = new TCPConsumerConnection(null);
 
 		oProducer.SetRemoteQueue(a_lReceivers);
-		oConsumer1.SetRemoteQueue(a_lSenders);
-		oConsumer2.SetRemoteQueue(a_lSenders);
 		oProducer.SetToLogQueue(a_oLogQueue);
 		oConsumer1.SetToLogQueue(a_oLogQueue);
 		oConsumer2.SetToLogQueue(a_oLogQueue);

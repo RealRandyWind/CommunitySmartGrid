@@ -5,6 +5,7 @@ import com.nativedevelopment.smartgrid.ISettings;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Serializer;
 
+import java.io.Serializable;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -15,15 +16,20 @@ public class UDPConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_LOCALPORT = "local.port";
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
 
-	private Set<DatagramChannel> a_lChannels = null;
-
 	private String a_sLocalAddress = null;
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 
+	private Set<DatagramChannel> a_lChannels = null;
+	private Queue<Serializable> a_lToQueue = null;
+
 	public UDPConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_lChannels = new HashSet<>();
+	}
+
+	public void SetToQueue(Queue<Serializable> lToQueue) {
+		a_lToQueue = lToQueue;
 	}
 
 	private void Fx_Consume(byte[] rawBytes) throws Exception {

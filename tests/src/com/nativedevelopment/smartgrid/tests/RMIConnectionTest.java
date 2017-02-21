@@ -74,9 +74,11 @@ public class RMIConnectionTest implements ITestCase {
 		int nTryCount = 6;
 		IStubController oStubController = null;
 
-		IConnection oCaller = new RMIControllerCallerConnection(null, oPromise);
-		IConnection oListener = new RMIControllerListenerConnection(null, a_oController);
+		RMIControllerCallerConnection oCaller = new RMIControllerCallerConnection(null);
+		RMIControllerListenerConnection oListener = new RMIControllerListenerConnection(null);
 
+		oCaller.SetPromise(oPromise);
+		oListener.SetRemote(a_oController);
 		oCaller.SetToLogQueue(a_oLogQueue);
 		oListener.SetToLogQueue(a_oLogQueue);
 

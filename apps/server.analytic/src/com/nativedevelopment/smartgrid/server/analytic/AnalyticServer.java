@@ -4,6 +4,7 @@ import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connection.MongoDBStorageConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
+import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -29,10 +30,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
 	private Queue<Serializable> a_lResultQueue = null; // TODO IData
-	private Queue<Serializable> a_lConfigureConnectionQueue = null; // TODO IConfigureConnection
-
-	// TODO fix coding violation use of complex language property/feature (anonymous classes).
-	private Map<UUID, IConnectionConstructor> a_lConnectionConstructors = null;
+	private Queue<Serializable> a_lStatusQueue = null; // TODO IStatus
+	private Queue<Serializable> a_lObserverQueue = null; // TODO IAddress
 
 	protected AnalyticServer() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -53,18 +52,37 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_mSettingsManager.SetUp();
 		a_mConnectionManager.SetUp();
 
-		ISettings oDeviceClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
-		a_iSettings = oDeviceClientSettings.GetIdentifier();
-		Configure(oDeviceClientSettings);
+		ISettings oAnalyticServerSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
+		a_iSettings = oAnalyticServerSettings.GetIdentifier();
+		Configure(oAnalyticServerSettings);
 
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
 		a_lResultQueue = new ConcurrentLinkedQueue<>();
-		a_lConfigureConnectionQueue = new ConcurrentLinkedQueue<>();
-		a_lConnectionConstructors = new ConcurrentHashMap<>();
+		a_lStatusQueue = new ConcurrentLinkedQueue<>();
+		a_lObserverQueue = new ConcurrentLinkedQueue<>();
 
 		/* temporary configuration begin */
-		Fx_RegisterConnectionConstructors();
+		RabbitMQConsumerConnection oDataRealtimeConsumer = new RabbitMQConsumerConnection(null);
+		oDataRealtimeConsumer.SetToQueue(a_lDataQueue);
+		oDataRealtimeConsumer.Configure(oAnalyticServerSettings);
+		a_mConnectionManager.AddConnection(oDataRealtimeConsumer);
+
+		RabbitMQProducerConnection oActionControlProducer = new RabbitMQProducerConnection(null);
+		oActionControlProducer.SetFromQueue(a_lActionQueue);
+		oActionControlProducer.Configure(oAnalyticServerSettings);
+		a_mConnectionManager.AddConnection(oActionControlProducer);
+
+		MongoDBStorageConnection oResultStoreProducer = new MongoDBStorageConnection(null);
+		oResultStoreProducer.SetFromQueue(a_lResultQueue);
+		oResultStoreProducer.Configure(oAnalyticServerSettings);
+		a_mConnectionManager.AddConnection(oResultStoreProducer);
+
+		UDPProducerConnection oStatusMonitorProducer = new UDPProducerConnection(null);
+		oStatusMonitorProducer.SetFromQueue(a_lStatusQueue);
+		oStatusMonitorProducer.SetRemoteQueue(a_lObserverQueue);
+		oStatusMonitorProducer.Configure(oAnalyticServerSettings);
+		a_mConnectionManager.AddConnection(oStatusMonitorProducer);
 		/* temporary configuration end */
 
 		a_mLogManager.Success("",0);
@@ -74,63 +92,6 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		if(a_oInstance != null) { return a_oInstance; }
 		a_oInstance = new AnalyticServer();
 		return a_oInstance;
-	}
-
-	private UUID Fx_EstablishConnection(IConnection oConnection) {
-		a_mConnectionManager.AddConnection(oConnection);
-		return oConnection.GetIdentifier();
-	}
-
-	private void Fx_TerminateConnection(UUID iConnection) {
-		a_mConnectionManager.RemoveConnection(iConnection);
-	}
-
-	private void Fx_RegisterConnectionConstructors() {
-		// TODO violation coding use of lambda function
-		ISettings oSettings = a_mSettingsManager.GetSettings(a_iSettings);
-		a_lConnectionConstructors.put(UUID.fromString(oSettings.GetString("action.control.producer.type")),
-				oConfiguration -> {
-					IConnection oConnection = new RabbitMQProducerConnection(oConfiguration.GetIdentifier());
-					oConnection.Configure(Fx_CreateConnectionSettings(oConfiguration));
-					oConnection.SetFromQueue(a_lActionQueue);
-					return oConnection;
-				});
-
-		a_lConnectionConstructors.put(UUID.fromString(oSettings.GetString("data.realtime.consumer.type")),
-				oConfiguration -> {
-					IConnection oConnection = new RabbitMQConsumerConnection(oConfiguration.GetIdentifier());
-					oConnection.Configure(Fx_CreateConnectionSettings(oConfiguration));
-					oConnection.SetToQueue(a_lDataQueue);
-					return oConnection;
-				});
-
-		a_lConnectionConstructors.put(UUID.fromString(oSettings.GetString("data.result.producer.type")),
-				oConfiguration -> {
-					IConnection oConnection = new MongoDBStorageConnection(oConfiguration.GetIdentifier());
-					oConnection.Configure(Fx_CreateConnectionSettings(oConfiguration));
-					oConnection.SetFromQueue(a_lResultQueue);
-					return oConnection;
-				});
-	}
-
-	private ISettings Fx_CreateConnectionSettings(IConfigureConnection oConfigure) {
-		ISettings oSettings = new Settings(oConfigure.GetIdentifier());
-		for (ISetting oSetting : oConfigure.GetSettings()) {
-			oSettings.Set(oSetting.GetKey(), oSetting.GetValue());
-		}
-		a_mSettingsManager.AddSettings(oSettings);
-		return oSettings;
-	}
-
-	private void Fx_ConfigureConnection() {
-		Serializable ptrConfigure =  a_lConfigureConnectionQueue.poll();
-		if(ptrConfigure == null) {
-			return;
-		}
-		IConfigureConnection oConfigure = (IConfigureConnection) ptrConfigure;
-		IConnectionConstructor oConstructor = a_lConnectionConstructors.get(oConfigure.GetTypeIdentifier());
-		Fx_EstablishConnection(oConstructor.New(oConfigure));
-		a_bIsIdle = false;
 	}
 
 	private void Fx_Analyze() {
@@ -163,14 +124,12 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		while(!IsClosing()) {
 			// Timer.TimeOutProcedure(a_bIsIdle);
 			a_bIsIdle = true;
-			Fx_ConfigureConnection();
 			Fx_Analyze();
 			Exit();
 		}
 	}
 
-	public static void main(String[] arguments)
-	{
+	public static void main(String[] arguments) {
 		Main oApplication = AnalyticServer.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);

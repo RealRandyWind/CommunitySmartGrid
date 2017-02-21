@@ -20,15 +20,24 @@ public class TCPProducerConnection extends Connection {
 
 	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
-	private Set<SocketChannel> a_lChannels = null;
-
 	private int a_nBufferCapacity = 0;
-
 	private int a_nDeltaConnections = 0;
+
+	protected Queue<Serializable> a_lRemoteQueue = null;
+	protected Queue<Serializable> a_lFromQueue = null;
+	private Set<SocketChannel> a_lChannels = null;
 
 	public TCPProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_lChannels = new HashSet<>();
+	}
+
+	public void SetRemoteQueue(Queue<Serializable> lRemoteQueue) {
+		a_lRemoteQueue = lRemoteQueue;
+	}
+
+	public void SetFromQueue(Queue<Serializable> lFromQueue) {
+		a_lFromQueue = lFromQueue;
 	}
 
 	private void Fx_EstablishConnections() throws Exception {

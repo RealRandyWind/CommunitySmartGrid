@@ -1,16 +1,12 @@
 package com.nativedevelopment.smartgrid;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 
 public class Connection implements IConnection {
     protected Thread a_oThread = null;
-    protected Queue<Serializable> a_lToQueue = null;
-    protected Queue<Serializable> a_lFromQueue = null;
     protected Queue<Serializable> a_lToLogQueue = null;
-    protected Queue<Serializable> a_lRemoteQueue = null;
     private UUID a_oIdentifier = null;
     volatile private boolean a_isClose = false;
 
@@ -95,22 +91,7 @@ public class Connection implements IConnection {
     }
 
     @Override
-    public void SetFromQueue(Queue<Serializable> lFromQueue) {
-        a_lFromQueue = lFromQueue;
-    }
-
-    @Override
-    public void SetToQueue(Queue<Serializable> lToQueue) {
-        a_lToQueue = lToQueue;
-    }
-
-    @Override
     public void SetToLogQueue(Queue<Serializable> lToLogQueue) {
         a_lToLogQueue = lToLogQueue;
-    }
-
-    @Override
-    public void SetRemoteQueue(Queue<Serializable> lRemoteQueue) {
-        a_lRemoteQueue = lRemoteQueue;
     }
 }

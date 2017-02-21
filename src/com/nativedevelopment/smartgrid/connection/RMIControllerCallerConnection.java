@@ -17,16 +17,18 @@ public class RMIControllerCallerConnection extends Connection {
 
 	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
 
-	private IController a_oRemote = null;
-	private IPromise a_oPromise = null;
-
 	private String a_sExchange = null;
 	private String a_sRemoteAddress = null;
 	private boolean a_bIsRebind = false;
 
-	public RMIControllerCallerConnection(UUID oIdentifier, IPromise oPromise) {
+	private IController a_oRemote = null;
+	private IPromise a_oPromise = null;
+
+	public RMIControllerCallerConnection(UUID oIdentifier) {
 		super(oIdentifier);
-		// TODO replace oPromise by a Queue of Promises, create Fx_UpdatePromises function.
+	}
+
+	public void SetPromise(IPromise oPromise) {
 		a_oPromise = oPromise;
 	}
 

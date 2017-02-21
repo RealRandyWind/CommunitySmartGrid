@@ -3,6 +3,7 @@ package com.nativedevelopment.smartgrid.client.device;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
+import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
-	public static final String APP_SETTINGS_RECOVERY_DEFAULT_PATH = "client.device.recovery.dump";
+	public static final String APP_DUMP_DEFAULT_PATH = "client.device.dump";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
@@ -27,9 +28,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
 	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
-	private Queue<Serializable> a_lConfigureConnectionQueue = null; // TODO IConfigureConnection
 	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> iInstruction
-	private Map<UUID, IConnectionConstructor> a_lConnectionConstructors = null;
 
 	protected DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -56,12 +55,18 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
-		a_lConfigureConnectionQueue = new ConcurrentLinkedQueue<>();
-		a_lActionMap = new ConcurrentHashMap<>(); // TODO maybe not concurrent actions are fixed
-		a_lConnectionConstructors = new ConcurrentHashMap<>();
+		a_lActionMap = new ConcurrentHashMap<>();
 
 		/* temporary configuration begin */
-		Fx_RegisterConnectionConstructors();
+		RabbitMQProducerConnection oRealtimeDataProducer = new RabbitMQProducerConnection(null);
+		oRealtimeDataProducer.SetFromQueue(a_lDataQueue);
+		oRealtimeDataProducer.Configure(oDeviceClientSettings);
+		a_mConnectionManager.AddConnection(oRealtimeDataProducer);
+
+		RabbitMQConsumerConnection oActionControlConsumer = new RabbitMQConsumerConnection(null);
+		oActionControlConsumer.SetToQueue(a_lActionQueue);
+		oActionControlConsumer.Configure(oDeviceClientSettings);
+		a_mConnectionManager.AddConnection(oActionControlConsumer);
 		/* temporary configuration end */
 
 		a_mLogManager.Success("",0);
@@ -71,71 +76,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		if(a_oInstance != null) { return a_oInstance; }
 		a_oInstance = new DeviceClient();
 		return a_oInstance;
-	}
-
-	private void Fx_RegisterConnectionConstructors() {
-		// TODO violation coding use of lambda function
-		ISettings oSettings = a_mSettingsManager.GetSettings(a_iSettings);
-		a_lConnectionConstructors.put(UUID.fromString(oSettings.GetString("data.realtime.producer.type")),
-				oConfiguration -> {
-					IConnection oConnection = new RabbitMQProducerConnection(oConfiguration.GetIdentifier());
-					oConnection.Configure(Fx_CreateConnectionSettings(oConfiguration));
-					oConnection.SetFromQueue(a_lDataQueue);
-					return oConnection;
-				});
-
-		a_lConnectionConstructors.put(UUID.fromString(oSettings.GetString("action.control.consumer.type")),
-				oConfiguration -> {
-					IConnection oConnection = new RabbitMQConsumerConnection(oConfiguration.GetIdentifier());
-					oConnection.Configure(Fx_CreateConnectionSettings(oConfiguration));
-					oConnection.SetToQueue(a_lActionQueue);
-					return oConnection;
-				});
-
-		a_lConnectionConstructors.put(UUID.fromString(oSettings.GetString("connection.configure.consumer.type")),
-				oConfiguration -> {
-					IConnection oConnection = new RabbitMQConsumerConnection(oConfiguration.GetIdentifier());
-					oConnection.Configure(Fx_CreateConnectionSettings(oConfiguration));
-					oConnection.SetToQueue(a_lConfigureConnectionQueue);
-					return oConnection;
-				});
-	}
-
-	private UUID Fx_EstablishConnection(IConnection oConnection) {
-		if(oConnection == null) {
-			a_mLogManager.Warning("attempt of a null connection",0);
-			return null;
-		}
-		a_mConnectionManager.AddConnection(oConnection);
-		return oConnection.GetIdentifier();
-	}
-
-	private void Fx_TerminateConnection(UUID iConnection) {
-		a_mConnectionManager.RemoveConnection(iConnection);
-	}
-
-	private ISettings Fx_CreateConnectionSettings(IConfigureConnection oConfigure) {
-		ISettings oSettings = new Settings(oConfigure.GetIdentifier());
-		for (ISetting oSetting : oConfigure.GetSettings()) {
-			oSettings.Set(oSetting.GetKey(), oSetting.GetValue());
-		}
-		a_mSettingsManager.AddSettings(oSettings);
-		return oSettings;
-	}
-
-	private void Fx_ConfigureConnection() {
-		Serializable ptrConfigure =  a_lConfigureConnectionQueue.poll();
-		if(ptrConfigure == null) {
-			return;
-		}
-		IConfigureConnection oConfigure = (IConfigureConnection) ptrConfigure;
-		IConnectionConstructor oConstructor = a_lConnectionConstructors.get(oConfigure.GetTypeIdentifier());
-		if(oConfigure == null) {
-			a_mLogManager.Warning("Constructor not available.",0);
-			return;
-		}
-		Fx_EstablishConnection(oConstructor.New(oConfigure));
-		a_bIsIdle = false;
 	}
 
 	private void Fx_PerformAction() {
@@ -170,13 +110,11 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 			a_bIsIdle = true;
 			Fx_ProduceData();
 			Fx_PerformAction();
-			Fx_ConfigureConnection();
 			Exit();
 		}
 	}
 
-	public static void main(String[] arguments)
-	{
+	public static void main(String[] arguments) {
 		Main oApplication = DeviceClient.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);

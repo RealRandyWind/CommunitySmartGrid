@@ -27,7 +27,7 @@ public class RabbitMQProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_USERPASSWORD = "user.password";
 
 	private String a_sToHost = null;
-	private int a_nThroughPort = 0;
+	private int a_iThroughPort = 0;
 	private String a_sToExchange = null;
 	private String a_sTypeExchange = null;
 	private String a_sRoutingKey = null;
@@ -38,6 +38,7 @@ public class RabbitMQProducerConnection extends Connection {
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
 	private Channel a_oRabbitMQChannel = null;
 	private com.rabbitmq.client.Connection a_oRabbitMQConnection = null;
+	private Queue<Serializable> a_lFromQueue = null;
 
 	public RabbitMQProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
@@ -55,10 +56,14 @@ public class RabbitMQProducerConnection extends Connection {
 		return Serializer.Serialize(oSerializable, 0);
 	}
 
+	public void SetFromQueue(Queue<Serializable> lFromQueue) {
+		a_lFromQueue = lFromQueue;
+	}
+
 	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_sToHost = oConfigurations.GetString(SETTINGS_KEY_REMOTEADRESS);
-		a_nThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
+		a_iThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_sToExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sTypeExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGETYPE);
 		a_sRoutingKey = oConfigurations.GetString(SETTINGS_KEY_ROUTINGKEY);
@@ -77,7 +82,7 @@ public class RabbitMQProducerConnection extends Connection {
 		try {
 			a_oRabbitMQConnectionFactory = new ConnectionFactory();
 			a_oRabbitMQConnectionFactory.setHost(a_sToHost);
-			a_oRabbitMQConnectionFactory.setPort(a_nThroughPort);
+			a_oRabbitMQConnectionFactory.setPort(a_iThroughPort);
 			if(a_bIsAuthenticate) {
 				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
 				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
@@ -89,7 +94,7 @@ public class RabbitMQProducerConnection extends Connection {
 			while(!IsClose()){
 				byte[] rawBytes = Fx_Produce();
 				if(rawBytes == null) { continue; }
-				//TODO allowe variable routing key
+				//TODO allowe variable routing key use IPackage
 				a_oRabbitMQChannel.basicPublish(a_sToExchange, a_sRoutingKey, null, rawBytes);
 			}
 		} catch (Exception oException) {

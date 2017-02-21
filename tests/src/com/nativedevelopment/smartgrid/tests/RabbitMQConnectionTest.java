@@ -47,7 +47,7 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
 
-		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADRESS,SETTINGS_VALUE_HOST);
+		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"test");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
@@ -79,8 +79,8 @@ public class RabbitMQConnectionTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		IConnection oProducer = new RabbitMQProducerConnection(null);
-		IConnection oConsumer = new RabbitMQConsumerConnection(null);
+		RabbitMQProducerConnection oProducer = new RabbitMQProducerConnection(null);
+		RabbitMQConsumerConnection oConsumer = new RabbitMQConsumerConnection(null);
 
 		oProducer.SetToLogQueue(a_oLogQueue);
 		oConsumer.SetToLogQueue(a_oLogQueue);
