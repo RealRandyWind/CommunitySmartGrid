@@ -19,7 +19,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "client.device.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "client.device.dump";
-	public static final String APP_CONNECTION_DATAREALTIMECONSUMER_PREFIX = "data.realtime.producer.";
+	public static final String APP_CONNECTION_DATAREALTIMEPRODUCER_PREFIX = "data.realtime.producer.";
 	public static final String APP_CONNECTION_ACTIONCONTROLCONSUMER_PREFIX = "action.control.consumer.";
 
 	private MLogManager a_mLogManager = null;
@@ -41,6 +41,10 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_mConnectionManager = MConnectionManager.GetInstance();
 		a_oTimeOut = new TimeOut();
+	}
+
+	public UUID GetIdentifier() {
+		return a_oIdentifier;
 	}
 
 	public void ShutDown() {
@@ -66,7 +70,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 		/* temporary configuration begin */
 		RabbitMQProducerConnection oDataRealtimeProducer = new RabbitMQProducerConnection(null);
-		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_DATAREALTIMECONSUMER_PREFIX);
+		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_DATAREALTIMEPRODUCER_PREFIX);
 		oDataRealtimeProducer.SetFromQueue(a_lDataQueue);
 		oDataRealtimeProducer.Configure(oDeviceClientSettings);
 		a_mConnectionManager.AddConnection(oDataRealtimeProducer);
@@ -129,11 +133,11 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 				a_bIsIdle = true;
 				Fx_ProduceData();
 				Fx_PerformAction();
-				Exit(); // TODO remove
 			}
 		} catch (Exception oException) {
 			oException.printStackTrace();
-			a_mLogManager.Warning("%s \"%s\"\n",0
+			a_mLogManager.Warning("@%s %s \"%s\"\n",0
+					,GetInstance().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

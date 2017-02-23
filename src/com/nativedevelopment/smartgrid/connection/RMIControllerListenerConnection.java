@@ -85,7 +85,10 @@ public class RMIControllerListenerConnection extends Connection{
 
 			UnicastRemoteObject.unexportObject(a_oRemote, a_bIsForceUnExport);
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: %s%s \"%s\"\n",oException.getClass().getCanonicalName(),oException.getMessage(),MLogManager.MethodName());
+			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
+					,MLogManager.MethodName()
+					,GetIdentifier().toString()
+					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
 }

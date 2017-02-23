@@ -103,8 +103,9 @@ public class RabbitMQProducerConnection extends Connection {
 			}
 		} catch (Exception oException) {
 			//TODO write errors to log queue
-			System.out.printf("_WARNING: %s%s \"%s\"\n"
+			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
 					,MLogManager.MethodName()
+					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

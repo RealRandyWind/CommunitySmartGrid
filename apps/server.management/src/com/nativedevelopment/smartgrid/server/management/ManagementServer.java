@@ -5,15 +5,23 @@ import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.MSettingsManager;
 import com.nativedevelopment.smartgrid.MConnectionManager;
 
+import java.util.UUID;
+
 public class ManagementServer extends Main {
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
 	private MConnectionManager a_mConnectionManager = null;
 
+	private UUID a_oIdentifier = null;
+
 	protected ManagementServer() {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_mConnectionManager = MConnectionManager.GetInstance();
+	}
+
+	public UUID GetIdentifier() {
+		return a_oIdentifier;
 	}
 
 	public void ShutDown() {

@@ -107,8 +107,9 @@ public class TCPProducerConnection extends Connection {
 			}
 			a_lChannels.clear();
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: %s%s \"%s\"\n"
+			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
 					,MLogManager.MethodName()
+					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

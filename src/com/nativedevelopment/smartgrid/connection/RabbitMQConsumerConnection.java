@@ -88,8 +88,9 @@ public class RabbitMQConsumerConnection extends Connection {
 			a_oRabbitMQChannel.queueBind(a_sFromQueue, a_sFromExchange, a_sRoutingKey);
 			a_oRabbitMQChannel.basicConsume(a_sFromQueue, a_bIsHandshake, oConsumer);
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: %s%s \"%s\"\n"
+			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
 					,MLogManager.MethodName()
+					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
@@ -132,8 +133,9 @@ public class RabbitMQConsumerConnection extends Connection {
 				Fx_Consume(body);
 			} catch (Exception oException) {
 				//TODO write errors to log queue
-				System.out.printf("_WARNING: %s%s \"%s\"\n"
+				System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
 						,MLogManager.MethodName()
+						,GetIdentifier().toString()
 						,oException.getClass().getCanonicalName(),oException.getMessage());
 			}
 		}

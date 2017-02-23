@@ -71,8 +71,9 @@ public class RMIControllerCallerConnection extends Connection {
 				}
 			}
 		} catch (Exception oException) {
-			System.out.printf("_WARNING: %s%s \"%s\"\n"
-					, MLogManager.MethodName()
+			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
+					,MLogManager.MethodName()
+					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

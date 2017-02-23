@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid.server.analytic;
 
 import com.nativedevelopment.smartgrid.*;
+import com.nativedevelopment.smartgrid.Package;
 import com.nativedevelopment.smartgrid.connection.MongoDBStorageConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
@@ -47,6 +48,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_mConnectionManager = MConnectionManager.GetInstance();
 		a_oTimeOut = new TimeOut();
+	}
+
+	public UUID GetIdentifier() {
+		return a_oIdentifier;
 	}
 
 	public void ShutDown() {
@@ -125,9 +130,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		IAction oAction = Generator.GenerateActionMachine(null);
 		UUID[] lActions = new UUID[1];
 		lActions[0] = oAction.GetIdentifier();
+		IPackage oPackage = new Package(oAction,oData.GetIdentifier(),null,0,System.currentTimeMillis());
 		int nTuple = 1;
 		IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
-		a_lActionQueue.add(oAction);
+		a_lActionQueue.add(oPackage);
 		a_lResultQueue.add(oResult);
 		a_bIsIdle = false;
 	}
@@ -149,7 +155,6 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 				a_oTimeOut.Routine(a_bIsIdle);
 				a_bIsIdle = true;
 				Fx_Analyze();
-				Exit();  // TODO remove
 			}
 		} catch (Exception oException) {
 			oException.printStackTrace();
