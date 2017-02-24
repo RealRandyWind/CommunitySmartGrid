@@ -9,14 +9,12 @@ import java.util.UUID;
 public class ManagementServer extends Main {
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
-	private MConnectionManager a_mConnectionManager = null;
 
 	private UUID a_oIdentifier = null;
 
 	protected ManagementServer() {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
-		a_mConnectionManager = MConnectionManager.GetInstance();
 	}
 
 	public UUID GetIdentifier() {
@@ -24,7 +22,6 @@ public class ManagementServer extends Main {
 	}
 
 	public void ShutDown() {
-		a_mConnectionManager.ShutDown();
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
 
@@ -34,7 +31,6 @@ public class ManagementServer extends Main {
 	public void SetUp() {
 		a_mLogManager.SetUp();
 		a_mSettingsManager.SetUp();
-		a_mConnectionManager.SetUp();
 
 		a_mLogManager.Success("",0);
 	}
