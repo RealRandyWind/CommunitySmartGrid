@@ -79,8 +79,11 @@ public final class AnalyticServerStub implements Runnable {
 	private void Fx_DisplayData(IData oData) {
 		int iTuple = 0;
 		Serializable[] ptrTuple = oData.GetTuple(iTuple);
-		while(ptrTuple == null) {
-			a_mLogManager.Debug("data received \"%s\"",0, Arrays.toString(ptrTuple));
+		while(ptrTuple != null) {
+			a_mLogManager.Debug("%s data(%d) received \"%s\"",0
+					,GetIdentifier().toString()
+					,iTuple
+					,Arrays.toString(ptrTuple));
 			++iTuple;
 			ptrTuple =  oData.GetTuple(iTuple);
 		}
@@ -106,6 +109,10 @@ public final class AnalyticServerStub implements Runnable {
 			oException.printStackTrace();
 		}
 		a_mLogManager.Debug("%s stopped",0, a_oIdentifier.toString());
+	}
+
+	public UUID GetIdentifier() {
+		return a_oIdentifier;
 	}
 
 	public static final ISettings NewDataRealtimeConsumerSettings(String sRemote, int iPort, UUID iSettings) {

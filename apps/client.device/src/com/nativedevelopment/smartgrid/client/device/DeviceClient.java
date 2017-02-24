@@ -84,6 +84,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		// TODO store date to mongodb
 
 		oDeviceClientSettings.SetKeyPrefix("");
+		a_mLogManager.Info("data.realtime.producer \"%s\"",0,a_oDataRealtimeProducer.GetIdentifier().toString());
+		a_mLogManager.Info("action.control.consumer \"%s\"",0,a_oActionControlConsumer.GetIdentifier().toString());
 		a_oDataRealtimeProducer.Open();
 		a_oActionControlConsumer.Open();
 		/* temporary configuration end */
