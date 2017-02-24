@@ -105,6 +105,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 			return;
 		}
 		IAction oAction = (IAction) ptrAction;
+		a_mLogManager.Debug("%s perform action %s",0,GetIdentifier().toString(),oAction.GetIdentifier().toString());
 		// TODO sub implementation
 		a_bIsIdle = false;
 	}
