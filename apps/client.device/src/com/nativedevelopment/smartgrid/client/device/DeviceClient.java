@@ -24,7 +24,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
-	private MConnectionManager a_mConnectionManager = null;
+	private RabbitMQProducerConnection a_oDataRealtimeProducer = null;
+	private RabbitMQConsumerConnection a_oActionControlConsumer = null;
 
 	private UUID a_oIdentifier = null;
 	private UUID a_iSettings = null;
@@ -38,7 +39,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	protected DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
-		a_mConnectionManager = MConnectionManager.GetInstance();
 		a_oTimeOut = new TimeOut();
 	}
 
@@ -47,9 +47,13 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	}
 
 	public void ShutDown() {
-		a_mConnectionManager.ShutDown();
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
+
+		a_oDataRealtimeProducer.Close();
+		a_oActionControlConsumer.Close();
+
+		// TODO join
 
 		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
@@ -57,7 +61,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public void SetUp() {
 		a_mLogManager.SetUp();
 		a_mSettingsManager.SetUp();
-		a_mConnectionManager.SetUp();
 
 		ISettings oDeviceClientSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
 		a_iSettings = oDeviceClientSettings.GetIdentifier();
@@ -68,23 +71,21 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_lActionMap = new ConcurrentHashMap<>();
 
 		/* temporary configuration begin */
-		RabbitMQProducerConnection oDataRealtimeProducer = new RabbitMQProducerConnection(null);
+		a_oDataRealtimeProducer = new RabbitMQProducerConnection(null);
 		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_DATAREALTIMEPRODUCER_PREFIX);
-		oDataRealtimeProducer.SetFromQueue(a_lDataQueue);
-		oDataRealtimeProducer.Configure(oDeviceClientSettings);
-		a_mConnectionManager.AddConnection(oDataRealtimeProducer);
+		a_oDataRealtimeProducer.SetFromQueue(a_lDataQueue);
+		a_oDataRealtimeProducer.Configure(oDeviceClientSettings);
 
-		RabbitMQConsumerConnection oActionControlConsumer = new RabbitMQConsumerConnection(null);
+		a_oActionControlConsumer = new RabbitMQConsumerConnection(null);
 		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLCONSUMER_PREFIX);
-		oActionControlConsumer.SetToQueue(a_lActionQueue);
-		oActionControlConsumer.Configure(oDeviceClientSettings);
-		a_mConnectionManager.AddConnection(oActionControlConsumer);
+		a_oActionControlConsumer.SetToQueue(a_lActionQueue);
+		a_oActionControlConsumer.Configure(oDeviceClientSettings);
 
 		// TODO store date to mongodb
 
 		oDeviceClientSettings.SetKeyPrefix("");
-		a_mConnectionManager.EstablishConnection(oDataRealtimeProducer.GetIdentifier());
-		a_mConnectionManager.EstablishConnection(oActionControlConsumer.GetIdentifier());
+		a_oDataRealtimeProducer.Open();
+		a_oActionControlConsumer.Open();
 		/* temporary configuration end */
 
 		a_mLogManager.Success("",0);

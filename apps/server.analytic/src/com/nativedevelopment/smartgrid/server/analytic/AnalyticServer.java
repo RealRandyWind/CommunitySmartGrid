@@ -29,7 +29,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
-	private MConnectionManager a_mConnectionManager = null;
+	private RabbitMQConsumerConnection a_oDataRealtimeConsumer = null;
+	private RabbitMQProducerConnection a_oActionControlProducer = null;
+	private MongoDBStorageConnection a_oResultStore = null;
+	private UDPProducerConnection a_oStatusMonitorProducer = null;
 
 	private UUID a_oIdentifier = null;
 	private UUID a_iSettings = null;
@@ -46,7 +49,6 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	protected AnalyticServer() {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
-		a_mConnectionManager = MConnectionManager.GetInstance();
 		a_oTimeOut = new TimeOut();
 	}
 
@@ -55,9 +57,15 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	}
 
 	public void ShutDown() {
-		a_mConnectionManager.ShutDown();
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
+
+		a_oDataRealtimeConsumer.Close();
+		a_oActionControlProducer.Close();
+		a_oResultStore.Close();
+		a_oStatusMonitorProducer.Close();
+
+		// TODO join
 
 		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
 	}
@@ -65,7 +73,6 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	public void SetUp() {
 		a_mLogManager.SetUp();
 		a_mSettingsManager.SetUp();
-		a_mConnectionManager.SetUp();
 
 		ISettings oAnalyticServerSettings = a_mSettingsManager.LoadSettingsFromFile(APP_SETTINGS_DEFAULT_PATH);
 		a_iSettings = oAnalyticServerSettings.GetIdentifier();
@@ -78,36 +85,33 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_lObserverQueue = new ConcurrentLinkedQueue<>();
 
 		/* temporary configuration begin */
-		RabbitMQConsumerConnection oDataRealtimeConsumer = new RabbitMQConsumerConnection(null);
+		a_oDataRealtimeConsumer = new RabbitMQConsumerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_DATAREAILTIMECONSUMER_PREFIX);
-		oDataRealtimeConsumer.SetToQueue(a_lDataQueue);
-		oDataRealtimeConsumer.Configure(oAnalyticServerSettings);
-		a_mConnectionManager.AddConnection(oDataRealtimeConsumer);
+		a_oDataRealtimeConsumer.SetToQueue(a_lDataQueue);
+		a_oDataRealtimeConsumer.Configure(oAnalyticServerSettings);
 
-		RabbitMQProducerConnection oActionControlProducer = new RabbitMQProducerConnection(null);
+		a_oActionControlProducer = new RabbitMQProducerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLPRODUCER_PREFIX);
-		oActionControlProducer.SetFromQueue(a_lActionQueue);
-		oActionControlProducer.Configure(oAnalyticServerSettings);
-		a_mConnectionManager.AddConnection(oActionControlProducer);
+		a_oActionControlProducer.SetFromQueue(a_lActionQueue);
+		a_oActionControlProducer.Configure(oAnalyticServerSettings);
 
-		MongoDBStorageConnection oResultStore = new MongoDBStorageConnection(null);
+		a_oResultStore = new MongoDBStorageConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_RESULTSTORE_PREFIX);
-		oResultStore.SetFromQueue(a_lResultQueue);
-		oResultStore.Configure(oAnalyticServerSettings);
-		a_mConnectionManager.AddConnection(oResultStore);
+		a_oResultStore.SetFromQueue(a_lResultQueue);
+		a_oResultStore.Configure(oAnalyticServerSettings);
 
-		UDPProducerConnection oStatusMonitorProducer = new UDPProducerConnection(null);
+		a_oStatusMonitorProducer = new UDPProducerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_STATUSMONITORPRODUCER_PREFIX);
-		oStatusMonitorProducer.SetFromQueue(a_lStatusQueue);
-		oStatusMonitorProducer.SetRemoteQueue(a_lObserverQueue);
-		oStatusMonitorProducer.Configure(oAnalyticServerSettings);
-		a_mConnectionManager.AddConnection(oStatusMonitorProducer);
+		a_oStatusMonitorProducer.SetFromQueue(a_lStatusQueue);
+		a_oStatusMonitorProducer.SetRemoteQueue(a_lObserverQueue);
+		a_oStatusMonitorProducer.Configure(oAnalyticServerSettings);
 
 		oAnalyticServerSettings.SetKeyPrefix("");
-		a_mConnectionManager.EstablishConnection(oDataRealtimeConsumer.GetIdentifier());
-		a_mConnectionManager.EstablishConnection(oActionControlProducer.GetIdentifier());
-		a_mConnectionManager.EstablishConnection(oResultStore.GetIdentifier());
-		a_mConnectionManager.EstablishConnection(oStatusMonitorProducer.GetIdentifier());
+		a_oDataRealtimeConsumer.Open();
+		a_oActionControlProducer.Open();
+		a_oResultStore.Open();
+		a_oStatusMonitorProducer.Open();
+
 		/* temporary configuration end */
 
 		a_mLogManager.Success("",0);

@@ -3,7 +3,6 @@ package com.nativedevelopment.smartgrid.server.management;
 import com.nativedevelopment.smartgrid.Main;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.MSettingsManager;
-import com.nativedevelopment.smartgrid.MConnectionManager;
 
 import java.util.UUID;
 
