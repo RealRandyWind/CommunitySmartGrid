@@ -15,6 +15,7 @@ public class RabbitMQConsumerConnection extends Connection {
 	public static final String SETTINGS_KEY_EXCHANGETYPE = "exchange.type";
 	public static final String SETTINGS_KEY_ROUTINGKEY = "routing.key";
 	public static final String SETTINGS_KEY_ISHANDSHAKE = "ishandshake";
+	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
 	public static final String SETTINGS_KEY_ISPACKAGEUNWRAP = "ispackageunwrap";
 	public static final String SETTINGS_KEY_ISAUTHENTICATE = "isauthenticate";
 	public static final String SETTINGS_KEY_USERNAME = "user.name";
@@ -32,6 +33,7 @@ public class RabbitMQConsumerConnection extends Connection {
 	private String a_sUserPassword = null;
 	private boolean a_bIsPackageUnwrap = false;
 
+	protected TimeOut a_oTimeOut = null;
 	protected Queue<Serializable> a_lToQueue = null;
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
 	private Channel a_oRabbitMQChannel = null;
@@ -39,6 +41,7 @@ public class RabbitMQConsumerConnection extends Connection {
 
 	public RabbitMQConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);
+		a_oTimeOut = new TimeOut();
 	}
 
 	public void SetToQueue(Queue<Serializable> lToQueue) {
@@ -69,6 +72,8 @@ public class RabbitMQConsumerConnection extends Connection {
 		a_bIsAuthenticate = (boolean)oConfigurations.Get(SETTINGS_KEY_ISAUTHENTICATE);
 		a_sUserName = oConfigurations.GetString(SETTINGS_KEY_USERNAME);
 		a_sUserPassword = oConfigurations.GetString(SETTINGS_KEY_USERPASSWORD);
+
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME));
 	}
 
 	@Override
@@ -81,12 +86,21 @@ public class RabbitMQConsumerConnection extends Connection {
 				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
 				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
 			}
+			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %s, %s, %s }\n",MLogManager.MethodName()
+					,GetIdentifier().toString(), a_sFromHost, a_iThroughPort, a_sUserName, a_sUserPassword, a_sFromExchange, a_sTypeExchange);
+			//a_oRabbitMQConnectionFactory.setAutomaticRecoveryEnabled(true);
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
 			a_oRabbitMQChannel.exchangeDeclare(a_sFromExchange, a_sTypeExchange);
 			a_sFromQueue = a_oRabbitMQChannel.queueDeclare().getQueue();
 			a_oRabbitMQChannel.queueBind(a_sFromQueue, a_sFromExchange, a_sRoutingKey);
 			a_oRabbitMQChannel.basicConsume(a_sFromQueue, a_bIsHandshake, oConsumer);
+			// TODO stay active until connection closed or rabbitmq connection closed.
+			while(!IsClose()) {
+				a_oTimeOut.Routine(a_oRabbitMQConnection.isOpen());
+			}
+			a_oRabbitMQChannel.close();
+			a_oRabbitMQConnection.close();
 		} catch (Exception oException) {
 			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"
 					,MLogManager.MethodName()

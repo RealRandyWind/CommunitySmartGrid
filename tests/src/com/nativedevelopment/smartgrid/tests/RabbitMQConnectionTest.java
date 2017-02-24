@@ -55,6 +55,7 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISHANDSHAKE,true);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
+		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_CHECKTIME, 20000);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,"");
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERNAME,SETTINGS_VALUE_USER);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,SETTINGS_VALUE_PASSWORD);
@@ -69,7 +70,6 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERNAME,SETTINGS_VALUE_USER);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERPASSWORD,SETTINGS_VALUE_PASSWORD);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,SETTINGS_VALUE_ISPACKAGEWRAPPED);
-
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);

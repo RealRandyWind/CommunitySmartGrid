@@ -83,6 +83,9 @@ public class RabbitMQProducerConnection extends Connection {
 				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
 				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
 			}
+			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %s, %s, %s }\n",MLogManager.MethodName()
+					,GetIdentifier().toString(), a_sToHost, a_iThroughPort, a_sUserName, a_sUserPassword, a_sToExchange, a_sTypeExchange);
+			//a_oRabbitMQConnectionFactory.setAutomaticRecoveryEnabled(true);
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
 			a_oRabbitMQChannel.exchangeDeclare(a_sToExchange, a_sTypeExchange);
@@ -101,6 +104,8 @@ public class RabbitMQProducerConnection extends Connection {
 					a_oRabbitMQChannel.basicPublish(a_sToExchange, a_sRoutingKey, null, rawBytes);
 				}
 			}
+			a_oRabbitMQChannel.close();
+			a_oRabbitMQConnection.close();
 		} catch (Exception oException) {
 			//TODO write errors to log queue
 			System.out.printf("_WARNING: %s@%s %s \"%s\"\n"

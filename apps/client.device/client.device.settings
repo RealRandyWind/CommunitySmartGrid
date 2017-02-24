@@ -22,6 +22,7 @@ action.control.consumer.exchange.type = "direct"
 action.control.consumer.routing.key = "8b9deeb8-ea9a-4a4e-93f3-a819b96c5620"
 action.control.consumer.ishandshake = true
 action.control.consumer.ispackageunwrap = true
+action.control.consumer.checktime = 200000
 action.control.consumer.isauthenticate = true
 action.control.consumer.user.name = "guest"
 action.control.consumer.user.password = "guest"

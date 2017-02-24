@@ -29,7 +29,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private UUID a_oIdentifier = null;
 	private UUID a_iSettings = null;
 	private boolean a_bIsIdle = true;
-
 	private TimeOut a_oTimeOut = null;
 
 	private Queue<Serializable> a_lDataQueue = null; // TODO IData
@@ -119,6 +118,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	public void Configure(ISettings oConfigurations) {
 		Serializable oIdentifier = oConfigurations.Get(SETTINGS_KEY_IDENTIFIER);
 		a_oIdentifier = oIdentifier == null ? UUID.randomUUID() : UUID.fromString((String)oIdentifier);
+		oConfigurations.Set(SETTINGS_KEY_IDENTIFIER,oIdentifier.toString());
 		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
 		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
 		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
@@ -137,7 +137,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		} catch (Exception oException) {
 			oException.printStackTrace();
 			a_mLogManager.Warning("@%s %s \"%s\"\n",0
-					,GetInstance().toString()
+					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}

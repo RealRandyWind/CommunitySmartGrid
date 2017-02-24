@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.MLogManager;
+import com.nativedevelopment.smartgrid.Package;
 import com.nativedevelopment.smartgrid.client.device.DeviceClient;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
@@ -16,6 +17,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.junit.Assert.*;
 
 public class DeviceClientTest implements ITestCase {
+	public static final int TEST_MSG_COUNT = 20;
+
 	DeviceClient a_oApplication = null;
 	MLogManager a_mLogManager = null;
 	Thread a_oDeviceClientThread = null;
@@ -41,11 +44,11 @@ public class DeviceClientTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub("192.168.99.100",5672,5673);
+		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"192.168.99.100",5672,5673,5675);
 		oAnalyticServerStub.SetQueues(null,a_lDataQueue,a_lActionQueue,null,null);
 		oAnalyticServerStub.Start();
 		a_oDeviceClientThread.start();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 		oAnalyticServerStub.Stop();
 		a_oApplication.Exit();
 		a_oDeviceClientThread.join();

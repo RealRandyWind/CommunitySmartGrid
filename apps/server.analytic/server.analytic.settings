@@ -23,6 +23,7 @@ data.realtime.consumer.routing.key = ""
 data.realtime.consumer.ishandshake = true
 data.realtime.consumer.ispackageunwrap = false
 data.realtime.consumer.isauthenticate = true
+data.realtime.consumer.checktime = 200000
 data.realtime.consumer.user.name = "guest"
 data.realtime.consumer.user.password = "guest"
 result.store.remote.address = "192.168.99.100"

@@ -79,7 +79,7 @@ public class MLogManager {
 		// TODO MLogManager ShutDown
 
 		a_bIsShutDown = true;
-		System.out.printf("_" + LOG_SUCCESS_STR + MethodName() + ".\n");
+		System.out.printf("_" + LOG_SUCCESS_STR + MethodName() + "\n");
 	}
 
 	public void SetLogFile(String sFilePath) {
