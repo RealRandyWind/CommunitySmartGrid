@@ -17,14 +17,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static org.junit.Assert.*;
 
 public class DeviceClientTest implements ITestCase {
-	public static final int TEST_MSG_COUNT = 20;
-
 	DeviceClient a_oApplication = null;
 	MLogManager a_mLogManager = null;
 	Thread a_oDeviceClientThread = null;
 
 	Queue<Serializable> a_lDataQueue = null;
 	Queue<Serializable> a_lActionQueue = null;
+	Queue<Serializable> a_lRemoteQueue = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -34,6 +33,7 @@ public class DeviceClientTest implements ITestCase {
 		a_mLogManager.SetUp();
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
+		a_lRemoteQueue = new ConcurrentLinkedQueue<>();
 	}
 
 	@After
@@ -45,7 +45,7 @@ public class DeviceClientTest implements ITestCase {
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
 		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"192.168.99.100",5672,5673,5675);
-		oAnalyticServerStub.SetQueues(null,a_lDataQueue,a_lActionQueue,null,null);
+		oAnalyticServerStub.SetQueues(null,a_lRemoteQueue,a_lDataQueue,a_lActionQueue,null,null);
 		oAnalyticServerStub.Start();
 		a_oDeviceClientThread.start();
 		Thread.sleep(5000);
