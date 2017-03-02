@@ -108,4 +108,13 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
 		return oSettings;
 	}
+
+	public static final ISettings NewStateMonitorProduceSettings(UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,2000);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,0);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,0);
+		return oSettings;
+	}
 }

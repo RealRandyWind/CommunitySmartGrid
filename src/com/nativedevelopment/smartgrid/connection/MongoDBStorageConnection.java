@@ -1,6 +1,7 @@
 package com.nativedevelopment.smartgrid.connection;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.nativedevelopment.smartgrid.*;
@@ -22,6 +23,8 @@ public class MongoDBStorageConnection extends Connection {
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
+	public static final String DOCUMENT_KEY_IDENTFIER = "_identifier";
+
 	private String a_sToHost = null;
 	private int a_iThroughPort = 0;
 	private String a_sKeySpace = null;
@@ -40,8 +43,10 @@ public class MongoDBStorageConnection extends Connection {
 		a_lFromQueue = lFromQueue;
 	}
 
-	private void Fx_Store() {
-		System.out.printf("_WARNING: %snot yet implemented\n",MLogManager.MethodName());
+	private Serializable Fx_Store() {
+		if(a_lFromQueue == null) { return null; }
+		Serializable ptrSerializable = a_lFromQueue.poll();
+		return ptrSerializable;
 	}
 
 	@Override
@@ -65,20 +70,20 @@ public class MongoDBStorageConnection extends Connection {
 		try {
 			while (!IsClose()) {
 				a_oTimeOut.Routine(false);
+				Serializable ptrSerializable = Fx_Store();
+				if(a_oTimeOut.Routine(ptrSerializable != null)) { continue; }
 				Document oDocument = new Document();
 				if(a_bIsPackageWrapped) {
-					/*
 					IPackage oPackage = (IPackage) ptrSerializable;
-					iRoute =  oPackage.GetRoutIdentifier();
-					iCorrelation = oPackage.GetCorrelationIdentifier();
+					UUID iRoute =  oPackage.GetRoutIdentifier();
+					UUID iCorrelation = oPackage.GetCorrelationIdentifier();
 					oDocument.append("route", iRoute.toString())
 						.append("timestamp", oPackage.GetTimeStamp())
 						.append("correlation", iCorrelation.toString())
 						.append("flag", oPackage.GetFlag())
 						.append("content", new Binary(Serializer.Serialize(oPackage.GetContent(),0)));
-					*/
 				} else {
-					/* oDocument.append("content", new Binary(rawBytes)); */
+					oDocument.append("content", new Binary(Serializer.Serialize(ptrSerializable,0)));
 				}
 				oCollection.insertOne(oDocument);
 			}
@@ -88,5 +93,49 @@ public class MongoDBStorageConnection extends Connection {
 					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
+	}
+
+	public static Document DataToDocument(IData oData, int iTuple) {
+		Document oDocument = new Document();
+		UUID iData = oData.GetIdentifier();
+		String[] lAttributes = oData.GetAttributes();
+		Serializable[] lTuple = oData.GetTuple(iTuple);
+		oDocument.append(DOCUMENT_KEY_IDENTFIER,iData);
+		for (int iAttribute = 0; iAttribute < lAttributes.length; ++iAttribute) {
+			oDocument.append(lAttributes[iAttribute],lTuple[iAttribute]);
+		}
+		return oDocument;
+	}
+
+	public static Document[] DataToDocuments(IData oData) {
+		if(oData == null) { return null; }
+		UUID iData = oData.GetIdentifier();
+		Serializable[][] lTuples = oData.GetAllTuples();
+		String[] lAttributes = oData.GetAttributes();
+		Document[] lDocuments = new Document[lTuples.length];
+		for(int iTuple = 0; iTuple < lTuples.length; ++iTuple) {
+			lDocuments[iTuple].append(DOCUMENT_KEY_IDENTFIER,iData);
+			for (int iAttribute = 0; iAttribute < lAttributes.length; ++iAttribute) {
+				lDocuments[iTuple].append(lAttributes[iAttribute],lTuples[iTuple][iAttribute]);
+			}
+		}
+		return lDocuments;
+	}
+
+	public static IData DocumentToData(Document oDocument) {
+		int nTupleSize = oDocument.size()-1;
+		int iAttribute = 0;
+		int iTuple = 0;
+		int nTuples = 1;
+		UUID iData = (UUID)oDocument.get(DOCUMENT_KEY_IDENTFIER);
+		String[] lAttributes = new String[nTupleSize];
+		Serializable[][] lTuples = new Serializable[nTuples][nTupleSize];
+		for (String sKey: oDocument.keySet()) {
+			if(sKey.equals(DOCUMENT_KEY_IDENTFIER)) { continue; }
+			lAttributes[iAttribute] = sKey;
+			lTuples[iTuple][iAttribute] = (Serializable)oDocument.get(sKey);
+			iAttribute++;
+		}
+		return new Data(iData,lTuples,lAttributes);
 	}
 }
