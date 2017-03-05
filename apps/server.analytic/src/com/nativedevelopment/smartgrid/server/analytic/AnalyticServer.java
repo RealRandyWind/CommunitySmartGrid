@@ -62,7 +62,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		a_oDataRealtimeConsumer.Close();
 		a_oActionControlProducer.Close();
-		a_oResultStore.Close();
+		//a_oResultStore.Close();
 		a_oStatusMonitorProducer.Close();
 
 		// TODO join
@@ -95,10 +95,12 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_oActionControlProducer.SetFromQueue(a_lActionQueue);
 		a_oActionControlProducer.Configure(oAnalyticServerSettings);
 
+		/*
 		a_oResultStore = new MongoDBStorageConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_RESULTSTORE_PREFIX);
 		a_oResultStore.SetFromQueue(a_lResultQueue);
 		a_oResultStore.Configure(oAnalyticServerSettings);
+		*/
 
 		a_oStatusMonitorProducer = new UDPProducerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_STATUSMONITORPRODUCER_PREFIX);
@@ -109,7 +111,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		oAnalyticServerSettings.SetKeyPrefix("");
 		a_oDataRealtimeConsumer.Open();
 		a_oActionControlProducer.Open();
-		a_oResultStore.Open();
+		//a_oResultStore.Open();
 		a_oStatusMonitorProducer.Open();
 
 		/* temporary configuration end */
@@ -125,20 +127,16 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	private void Fx_Analyze() {
 		Serializable ptrData = a_lDataQueue.poll();
-		if(ptrData == null) {
-			return;
-		}
+		if(ptrData == null) { return; }
 		IData oData = (IData) ptrData;
-		// TODO stub implementation
-		//IAction oAction = Generator.GenerateActionSensor(null);
 		IAction oAction = Generator.GenerateActionMachine(null);
-		UUID[] lActions = new UUID[1];
-		lActions[0] = oAction.GetIdentifier();
 		IPackage oPackage = new Package(oAction,oData.GetIdentifier(),null,0,System.currentTimeMillis());
 		int nTuple = 1;
+		UUID[] lActions = new UUID[1];
+		lActions[0] = oAction.GetIdentifier();
 		IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
-		a_lActionQueue.add(oPackage);
-		a_lResultQueue.add(oResult);
+		a_lActionQueue.offer(oPackage);
+		a_lResultQueue.offer(oResult);
 		a_bIsIdle = false;
 	}
 

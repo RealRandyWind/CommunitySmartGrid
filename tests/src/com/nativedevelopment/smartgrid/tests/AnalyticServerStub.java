@@ -83,10 +83,17 @@ public final class AnalyticServerStub extends AServerStub {
 				Serializable ptrData = a_lDataQueue.poll();
 				if(a_oTimeOut.Routine(ptrData == null)) { continue; }
 				IData oData = (IData) ptrData;
-				DisplayData(oData);
+				DisplayData(oData, "recived");
 				IAction oAction = Generator.GenerateActionMachine(null);
+				DisplayAction(oAction, "generated");
 				IPackage oPackage = new Package(oAction,oData.GetIdentifier(),null,0,System.currentTimeMillis());
 				a_lActionQueue.add(oPackage);
+				int nTuple = 1;
+				UUID[] lActions = new UUID[1];
+				lActions[0] = oAction.GetIdentifier();
+				IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
+				DisplayResult(oResult, "generated");
+				a_lResultQueue.add(oResult);
 			}
 		} catch (Exception oException) {
 			a_mLogManager.Warning("%s \"%s\"\n",0

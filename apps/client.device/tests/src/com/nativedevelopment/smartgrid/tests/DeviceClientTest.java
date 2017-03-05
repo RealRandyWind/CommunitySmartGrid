@@ -23,6 +23,7 @@ public class DeviceClientTest implements ITestCase {
 
 	Queue<Serializable> a_lDataQueue = null;
 	Queue<Serializable> a_lActionQueue = null;
+	Queue<Serializable> a_lResultQueue = null;
 	Queue<Serializable> a_lRemoteQueue = null;
 
 	@Before
@@ -33,6 +34,7 @@ public class DeviceClientTest implements ITestCase {
 		a_mLogManager.SetUp();
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
+		a_lResultQueue = new ConcurrentLinkedQueue<>();
 		a_lRemoteQueue = new ConcurrentLinkedQueue<>();
 	}
 
@@ -45,7 +47,7 @@ public class DeviceClientTest implements ITestCase {
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
 		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"192.168.99.100",5672,5673,5675);
-		oAnalyticServerStub.SetQueues(null,a_lRemoteQueue,a_lDataQueue,a_lActionQueue,null,null);
+		oAnalyticServerStub.SetQueues(null,a_lRemoteQueue,a_lDataQueue,a_lActionQueue,a_lResultQueue,null);
 		oAnalyticServerStub.Start();
 		a_oDeviceClientThread.start();
 		Thread.sleep(5000);

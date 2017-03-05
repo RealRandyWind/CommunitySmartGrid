@@ -114,7 +114,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		int nTuples = 1;
 		IData oData = Generator.GenerateDataSensor(a_oIdentifier, nTuples);
 		// TODO sub implementation
-		a_lDataQueue.add(oData);
+		a_lDataQueue.offer(oData);
 		a_bIsIdle = false;
 	}
 

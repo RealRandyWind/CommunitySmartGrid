@@ -11,22 +11,26 @@ import java.util.UUID;
 public class DeviceClientStub extends AServerStub {
 	private RabbitMQProducerConnection a_oDataProducer = null;
 	private RabbitMQConsumerConnection a_oActionConsumer = null;
-	//private UDPConsumerConnection a_oStateConsumer = null;
 	// TODO Storage, Monitor
 
 	private Queue<Serializable> a_lLogQueue = null;
 	private Queue<Serializable> a_lDataQueue = null;
 	private Queue<Serializable> a_lActionQueue = null;
 
-	public DeviceClientStub(UUID oIdentifier) {
+	public DeviceClientStub(UUID oIdentifier, String sRemote, int iPortRabbit, int iPortMongo, int iPortUDP) {
 		super(oIdentifier);
+		a_oDataProducer = new RabbitMQProducerConnection(null);
+		a_oActionConsumer = new RabbitMQConsumerConnection(null);
+		ISettings oDataProducerSettings = NewDataRealtimeProducerSettings(sRemote, iPortRabbit, null);
+		ISettings oActionConsumerSettings = NewActionControlConsumerSettings(sRemote, iPortRabbit, GetIdentifier(), null);
+		a_oDataProducer.Configure(oDataProducerSettings);
+		a_oActionConsumer.Configure(oActionConsumerSettings);
 	}
 
 	public void SetQueues(Queue<Serializable> lLogQueue, Queue<Serializable> lDataQueue,
 						  Queue<Serializable> lActionQueue) {
 		a_oDataProducer.SetFromQueue(lDataQueue);
 		a_oActionConsumer.SetToQueue(lActionQueue);
-
 
 		a_lLogQueue = lLogQueue;
 		a_lDataQueue = lDataQueue;
@@ -57,13 +61,14 @@ public class DeviceClientStub extends AServerStub {
 		a_mLogManager.Debug("%s running",0, GetIdentifier().toString());
 		try {
 			while(!a_bIsStop) {
-				Serializable ptrData = a_lActionQueue.poll();
-				if(a_oTimeOut.Routine(ptrData == null)) { continue; }
-				IAction oAction = (IAction) ptrData;
-				DisplayAction(oAction);
-				int nTuples = 0;
+				int nTuples = 1;
 				IData oData = Generator.GenerateDataMachine(GetIdentifier(),nTuples);
-				a_lDataQueue.add(oData);
+				DisplayData(oData, "generated");
+				a_lDataQueue.offer(oData);
+				Serializable ptrAction = a_lActionQueue.poll();
+				if(ptrAction == null) { continue; }
+				IAction oAction = (IAction) ptrAction;
+				DisplayAction(oAction, "recived");
 			}
 		} catch (Exception oException) {
 			a_mLogManager.Warning("%s \"%s\"\n",0

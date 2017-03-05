@@ -23,21 +23,31 @@ public abstract class AServerStub implements Runnable {
 		a_oIdentifier = (oIdentifier == null ? UUID.randomUUID() : oIdentifier);
 	}
 
-	public void DisplayData(IData oData) {
+	public void DisplayData(IData oData, String sContext) {
+		Fx_DisplayData("data", sContext, oData);
+	}
+
+	public void DisplayResult(IData oData, String sContext) {
+		Fx_DisplayData("result", sContext, oData);
+	}
+
+	private void Fx_DisplayData(String sSubject, String sContext, IData oData) {
 		int iTuple = 0;
 		Serializable[] ptrTuple = oData.GetTuple(iTuple);
 		while(ptrTuple != null) {
-			a_mLogManager.Debug("%s data(%d) received \"%s\"",0
+			a_mLogManager.Debug("@%s %s(%d) %s \"%s\"",0
 					,GetIdentifier().toString()
+					,sSubject
 					,iTuple
-					, Arrays.toString(ptrTuple));
+					,sContext
+					,Arrays.toString(ptrTuple));
 			++iTuple;
 			ptrTuple =  oData.GetTuple(iTuple);
 		}
 	}
 
-	public void DisplayAction(IAction oAction) {
-		a_mLogManager.Debug("%s perform action %s",0,GetIdentifier().toString(),oAction.GetIdentifier().toString());
+	public void DisplayAction(IAction oAction, String sContext) {
+		a_mLogManager.Debug("@%s action(%s) %s",0,GetIdentifier().toString(),oAction.GetIdentifier().toString(), sContext);
 	}
 
 	public UUID GetIdentifier() {
@@ -57,6 +67,39 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,"");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERNAME,"guest");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
+		return oSettings;
+	}
+
+	public static final ISettings NewActionControlConsumerSettings(String sRemote, int iPort, UUID iRoute, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"action.control");
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"direct");
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISHANDSHAKE,true);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,true);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_CHECKTIME,200000);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEPORT,iPort);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,iRoute.toString());
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERNAME,"guest");
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
+		return oSettings;
+	}
+
+	public static final ISettings NewDataRealtimeProducerSettings(String sRemote, int iPort, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"data.realtime");
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,false);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_REMOTEPORT,iPort);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTINGKEY,"");
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERNAME,"guest");
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
 		return oSettings;
 	}
 

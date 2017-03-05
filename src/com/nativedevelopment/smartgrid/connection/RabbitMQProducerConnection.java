@@ -83,7 +83,7 @@ public class RabbitMQProducerConnection extends Connection {
 				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
 				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
 			}
-			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %s, %s, %s }\n",MLogManager.MethodName()
+			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %s, %s, %s, producer }\n",MLogManager.MethodName()
 					,GetIdentifier().toString(), a_sToHost, a_iThroughPort, a_sUserName, a_sUserPassword, a_sToExchange, a_sTypeExchange);
 			a_oRabbitMQConnectionFactory.setAutomaticRecoveryEnabled(true);
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
