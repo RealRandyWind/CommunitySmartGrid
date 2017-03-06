@@ -105,7 +105,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 			return;
 		}
 		IAction oAction = (IAction) ptrAction;
-		a_mLogManager.Debug("%s perform action %s",0,GetIdentifier().toString(),oAction.GetIdentifier().toString());
+		a_mLogManager.Log("perform action %s by %s",0,oAction.GetIdentifier().toString(),GetIdentifier().toString());
 		// TODO sub implementation
 		a_bIsIdle = false;
 	}
@@ -113,7 +113,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private void Fx_ProduceData() {
 		int nTuples = 1;
 		IData oData = Generator.GenerateDataSensor(a_oIdentifier, nTuples);
-		// TODO sub implementation
+		a_mLogManager.Log("produce data by %s",0,GetIdentifier().toString());
 		a_lDataQueue.offer(oData);
 		a_bIsIdle = false;
 	}

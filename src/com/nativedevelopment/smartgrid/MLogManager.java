@@ -95,7 +95,7 @@ public class MLogManager {
 	}
 
 	public void Log(String sFormat, int iCode, Object... olArgs) {
-		String sString = String.format(LOG_LOG_COL + LOG_LOG_STR + sFormat, olArgs);
+		String sString = String.format(LOG_LOG_COL + LOG_LOG_STR + Fx_MethodName() + sFormat, olArgs);
 		Fx_PrintLog(sString,iCode);
 		/*
 		Fx_WriteLog(sString,0,iCode)
