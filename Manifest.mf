@@ -1,0 +1,2 @@
+Class-Path: lib/amqp-client-4.1.0.jar lib/bson-3.4.2.jar lib/mongodb-driver-3.4.2.jar lib/mongodb-driver-core-3.4.2.jar lib/slf4j-api-1.7.24.jar lib/slf4j-simple-1.7.24.jar
+Manifest-Version: 1.0
