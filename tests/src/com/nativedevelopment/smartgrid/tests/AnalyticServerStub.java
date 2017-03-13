@@ -2,19 +2,19 @@ package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
-import com.nativedevelopment.smartgrid.connection.MongoDBStorageConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Queue;
 import java.util.UUID;
 
 public final class AnalyticServerStub extends AServerStub {
 	private RabbitMQConsumerConnection a_oDataConsumer = null;
 	private RabbitMQProducerConnection a_oActionProducer = null;
-	private UDPProducerConnection a_oStateProducer = null;
+	private UDPProducerConnection a_oHeartbeatProducer = null;
 	// TODO Storage, Monitor
 
 	private Queue<Serializable> a_lLogQueue = null;
@@ -27,13 +27,13 @@ public final class AnalyticServerStub extends AServerStub {
 		super(oIdentifier);
 		a_oDataConsumer = new RabbitMQConsumerConnection(null);
 		a_oActionProducer = new RabbitMQProducerConnection(null);
-		a_oStateProducer = new UDPProducerConnection(null);
+		a_oHeartbeatProducer = new UDPProducerConnection(null);
 		ISettings oDataConsumerSettings = NewDataRealtimeConsumerSettings(sRemote, iPortRabbit, null);
 		ISettings oActionProducerSettings = NewActionControlProducerSettings(sRemote, iPortRabbit, null);
-		ISettings oStateProducerSettings = NewStateMonitorProducerSettings("localhost",iPortUDP,null);
+		ISettings oHeartbeatProducerSettings = NewHeartbeatMonitorProducerSettings("localhost",iPortUDP,null);
 		a_oDataConsumer.Configure(oDataConsumerSettings);
 		a_oActionProducer.Configure(oActionProducerSettings);
-		a_oStateProducer.Configure(oStateProducerSettings);
+		a_oHeartbeatProducer.Configure(oHeartbeatProducerSettings);
 	}
 
 	public void SetQueues(Queue<Serializable> lLogQueue, Queue<Serializable> lRemoteQueue,
@@ -41,8 +41,8 @@ public final class AnalyticServerStub extends AServerStub {
 						  Queue<Serializable> lResultQueue, Queue<Serializable> lStatusQueue) {
 		a_oDataConsumer.SetToQueue(lDataQueue);
 		a_oActionProducer.SetFromQueue(lActionQueue);
-		a_oStateProducer.SetFromQueue(lStatusQueue);
-		a_oStateProducer.SetRemoteQueue(lRemoteQueue);
+		a_oHeartbeatProducer.SetFromQueue(lStatusQueue);
+		a_oHeartbeatProducer.SetRemoteQueue(lRemoteQueue);
 
 
 		a_lLogQueue = lLogQueue;
@@ -53,16 +53,16 @@ public final class AnalyticServerStub extends AServerStub {
 
 		a_oActionProducer.SetToLogQueue(lLogQueue);
 		a_oDataConsumer.SetToLogQueue(lLogQueue);
-		a_oStateProducer.SetToLogQueue(lLogQueue);
+		a_oHeartbeatProducer.SetToLogQueue(lLogQueue);
 	}
 
 	public void Start() {
 		a_mLogManager.Info("data.realtime.consumer \"%s\"",0,a_oDataConsumer.GetIdentifier().toString());
 		a_mLogManager.Info("action.control.producer \"%s\"",0,a_oActionProducer.GetIdentifier().toString());
-		a_mLogManager.Info("state.monitor.producer \"%s\"",0,a_oStateProducer.GetIdentifier().toString());
+		a_mLogManager.Info("state.monitor.producer \"%s\"",0, a_oHeartbeatProducer.GetIdentifier().toString());
 		a_oDataConsumer.Open();
 		a_oActionProducer.Open();
-		a_oStateProducer.Open();
+		a_oHeartbeatProducer.Open();
 		a_bIsStop = false;
 		a_oThread.start();
 	}
@@ -71,7 +71,7 @@ public final class AnalyticServerStub extends AServerStub {
 		a_bIsStop = true;
 		a_oActionProducer.Close();
 		a_oDataConsumer.Close();
-		a_oStateProducer.Close();
+		a_oHeartbeatProducer.Close();
 		a_oThread.join();
 	}
 
@@ -83,17 +83,17 @@ public final class AnalyticServerStub extends AServerStub {
 				Serializable ptrData = a_lDataQueue.poll();
 				if(a_oTimeOut.Routine(ptrData == null)) { continue; }
 				IData oData = (IData) ptrData;
-				DisplayData(oData, "recived");
+				DisplayData(oData, "received");
 				IAction oAction = Generator.GenerateActionMachine(null);
 				DisplayAction(oAction, "generated");
 				IPackage oPackage = new Package(oAction,oData.GetIdentifier(),null,0,System.currentTimeMillis());
-				a_lActionQueue.add(oPackage);
+				a_lActionQueue.offer(oPackage);
 				int nTuple = 1;
 				UUID[] lActions = new UUID[1];
 				lActions[0] = oAction.GetIdentifier();
 				IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
 				DisplayResult(oResult, "generated");
-				a_lResultQueue.add(oResult);
+				a_lResultQueue.offer(oResult);
 			}
 		} catch (Exception oException) {
 			a_mLogManager.Warning("%s \"%s\"\n",0

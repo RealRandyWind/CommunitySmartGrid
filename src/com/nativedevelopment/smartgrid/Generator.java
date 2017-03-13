@@ -125,6 +125,22 @@ public final class Generator {
 		return new Action(iAction, new Serializable[0]);
 	}
 
+	public static IData GenerateHeartbeat(UUID iDevice) {
+		/* create attributes */
+		String[] lAttributes = new String[4];
+		lAttributes[0] = "timestamp";
+		lAttributes[1] = "state";
+
+		/* initialize bounds */
+		int nStateUpper = 5;
+
+		/* generate actual data */
+		Serializable[][] lTuples = new Serializable[1][2];
+		lTuples[0][0] = System.currentTimeMillis();
+		lTuples[0][1] = (long)a_oRandom.nextInt(nStateUpper);
+		return new Data(iDevice,lTuples,lAttributes);
+	}
+
 	public static IAction GenerateActionMachine(UUID[] lActions) {
 		UUID iAction = (lActions == null ? UUID.randomUUID() : lActions[a_oRandom.nextInt(lActions.length)]);
 		// TODO also add arguments used

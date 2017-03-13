@@ -29,7 +29,7 @@ public class Package implements IPackage {
 	}
 
 	@Override
-	public int GetFlag() {
+	public long GetFlag() {
 		return a_nFlag;
 	}
 

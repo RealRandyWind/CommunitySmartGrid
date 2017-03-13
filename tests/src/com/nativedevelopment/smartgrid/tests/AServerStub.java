@@ -133,7 +133,7 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewStateMonitorProducerSettings(String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewHeartbeatMonitorProducerSettings(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);

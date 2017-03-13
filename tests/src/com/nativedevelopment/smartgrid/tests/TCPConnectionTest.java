@@ -120,7 +120,7 @@ public class TCPConnectionTest implements ITestCase {
 
 		assertTrue(a_oFromQueue.isEmpty());
 		assertFalse(a_oToQueue.isEmpty());
-		assertEquals(TEST_MSG_COUNT*2,a_oToQueue.size());
+		assertEquals(TEST_MSG_COUNT * 2,a_oToQueue.size());
 		a_mLogManager.Test("end",0);
 	}
 }
