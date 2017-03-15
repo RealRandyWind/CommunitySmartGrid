@@ -127,7 +127,7 @@ public final class Generator {
 
 	public static IData GenerateHeartbeat(UUID iDevice) {
 		/* create attributes */
-		String[] lAttributes = new String[4];
+		String[] lAttributes = new String[2];
 		lAttributes[0] = "timestamp";
 		lAttributes[1] = "state";
 
