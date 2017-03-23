@@ -37,6 +37,20 @@
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -46,6 +60,27 @@
       <library name="org.mongodb:mongodb-driver:Latest" type="repository">
         <properties maven-id="org.mongodb:mongodb-driver:LATEST" />
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
@@ -80,6 +115,20 @@
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.24.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.24.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.24.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.24.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.24.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.24.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.24.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
