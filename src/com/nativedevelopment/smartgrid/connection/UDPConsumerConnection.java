@@ -20,11 +20,9 @@ public class UDPConsumerConnection extends Connection {
 	private boolean a_bIsPackageUnwrap = false;
 
 	protected Queue<Serializable> a_lToQueue = null;
-	private Set<DatagramChannel> a_lChannels = null;
 
 	public UDPConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);
-		a_lChannels = new HashSet<>();
 	}
 
 	public void SetToQueue(Queue<Serializable> lToQueue) {

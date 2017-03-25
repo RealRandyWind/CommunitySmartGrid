@@ -1,4 +1,6 @@
 package com.nativedevelopment.smartgrid.client.device;
 
-public interface IDeviceClient {
+import com.nativedevelopment.smartgrid.IController;
+
+public interface IDeviceClient extends IController{
 }

@@ -57,7 +57,9 @@ public class RMIConnectionTest implements ITestCase {
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIME,SETTINGS_VALUE_CHECKTIME);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
-		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIME,SETTINGS_VALUE_CHECKTIME);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,SETTINGS_VALUE_PORT);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
 	}

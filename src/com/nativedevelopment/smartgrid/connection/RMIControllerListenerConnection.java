@@ -18,7 +18,9 @@ public class RMIControllerListenerConnection extends Connection{
 	public static final String SETTING_KEY_ISREBIND = "isrebind";
 	public static final String SETTING_KEY_ISFORCEUNEXPORT = "isforceunexport";
 
-	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
+	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
+	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
+	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private String a_sExchange = null;
 	private int a_nLocalPort = 0;
@@ -28,7 +30,6 @@ public class RMIControllerListenerConnection extends Connection{
 	protected TimeOut a_oTimeOut = null;
 	private static Registry a_oRegistry = null;
 	private IController a_oRemote = null;
-	private AbstractMap<Object, Remote> a_lRemotes = null;
 
 	public RMIControllerListenerConnection(UUID oIdentifier) {
 		super(oIdentifier);
@@ -51,7 +52,9 @@ public class RMIControllerListenerConnection extends Connection{
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 		a_bIsForceUnExport = (boolean)oConfigurations.Get(SETTING_KEY_ISFORCEUNEXPORT);
 
-		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME));
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override

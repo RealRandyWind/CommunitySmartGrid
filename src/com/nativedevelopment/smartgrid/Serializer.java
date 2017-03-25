@@ -7,6 +7,13 @@ public final class Serializer {
 
 	}
 
+	public static Serializable Deserialize(ByteArrayInputStream oByteArray) throws Exception {
+		ObjectInput oObjectInput = new ObjectInputStream(oByteArray);
+		Serializable ptrSerializable = (Serializable)oObjectInput.readObject();
+		// oObjectInput.close();
+		return ptrSerializable;
+	}
+
 	public static Serializable Deserialize(byte[] rawBytes, int nBufferCapacity) throws Exception {
 		ByteArrayInputStream oByteArray = new ByteArrayInputStream(rawBytes);
 		ObjectInput oObjectInput = new ObjectInputStream(oByteArray);

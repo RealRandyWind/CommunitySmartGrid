@@ -54,7 +54,7 @@ public abstract class AServerStub implements Runnable {
 		return a_oIdentifier;
 	}
 
-	public static final ISettings NewDataRealtimeConsumerSettings(String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewDataRealtimeConsumerSettingsRabbitMQ(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"data.realtime");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
@@ -67,6 +67,27 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,"");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERNAME,"guest");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
+		return oSettings;
+	}
+
+	public static final ISettings NewDataRealtimeConsumerSettingsUDP(String sLocal, int iPort, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
+		return oSettings;
+	}
+
+	public static final ISettings NewDataRealtimeConsumerSettingsTCP(String sLocal, int iPort, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 		return oSettings;
 	}
 
@@ -117,6 +138,18 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTINGKEY,"");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERNAME,"guest");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
+		return oSettings;
+	}
+
+	public static final ISettings NewControllerListenerSettings(String sExchange, int iPort, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);/*StubController*/
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
+		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,iPort);
+		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
 		return oSettings;
 	}
 

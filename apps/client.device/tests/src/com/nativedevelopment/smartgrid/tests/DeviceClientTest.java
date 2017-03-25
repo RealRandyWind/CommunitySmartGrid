@@ -1,17 +1,14 @@
 package com.nativedevelopment.smartgrid.tests;
 
+import com.nativedevelopment.smartgrid.IController;
 import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.Package;
 import com.nativedevelopment.smartgrid.client.device.DeviceClient;
-import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.Queue;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.Assert.*;
@@ -24,7 +21,7 @@ public class DeviceClientTest implements ITestCase {
 	Queue<Serializable> a_lDataQueue = null;
 	Queue<Serializable> a_lActionQueue = null;
 	Queue<Serializable> a_lResultQueue = null;
-	Queue<Serializable> a_lRemoteQueue = null;
+	IController a_oController = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -35,7 +32,7 @@ public class DeviceClientTest implements ITestCase {
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
 		a_lResultQueue = new ConcurrentLinkedQueue<>();
-		a_lRemoteQueue = new ConcurrentLinkedQueue<>();
+		a_oController = new ControllerDeviceClientStub();
 	}
 
 	@After
@@ -46,8 +43,9 @@ public class DeviceClientTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"192.168.99.100",5672,5673,5675);
-		oAnalyticServerStub.SetQueues(null,a_lRemoteQueue,a_lDataQueue,a_lActionQueue,a_lResultQueue,null);
+		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"192.168.99.100","localhost",5672,27017,5675,55539,0);
+		oAnalyticServerStub.SetQueues(null,a_lDataQueue,a_lActionQueue,a_lResultQueue);
+		oAnalyticServerStub.SetControllers(a_oController);
 		oAnalyticServerStub.Start();
 		a_oDeviceClientThread.start();
 		Thread.sleep(5000);
