@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static org.junit.Assert.*;
-
 public class DeviceClientTest implements ITestCase {
 	DeviceClient a_oApplication = null;
 	MLogManager a_mLogManager = null;
@@ -32,7 +30,7 @@ public class DeviceClientTest implements ITestCase {
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
 		a_lResultQueue = new ConcurrentLinkedQueue<>();
-		a_oController = new ControllerDeviceClientStub();
+		a_oController = new ControllerServerAnalyticStub();
 	}
 
 	@After

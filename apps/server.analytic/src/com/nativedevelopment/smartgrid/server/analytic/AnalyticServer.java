@@ -6,12 +6,11 @@ import com.nativedevelopment.smartgrid.connection.MongoDBStorageConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
+import com.nativedevelopment.smartgrid.controller.IAnalyticServer;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AnalyticServer extends Main implements IAnalyticServer, IConfigurable {
