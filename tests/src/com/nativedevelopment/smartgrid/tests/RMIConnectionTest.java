@@ -18,8 +18,7 @@ import static org.junit.Assert.*;
 public class RMIConnectionTest implements ITestCase {
 	static final String SETTINGS_VALUE_EXCHANGE = "StubController";
 	static final String SETTINGS_VALUE_HOST = "localhost";
-	static final int SETTINGS_VALUE_CHECKTIME = 400;
-	static final int SETTINGS_VALUE_PORT = 0;
+	static final int SETTINGS_VALUE_PORT = 1099;
 	static final String SERIALIZABLE_OBJECT = "Serializable";
 
 
@@ -54,7 +53,10 @@ public class RMIConnectionTest implements ITestCase {
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEADDRESS,SETTINGS_VALUE_HOST);
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTING_KEY_ISREBIND,false);
-		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIME,SETTINGS_VALUE_CHECKTIME);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);

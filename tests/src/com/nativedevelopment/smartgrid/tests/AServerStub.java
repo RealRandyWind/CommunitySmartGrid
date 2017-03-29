@@ -153,9 +153,29 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
+	public static final ISettings NewControllerCallerSettings(String sRemote, String sExchange, int iPort, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);/*StubController*/
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
+		oSettings.Set(RMIControllerCallerConnection.SETTING_KEY_ISREBIND,false);
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
+		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,iPort);
+		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
+		return oSettings;
+	}
+
 	public static final ISettings NewResultStoreSettings(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,false);
+		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_ISDOCUMENT,false);
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
@@ -163,34 +183,6 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_REMOTEPORT,iPort);
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_DATABASE,"8b9deeb8-ea9a-4a4e-93f3-a819b96c5620");
 		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_COLLECTION,"results");
-		return oSettings;
-	}
-
-	public static final ISettings NewHeartbeatMonitorProducerSettings(String sRemote, int iPort, UUID iSettings) {
-		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
-		return oSettings;
-	}
-
-	public static final ISettings NewStateMonitorConsumerSettings(String sLocal, int iPort, UUID iSettings) {
-		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
-		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
-		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
-		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
-		return oSettings;
-	}
-
-	public static final ISettings NewStateMonitorProduceSettings(UUID iSettings) {
-		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,2000);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,0);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,0);
 		return oSettings;
 	}
 }

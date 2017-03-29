@@ -18,6 +18,7 @@ public class MongoDBStorageConnection extends Connection {
 	public static final String SETTINGS_KEY_DATABASE = "database";
 	public static final String SETTINGS_KEY_COLLECTION = "collection";
 	public static final String SETTINGS_KEY_ISPACKAGEWRAPPED = "ispackagewrapped";
+	public static final String SETTINGS_KEY_ISDOCUMENT = "isdocument";
 
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
@@ -30,6 +31,7 @@ public class MongoDBStorageConnection extends Connection {
 	private String a_sKeySpace = null;
 	private String a_sCollection = null;
 	private boolean a_bIsPackageWrapped = false;
+	private boolean a_bIsDocument = false;
 
 	protected TimeOut a_oTimeOut = null;
 	protected Queue<Serializable> a_lFromQueue = null;
@@ -56,6 +58,7 @@ public class MongoDBStorageConnection extends Connection {
 		a_sKeySpace = oConfigurations.GetString(SETTINGS_KEY_DATABASE);
 		a_sCollection = oConfigurations.GetString(SETTINGS_KEY_COLLECTION);
 		a_bIsPackageWrapped = (boolean)oConfigurations.Get(SETTINGS_KEY_ISPACKAGEWRAPPED);
+		a_bIsDocument = (boolean)oConfigurations.Get(SETTINGS_KEY_ISDOCUMENT);
 		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
 		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
 		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
@@ -72,18 +75,20 @@ public class MongoDBStorageConnection extends Connection {
 				a_oTimeOut.Routine(false);
 				Serializable ptrSerializable = Fx_Store();
 				if(a_oTimeOut.Routine(ptrSerializable != null)) { continue; }
-				Document oDocument = new Document();
-				if(a_bIsPackageWrapped) {
+				Document oDocument;
+				if(a_bIsDocument) {
+					oDocument = (Document) ptrSerializable;
+				} else if(a_bIsPackageWrapped) {
 					IPackage oPackage = (IPackage) ptrSerializable;
 					UUID iRoute =  oPackage.GetRoutIdentifier();
 					UUID iCorrelation = oPackage.GetCorrelationIdentifier();
-					oDocument.append("route", iRoute.toString())
+					oDocument = new Document().append("route", iRoute.toString())
 						.append("timestamp", oPackage.GetTimeStamp())
 						.append("correlation", iCorrelation.toString())
 						.append("flag", oPackage.GetFlag())
 						.append("content", new Binary(Serializer.Serialize(oPackage.GetContent(),0)));
 				} else {
-					oDocument.append("content", new Binary(Serializer.Serialize(ptrSerializable,0)));
+					oDocument = new Document().append("content", new Binary(Serializer.Serialize(ptrSerializable,0)));
 				}
 				oCollection.insertOne(oDocument);
 			}
@@ -93,49 +98,5 @@ public class MongoDBStorageConnection extends Connection {
 					,GetIdentifier().toString()
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
-	}
-
-	public static Document DataToDocument(IData oData, int iTuple) {
-		Document oDocument = new Document();
-		UUID iData = oData.GetIdentifier();
-		String[] lAttributes = oData.GetAttributes();
-		Serializable[] lTuple = oData.GetTuple(iTuple);
-		oDocument.append(DOCUMENT_KEY_IDENTFIER,iData);
-		for (int iAttribute = 0; iAttribute < lAttributes.length; ++iAttribute) {
-			oDocument.append(lAttributes[iAttribute],lTuple[iAttribute]);
-		}
-		return oDocument;
-	}
-
-	public static Document[] DataToDocuments(IData oData) {
-		if(oData == null) { return null; }
-		UUID iData = oData.GetIdentifier();
-		Serializable[][] lTuples = oData.GetAllTuples();
-		String[] lAttributes = oData.GetAttributes();
-		Document[] lDocuments = new Document[lTuples.length];
-		for(int iTuple = 0; iTuple < lTuples.length; ++iTuple) {
-			lDocuments[iTuple].append(DOCUMENT_KEY_IDENTFIER,iData);
-			for (int iAttribute = 0; iAttribute < lAttributes.length; ++iAttribute) {
-				lDocuments[iTuple].append(lAttributes[iAttribute],lTuples[iTuple][iAttribute]);
-			}
-		}
-		return lDocuments;
-	}
-
-	public static IData DocumentToData(Document oDocument) {
-		int nTupleSize = oDocument.size()-1;
-		int iAttribute = 0;
-		int iTuple = 0;
-		int nTuples = 1;
-		UUID iData = (UUID)oDocument.get(DOCUMENT_KEY_IDENTFIER);
-		String[] lAttributes = new String[nTupleSize];
-		Serializable[][] lTuples = new Serializable[nTuples][nTupleSize];
-		for (String sKey: oDocument.keySet()) {
-			if(sKey.equals(DOCUMENT_KEY_IDENTFIER)) { continue; }
-			lAttributes[iAttribute] = sKey;
-			lTuples[iTuple][iAttribute] = (Serializable)oDocument.get(sKey);
-			iAttribute++;
-		}
-		return new Data(iData,lTuples,lAttributes);
 	}
 }

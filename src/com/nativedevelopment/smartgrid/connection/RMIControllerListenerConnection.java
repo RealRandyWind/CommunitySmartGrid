@@ -2,14 +2,11 @@ package com.nativedevelopment.smartgrid.connection;
 
 import com.nativedevelopment.smartgrid.*;
 
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.Queue;
 import java.util.UUID;
 
 public class RMIControllerListenerConnection extends Connection{
@@ -23,7 +20,7 @@ public class RMIControllerListenerConnection extends Connection{
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private String a_sExchange = null;
-	private int a_nLocalPort = 0;
+	private int a_iLocalPort = 0;
 	private boolean a_bIsRebind = false;
 	private boolean a_bIsForceUnExport = false;
 
@@ -48,7 +45,7 @@ public class RMIControllerListenerConnection extends Connection{
 	@Override
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
-		a_nLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
+		a_iLocalPort = (int)oConfigurations.Get(SETTINGS_KEY_LOCALPORT);
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 		a_bIsForceUnExport = (boolean)oConfigurations.Get(SETTING_KEY_ISFORCEUNEXPORT);
 
@@ -72,7 +69,7 @@ public class RMIControllerListenerConnection extends Connection{
 				System.out.printf("_WARNING: %slocal address/name for rmi already in use.\n", MLogManager.MethodName());
 				Close();
 			} else {
-				oStub = UnicastRemoteObject.exportObject(a_oRemote, a_nLocalPort);
+				oStub = UnicastRemoteObject.exportObject(a_oRemote, a_iLocalPort);
 			}
 
 			while (!IsClose()) {

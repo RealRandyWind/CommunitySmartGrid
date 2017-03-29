@@ -10,7 +10,6 @@ public final class Serializer {
 	public static Serializable Deserialize(ByteArrayInputStream oByteArray) throws Exception {
 		ObjectInput oObjectInput = new ObjectInputStream(oByteArray);
 		Serializable ptrSerializable = (Serializable)oObjectInput.readObject();
-		// oObjectInput.close();
 		return ptrSerializable;
 	}
 

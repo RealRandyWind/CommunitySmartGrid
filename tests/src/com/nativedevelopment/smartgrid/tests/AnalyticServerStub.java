@@ -6,7 +6,6 @@ import com.nativedevelopment.smartgrid.connection.*;
 
 import java.io.Serializable;
 import java.util.Queue;
-import java.util.StringJoiner;
 import java.util.UUID;
 
 public final class AnalyticServerStub extends AServerStub {

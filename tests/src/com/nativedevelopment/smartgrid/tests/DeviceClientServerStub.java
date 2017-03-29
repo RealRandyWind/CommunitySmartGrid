@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Queue;
 import java.util.UUID;
 
-public class DeviceClientStub extends AServerStub {
+public class DeviceClientServerStub extends AServerStub {
 	private RabbitMQProducerConnection a_oDataProducer = null;
 	private RabbitMQConsumerConnection a_oActionConsumer = null;
 	// TODO Storage, Monitor
@@ -17,7 +17,7 @@ public class DeviceClientStub extends AServerStub {
 	private Queue<Serializable> a_lDataQueue = null;
 	private Queue<Serializable> a_lActionQueue = null;
 
-	public DeviceClientStub(UUID oIdentifier, String sRemote, int iPortRabbit, int iPortMongo, int iPortUDP) {
+	public DeviceClientServerStub(UUID oIdentifier, String sRemote, int iPortRabbit, int iPortMongo, int iPortUDP) {
 		super(oIdentifier);
 		a_oDataProducer = new RabbitMQProducerConnection(null);
 		a_oActionConsumer = new RabbitMQConsumerConnection(null);

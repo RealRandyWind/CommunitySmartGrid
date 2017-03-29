@@ -12,13 +12,17 @@ import java.util.UUID;
 
 public class RMIControllerCallerConnection extends Connection {
 	public static final String SETTINGS_KEY_REMOTEADDRESS = "remote.address";
+	public static final String SETTINGS_KEY_REMOTEPORT = "remote.port";
 	public static final String SETTINGS_KEY_EXCHANGE = "exchange";
 	public static final String SETTING_KEY_ISREBIND = "isrebind";
 
-	public static final String SETTINGS_KEY_CHECKTIME = "checktime";
+	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
+	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
+	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private String a_sExchange = null;
 	private String a_sRemoteAddress = null;
+	private int a_iRemotePort = 0;
 	private boolean a_bIsRebind = false;
 
 	protected TimeOut a_oTimeOut = null;
@@ -48,15 +52,18 @@ public class RMIControllerCallerConnection extends Connection {
 	public void Configure(ISettings oConfigurations) {
 		a_sExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);
 		a_sRemoteAddress = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
+		a_iRemotePort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 
-		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIME));
+		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
+		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
+		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override
 	public void Run() {
 		try {
-			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress);
+			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress, a_iRemotePort);
 
 			if(Fx_Contains(a_sExchange, oRegistry.list())) {
 				a_oRemote = (IController)oRegistry.lookup(a_sExchange);
