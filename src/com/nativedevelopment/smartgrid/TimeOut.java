@@ -1,8 +1,5 @@
 package com.nativedevelopment.smartgrid;
 
-/**
- * Created by Gebruiker on 21/02/2017.
- */
 public class TimeOut {
 	protected int a_tTime = 0;
 	protected int a_tLowerBound = 0;
@@ -23,7 +20,7 @@ public class TimeOut {
 		}
 		Now();
 		a_tTime += a_tDeltaCheckTime;
-		a_tTime = a_tTime >= a_tUpperBound ? a_tUpperBound : a_tTime;
+		a_tTime = (a_tTime >= a_tUpperBound ? a_tUpperBound : a_tTime);
 		return true;
 	}
 
@@ -33,7 +30,7 @@ public class TimeOut {
 
 	public void SetLowerBound(int tLowerBound) {
 		a_tLowerBound = tLowerBound;
-		a_tTime = (a_tTime < tLowerBound ? tLowerBound : a_tTime);
+		a_tTime = (a_tTime < a_tLowerBound ? a_tLowerBound : a_tTime);
 	}
 
 	public void SetDelta(int tDelta) {

@@ -40,11 +40,18 @@ public class AnalyticServerTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
+
 		DeviceClientServerStub oDeviceClientStub = new DeviceClientServerStub(null,"192.168.99.100",5672,5673,5675);
+
 		oDeviceClientStub.SetQueues(null,a_lDataQueue,a_lActionQueue);
 		oDeviceClientStub.Start();
 		a_oAnalyticServerThread.start();
+		Thread.sleep(500);
+		String sExchangeRMI = a_oApplication.GetIdentifier().toString();
+		GUIAnalyticServerStub oGUIAnalyticServerStub = new GUIAnalyticServerStub(null,"localhost",sExchangeRMI,1099);
+		oGUIAnalyticServerStub.Start();
 		Thread.sleep(5000);
+		oGUIAnalyticServerStub.Stop();
 		oDeviceClientStub.Stop();
 		a_oApplication.Exit();
 		a_oAnalyticServerThread.join();

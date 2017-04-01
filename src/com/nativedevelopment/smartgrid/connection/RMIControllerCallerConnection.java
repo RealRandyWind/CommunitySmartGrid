@@ -17,8 +17,6 @@ public class RMIControllerCallerConnection extends Connection {
 	public static final String SETTING_KEY_ISREBIND = "isrebind";
 
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
-	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
-	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
 
 	private String a_sExchange = null;
 	private String a_sRemoteAddress = null;
@@ -56,20 +54,12 @@ public class RMIControllerCallerConnection extends Connection {
 		a_bIsRebind = (boolean)oConfigurations.Get(SETTING_KEY_ISREBIND);
 
 		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
-		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
-		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
 	}
 
 	@Override
 	public void Run() {
 		try {
 			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress, a_iRemotePort);
-
-			if(Fx_Contains(a_sExchange, oRegistry.list())) {
-				a_oRemote = (IController)oRegistry.lookup(a_sExchange);
-				a_oPromise.Set(a_oRemote);
-			}
-
 			while (!IsClose()) {
 				a_oTimeOut.Now();
 				if((a_oRemote == null || a_bIsRebind) && Fx_Contains(a_sExchange, oRegistry.list())) {

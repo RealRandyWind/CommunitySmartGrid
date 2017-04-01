@@ -3,6 +3,7 @@ package com.nativedevelopment.smartgrid.tests;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
 import com.nativedevelopment.smartgrid.connection.*;
+import com.nativedevelopment.smartgrid.converter.DataToDocument;
 
 import java.io.Serializable;
 import java.util.Queue;
@@ -14,7 +15,7 @@ public final class AnalyticServerStub extends AServerStub {
 	private UDPConsumerConnection a_oDataConsumerUDP = null;
 	private TCPConsumerConnection a_oDataConsumerTCP = null;
 	private RabbitMQProducerConnection a_oActionProducer = null;
-	private MongoDBStorageConnection a_oResultProducer = null;
+	private MongoDBStoreConnection a_oResultStore = null;
 	private RMIControllerListenerConnection a_oControllerListener = null;
 	// TODO Storage, Monitor
 
@@ -24,6 +25,7 @@ public final class AnalyticServerStub extends AServerStub {
 	private Queue<Serializable> a_lResultQueue = null;
 
 	private IController a_oController = null;
+	private DataToDocument a_oConverter = null;
 
 	public AnalyticServerStub(UUID oIdentifier, String sRemote, String sLocal, int iPortRabbit, int iPortMongo, int iPortUDP, int iPortTCP, int iPortRMI) {
 		super(oIdentifier);
@@ -31,17 +33,22 @@ public final class AnalyticServerStub extends AServerStub {
 		a_oDataConsumerUDP = new UDPConsumerConnection(null);
 		a_oDataConsumerTCP = new TCPConsumerConnection(null);
 		a_oActionProducer = new RabbitMQProducerConnection(null);
+		a_oResultStore = new MongoDBStoreConnection(null);
 		a_oControllerListener = new RMIControllerListenerConnection(null);
 		ISettings oDataConsumerSettingsRabbitMQ = NewDataRealtimeConsumerSettingsRabbitMQ(sRemote, iPortRabbit, null);
 		ISettings oDataConsumerSettingsUDP = NewDataRealtimeConsumerSettingsUDP(sLocal, iPortUDP, null);
 		ISettings oDataConsumerSettingsTCP = NewDataRealtimeConsumerSettingsTCP(sLocal, iPortTCP, null);
 		ISettings oActionProducerSettings = NewActionControlProducerSettings(sRemote, iPortRabbit, null);
-		ISettings oControllerListenerSettings = NewControllerListenerSettings(GetIdentifier().toString(), iPortRMI, null);
+		ISettings oResultStoreSettings = NewResultStoreSettings(sRemote,iPortMongo,null);
+		ISettings oControllerListenerSettings = NewControllerListenerSettings(GetIdentifier().toString(), null, iPortRMI, null);
 		a_oDataConsumerRabbitMQ.Configure(oDataConsumerSettingsRabbitMQ);
 		a_oDataConsumerUDP.Configure(oDataConsumerSettingsUDP);
 		a_oDataConsumerTCP.Configure(oDataConsumerSettingsTCP);
 		a_oActionProducer.Configure(oActionProducerSettings);
+		a_oResultStore.Configure(oResultStoreSettings);
 		a_oControllerListener.Configure(oControllerListenerSettings);
+
+		a_oConverter = new DataToDocument();
 	}
 
 	public void SetQueues(Queue<Serializable> lLogQueue, Queue<Serializable> lDataQueue,
@@ -55,7 +62,10 @@ public final class AnalyticServerStub extends AServerStub {
 		a_oDataConsumerUDP.SetToQueue(lDataQueue);
 		a_oDataConsumerTCP.SetToQueue(lDataQueue);
 		a_oActionProducer.SetFromQueue(lActionQueue);
+		a_oResultStore.SetFromQueue(lResultQueue);
 
+		a_oResultStore.SetToLogQueue(lLogQueue);
+		a_oControllerListener.SetToLogQueue(lLogQueue);
 		a_oActionProducer.SetToLogQueue(lLogQueue);
 		a_oDataConsumerTCP.SetToLogQueue(lLogQueue);
 		a_oDataConsumerUDP.SetToLogQueue(lLogQueue);
@@ -64,7 +74,6 @@ public final class AnalyticServerStub extends AServerStub {
 
 	public void SetControllers(IController oController) {
 		a_oController = oController;
-
 		a_oControllerListener.SetRemote(oController);
 	}
 
@@ -73,11 +82,13 @@ public final class AnalyticServerStub extends AServerStub {
 		a_mLogManager.Info("data.realtime.consumer (UDP) \"%s\"",0, a_oDataConsumerUDP.GetIdentifier().toString());
 		a_mLogManager.Info("data.realtime.consumer (TCP) \"%s\"",0, a_oDataConsumerTCP.GetIdentifier().toString());
 		a_mLogManager.Info("action.control.producer (RabbitMQ) \"%s\"",0,a_oActionProducer.GetIdentifier().toString());
-		a_mLogManager.Info("controller (RMI) \"%s\"",0,a_oControllerListener.GetIdentifier().toString());
+		a_mLogManager.Info("result.store (MongoDB) \"%s\"",0,a_oActionProducer.GetIdentifier().toString());
+		a_mLogManager.Info("controller.listener (RMI) \"%s\"",0,a_oControllerListener.GetIdentifier().toString());
 		a_oDataConsumerRabbitMQ.Open();
 		a_oDataConsumerUDP.Open();
 		a_oDataConsumerTCP.Open();
 		a_oActionProducer.Open();
+		a_oResultStore.Open();
 		a_oControllerListener.Open();
 		a_bIsStop = false;
 		a_oThread.start();
@@ -86,6 +97,7 @@ public final class AnalyticServerStub extends AServerStub {
 	public void Stop() throws InterruptedException {
 		a_bIsStop = true;
 		a_oControllerListener.Close();
+		a_oResultStore.Close();
 		a_oActionProducer.Close();
 		a_oDataConsumerRabbitMQ.Close();
 		a_oDataConsumerTCP.Close();
@@ -111,7 +123,7 @@ public final class AnalyticServerStub extends AServerStub {
 				lActions[0] = oAction.GetIdentifier();
 				IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
 				DisplayResult(oResult, "generated");
-				a_lResultQueue.offer(oResult);
+				a_lResultQueue.offer(a_oConverter.Do(oResult,0));
 			}
 		} catch (Exception oException) {
 			a_mLogManager.Warning("%s \"%s\"\n",0

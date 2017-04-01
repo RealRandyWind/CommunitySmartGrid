@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Queue;
 import java.util.UUID;
 
-public class MongoDBStorageConnection extends Connection {
+public class MongoDBStoreConnection extends Connection {
 	public static final String SETTINGS_KEY_REMOTEADDRESS = "remote.address";
 	public static final String SETTINGS_KEY_REMOTEPORT = "remote.port";
 	public static final String SETTINGS_KEY_DATABASE = "database";
@@ -36,7 +36,7 @@ public class MongoDBStorageConnection extends Connection {
 	protected TimeOut a_oTimeOut = null;
 	protected Queue<Serializable> a_lFromQueue = null;
 
-	public MongoDBStorageConnection(UUID oIdentifier) {
+	public MongoDBStoreConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_oTimeOut = new TimeOut();
 	}

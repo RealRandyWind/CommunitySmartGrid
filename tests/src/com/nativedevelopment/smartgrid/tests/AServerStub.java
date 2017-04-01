@@ -141,48 +141,38 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewControllerListenerSettings(String sExchange, int iPort, UUID iSettings) {
-		ISettings oSettings = new Settings(iSettings);/*StubController*/
+	public static final ISettings NewControllerListenerSettings(String sExchange, String sRemote, int iPort, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
 		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,iPort);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,2000);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_REMOTEPORT,iPort);
+		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
 		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
 		return oSettings;
 	}
 
 	public static final ISettings NewControllerCallerSettings(String sRemote, String sExchange, int iPort, UUID iSettings) {
-		ISettings oSettings = new Settings(iSettings);/*StubController*/
+		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
 		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEPORT,iPort);
 		oSettings.Set(RMIControllerCallerConnection.SETTING_KEY_ISREBIND,false);
-		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
-		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,iPort);
-		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
+		oSettings.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,2000);
 		return oSettings;
 	}
 
 	public static final ISettings NewResultStoreSettings(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,false);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_ISDOCUMENT,false);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_REMOTEPORT,iPort);
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_DATABASE,"8b9deeb8-ea9a-4a4e-93f3-a819b96c5620");
-		oSettings.Set(MongoDBStorageConnection.SETTINGS_KEY_COLLECTION,"results");
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,false);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ISDOCUMENT,true);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_REMOTEPORT,iPort);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_DATABASE,"8b9deeb8-ea9a-4a4e-93f3-a819b96c5620");
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_COLLECTION,"results");
 		return oSettings;
 	}
 }

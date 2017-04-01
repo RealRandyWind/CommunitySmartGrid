@@ -2,10 +2,7 @@ package com.nativedevelopment.smartgrid.server.analytic;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
-import com.nativedevelopment.smartgrid.connection.MongoDBStorageConnection;
-import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
-import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
+import com.nativedevelopment.smartgrid.connection.*;
 import com.nativedevelopment.smartgrid.controller.IAnalyticServer;
 
 import java.io.Serializable;
@@ -24,14 +21,14 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCER_PREFIX = "action.control.producer.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMER_PREFIX = "data.realtime.consumer.";
 	public static final String APP_CONNECTION_RESULTSTORE_PREFIX = "result.store.";
-	public static final String APP_CONNECTION_STATUSMONITORPRODUCER_PREFIX = "status.monitor.producer.";
+	public static final String APP_CONNECTION_CONTROLLERLISTENER_PREFIX = "controller.listener.";
 
 	private MLogManager a_mLogManager = null;
 	private MSettingsManager a_mSettingsManager = null;
 	private RabbitMQConsumerConnection a_oDataRealtimeConsumer = null;
 	private RabbitMQProducerConnection a_oActionControlProducer = null;
-	private MongoDBStorageConnection a_oResultStore = null;
-	private UDPProducerConnection a_oStatusMonitorProducer = null;
+	private MongoDBStoreConnection a_oResultStore = null;
+	private RMIControllerListenerConnection a_oControllerListener = null;
 
 	private UUID a_oIdentifier = null;
 	private UUID a_iSettings = null;
@@ -39,11 +36,9 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	private TimeOut a_oTimeOut = null;
 
-	private Queue<Serializable> a_lDataQueue = null; // TODO IData
-	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
-	private Queue<Serializable> a_lResultQueue = null; // TODO IData
-	private Queue<Serializable> a_lStatusQueue = null; // TODO IStatus
-	private Queue<Serializable> a_lObserverQueue = null; // TODO IAddress
+	private Queue<Serializable> a_lDataQueue = null;
+	private Queue<Serializable> a_lActionQueue = null;
+	private Queue<Serializable> a_lResultQueue = null;
 
 	protected AnalyticServer() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -59,11 +54,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_mSettingsManager.ShutDown();
 		a_mLogManager.ShutDown();
 
-		a_oDataRealtimeConsumer.Close();
-		a_oActionControlProducer.Close();
+		a_oControllerListener.Close();
 		//a_oResultStore.Close();
-		a_oStatusMonitorProducer.Close();
-
+		a_oActionControlProducer.Close();
+		a_oDataRealtimeConsumer.Close();
 		// TODO join
 
 		System.out.printf("_SUCCESS: %s\n",MLogManager.MethodName());
@@ -80,8 +74,6 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_lDataQueue = new ConcurrentLinkedQueue<>();
 		a_lActionQueue = new ConcurrentLinkedQueue<>();
 		a_lResultQueue = new ConcurrentLinkedQueue<>();
-		a_lStatusQueue = new ConcurrentLinkedQueue<>();
-		a_lObserverQueue = new ConcurrentLinkedQueue<>();
 
 		/* temporary configuration begin */
 		a_oDataRealtimeConsumer = new RabbitMQConsumerConnection(null);
@@ -95,23 +87,22 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_oActionControlProducer.Configure(oAnalyticServerSettings);
 
 		/*
-		a_oResultStore = new MongoDBStorageConnection(null);
+		a_oResultStore = new MongoDBStoreConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_RESULTSTORE_PREFIX);
 		a_oResultStore.SetFromQueue(a_lResultQueue);
 		a_oResultStore.Configure(oAnalyticServerSettings);
 		*/
 
-		a_oStatusMonitorProducer = new UDPProducerConnection(null);
-		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_STATUSMONITORPRODUCER_PREFIX);
-		a_oStatusMonitorProducer.SetFromQueue(a_lStatusQueue);
-		a_oStatusMonitorProducer.SetRemoteQueue(a_lObserverQueue);
-		a_oStatusMonitorProducer.Configure(oAnalyticServerSettings);
+		a_oControllerListener = new RMIControllerListenerConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_CONTROLLERLISTENER_PREFIX);
+		a_oControllerListener.SetRemote(this);
+		a_oControllerListener.Configure(oAnalyticServerSettings);
 
 		oAnalyticServerSettings.SetKeyPrefix("");
 		a_oDataRealtimeConsumer.Open();
 		a_oActionControlProducer.Open();
 		//a_oResultStore.Open();
-		a_oStatusMonitorProducer.Open();
+		a_oControllerListener.Open();
 
 		/* temporary configuration end */
 
@@ -148,6 +139,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
 		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
 		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));
+		a_mLogManager.Debug("configured %s",0, a_oIdentifier.toString());
 		a_mLogManager.Success("configured",0);
 	}
 
@@ -170,5 +162,11 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		Main oApplication = AnalyticServer.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
+	}
+
+	@Override
+	public String Notify(String sMessage) {
+		a_mLogManager.Log("call from \"%s\"",0,sMessage);
+		return String.format("reply to \"%s\"",sMessage);
 	}
 }

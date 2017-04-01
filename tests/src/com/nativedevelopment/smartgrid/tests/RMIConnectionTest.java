@@ -53,16 +53,13 @@ public class RMIConnectionTest implements ITestCase {
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEADDRESS,SETTINGS_VALUE_HOST);
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTING_KEY_ISREBIND,false);
-		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,2000);
 		a_oCallerConfiguration.Set(RMIControllerCallerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,SETTINGS_VALUE_EXCHANGE);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_REMOTEADDRESS,null);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
-		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
-		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
-		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
-		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_LOCALPORT,SETTINGS_VALUE_PORT);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,2000);
+		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oListenerConfiguration.Set(RMIControllerListenerConnection.SETTING_KEY_ISFORCEUNEXPORT,true);
 	}
 
@@ -75,7 +72,7 @@ public class RMIConnectionTest implements ITestCase {
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin", 0);
 		IPromise oPromise = new Promise();
-		int nTryCount = 6;
+		int nTryCount = 12;
 		IStubController oStubController = null;
 
 		RMIControllerCallerConnection oCaller = new RMIControllerCallerConnection(null);
@@ -101,6 +98,8 @@ public class RMIConnectionTest implements ITestCase {
 			Thread.sleep(200);
 			nTryCount--;
 		}
+		a_mLogManager.Debug("recieved promise",0);
+
 		oStubController = (IStubController)oPromise.Get();
 		assertTrue(a_lQueue.isEmpty());
 		oStubController.ProcedureNoArguments();

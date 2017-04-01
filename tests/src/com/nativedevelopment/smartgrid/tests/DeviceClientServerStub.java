@@ -68,7 +68,7 @@ public class DeviceClientServerStub extends AServerStub {
 				Serializable ptrAction = a_lActionQueue.poll();
 				if(ptrAction == null) { continue; }
 				IAction oAction = (IAction) ptrAction;
-				DisplayAction(oAction, "recived");
+				DisplayAction(oAction, "received");
 			}
 		} catch (Exception oException) {
 			a_mLogManager.Warning("%s \"%s\"\n",0

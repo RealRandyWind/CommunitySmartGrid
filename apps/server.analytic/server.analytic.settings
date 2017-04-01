@@ -1,4 +1,4 @@
-identifier = null
+identifier = "f89a1319-c937-4305-a6b5-d51b88e80e7e"
 directory.working = null
 checktime.lowerbound = 5
 checktime.upperbound = 20000
@@ -34,10 +34,9 @@ result.store.ispackagewrapped = false
 result.store.checktime.lowerbound = 5
 result.store.checktime.upperbound = 20000
 result.store.checktime.delta = 500
-status.monitor.producer.buffer.capacity = 64
-status.monitor.producer.connections.delta = 16
-status.monitor.producer.checktime.lowerbound = 5
-status.monitor.producer.checktime.upperbound = 20000
-status.monitor.producer.checktime.delta = 500
-
-
+controller.listener.isforceunexport = true
+controller.listener.isrebind = false
+controller.listener.remote.port = 1099
+controller.listener.remote.adress = null
+controller.listener.exchange = "f89a1319-c937-4305-a6b5-d51b88e80e7e"
+controller.listener.checktime.lowerbound = 2000
