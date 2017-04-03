@@ -48,7 +48,7 @@ public class RabbitMQProducerConnection extends Connection {
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
-		a_oTimeOut.Routine(ptrSerializable==null);
+		a_oTimeOut.Routine(ptrSerializable == null);
 		return ptrSerializable;
 	}
 

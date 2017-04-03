@@ -45,9 +45,10 @@ public class MongoDBStoreConnection extends Connection {
 		a_lFromQueue = lFromQueue;
 	}
 
-	private Serializable Fx_Store() {
+	private Serializable Fx_Store() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
+		a_oTimeOut.Routine(ptrSerializable == null);
 		return ptrSerializable;
 	}
 
@@ -72,9 +73,8 @@ public class MongoDBStoreConnection extends Connection {
 		MongoCollection<Document> oCollection = oKeySpace.getCollection(a_sCollection);
 		try {
 			while (!IsClose()) {
-				a_oTimeOut.Routine(false);
 				Serializable ptrSerializable = Fx_Store();
-				if(a_oTimeOut.Routine(ptrSerializable != null)) { continue; }
+				if(ptrSerializable == null) { continue; }
 				Document oDocument;
 				if(a_bIsDocument) {
 					oDocument = (Document) ptrSerializable;

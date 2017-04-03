@@ -12,4 +12,14 @@ public class Converter implements IConverter {
 	public Serializable Undo(Serializable ptrFrom, int iIndex) {
 		return ptrFrom;
 	}
+
+	@Override
+	public Serializable ExceptionsDo(Serializable ptrValue) {
+		return ptrValue;
+	}
+
+	@Override
+	public Serializable ExceptionsUndo(Serializable ptrValue) {
+		return ptrValue;
+	}
 }
