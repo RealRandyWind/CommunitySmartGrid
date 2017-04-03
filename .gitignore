@@ -3,3 +3,4 @@ bin
 tests/bin
 tests/bin/objects
 .idea
+node_modules

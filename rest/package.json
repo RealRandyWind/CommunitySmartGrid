@@ -1,0 +1,27 @@
+{
+  "name": "smartservicecenter.restapi",
+  "version": "0.0.1",
+  "description": "Rest api for the smart service center layer.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "SmartServiceCenterRESTAPI"
+  },
+  "keywords": [
+    "Smart",
+    "Service",
+    "Center",
+    "REST",
+    "API"
+  ],
+  "author": "Randy Wind",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongodb": "^2.2.25"
+  }
+}
