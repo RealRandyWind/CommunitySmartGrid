@@ -7,9 +7,6 @@ using docker to set up the extenal services, start docker, pull and run images, 
 # if docker need start
 docker-machine start
 
-# if network need creation
-docker network create devnet
-
 # if images need pull before run
 docker run --name dev.rabbitmq -p 5672:5672 -d rabbitmq:latest
 docker run --name dev.mongo -p 27017:27017 -d mongo:latest
@@ -23,9 +20,6 @@ docker stop $(docker ps -a -q)
 
 # if images need remove
 docker rm $(docker ps -a -q)
-
-# id network need remove
-docker network rm devnet
 
 # if docker need stop
 docker-machine stop
