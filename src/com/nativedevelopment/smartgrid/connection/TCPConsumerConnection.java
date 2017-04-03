@@ -121,4 +121,26 @@ public class TCPConsumerConnection extends Connection {
 					,oException.getClass().getCanonicalName(),oException.getMessage());
 		}
 	}
+	/*
+	private class _Connection {
+		private SocketChannel a_oChannel = null;
+		private ByteBuffer a_oByteBuffer = null;
+
+		public _Connection(SocketChannel oChannel, int nBufferCapacity) {
+			a_oChannel = oChannel;
+			a_oByteBuffer = ByteBuffer.allocate(nBufferCapacity);
+		}
+
+		public ByteBuffer GetBuffer() {
+			return a_oByteBuffer;
+		}
+
+		public SocketChannel GetChannel() {
+			return a_oChannel;
+		}
+
+		public boolean equals(Object o) {
+		}
+	}
+	*/
 }
