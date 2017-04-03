@@ -12,13 +12,8 @@ docker network create devnet
 
 # if images need pull before run
 docker run --name dev.rabbitmq -p 5672:5672 -d rabbitmq:latest
-docker run --name dev.mongo -p 5673:5673 -d mongo:latest
+docker run --name dev.mongo -p 27017:27017 -d mongo:latest
 docker run --name dev.node -p 5674:5674 -d node:latest
-
-# if container need configuration
-docker exec dev.rabbitmq rabbitmqctl add_user user password
-docker exec dev.rabbitmq rabbitmqctl set_permissions -p / user ".*" ".*" ".*"
-docker exec dev.rabbitmq rabbitmqctl set_user_tags user administrator
 
 # if images need start
 docker start $(docker ps -a -q)
@@ -34,6 +29,10 @@ docker network rm devnet
 
 # if docker need stop
 docker-machine stop
+
+# to check or clean MongoDB
+docker exec dev.mongo mongo "8b9deeb8-ea9a-4a4e-93f3-a819b96c5620" --eval 'printjson(db["results"].find({}).toArray());'
+docker exec dev.mongo mongo "8b9deeb8-ea9a-4a4e-93f3-a819b96c5620" --eval 'db.dropDatabase();'
 ```
 
 ## References
