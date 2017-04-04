@@ -41,7 +41,7 @@ public class AnalyticServerTest implements ITestCase {
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
 
-		DeviceClientServerStub oDeviceClientStub = new DeviceClientServerStub(null,"192.168.99.100",5672,5673,5675);
+		DeviceClientServerStub oDeviceClientStub = new DeviceClientServerStub(null,"localhost",5672,5673,5675);
 
 		oDeviceClientStub.SetQueues(null,a_lDataQueue,a_lActionQueue);
 		oDeviceClientStub.Start();

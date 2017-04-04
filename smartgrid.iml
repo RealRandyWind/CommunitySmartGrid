@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/bin/smartgrid" />
     <output-test url="file://$MODULE_DIR$/tests/bin/smartgrid" />
     <exclude-output />
@@ -12,7 +12,7 @@
       <excludeFolder url="file://$MODULE_DIR$/bin" />
       <excludeFolder url="file://$MODULE_DIR$/tests/bin" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">
@@ -29,6 +29,8 @@
         <properties maven-id="com.rabbitmq:amqp-client:LATEST" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.21.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/amqp-client-4.1.0.jar!/" />
@@ -171,6 +173,9 @@
           <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/bson-3.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/mongodb-driver-core-3.4.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -180,6 +185,8 @@
       <library name="org.slf4j:slf4j-simple:Latest" type="repository">
         <properties maven-id="org.slf4j:slf4j-simple:LATEST" />
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
+          <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-api-1.7.25.jar!/" />
           <root url="jar://$MODULE_DIR$/bin/lib/slf4j-simple-1.7.25.jar!/" />

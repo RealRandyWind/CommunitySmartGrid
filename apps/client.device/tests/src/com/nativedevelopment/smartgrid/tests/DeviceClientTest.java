@@ -41,7 +41,7 @@ public class DeviceClientTest implements ITestCase {
 	@Test
 	public void testRun() throws Exception {
 		a_mLogManager.Test("begin",0);
-		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"192.168.99.100","localhost",5672,27017,5675,55539,1099);
+		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"localhost","localhost",5672,27017,5675,55539,1099);
 		oAnalyticServerStub.SetQueues(null,a_lDataQueue,a_lActionQueue,a_lResultQueue);
 		oAnalyticServerStub.SetControllers(a_oController);
 		oAnalyticServerStub.Start();

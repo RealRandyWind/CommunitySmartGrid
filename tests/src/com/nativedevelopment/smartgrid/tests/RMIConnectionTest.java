@@ -89,6 +89,7 @@ public class RMIConnectionTest implements ITestCase {
 
 		a_mLogManager.Test("Open",0);
 		oListener.Open();
+		Thread.sleep(500);
 		oCaller.Open();
 		Thread.sleep(500);
 
