@@ -48,7 +48,7 @@ public class RabbitMQProducerConnection extends Connection {
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
-		if(a_iRoute != null) {
+		if(ptrSerializable != null && a_iRoute != null) {
 			IRoute oRoute = (IRoute) ptrSerializable;
 			if(!oRoute.GetRouteId().equals(a_iRoute)) {
 				a_lFromQueue.offer(ptrSerializable);

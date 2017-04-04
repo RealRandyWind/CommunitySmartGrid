@@ -21,8 +21,8 @@ public class DeviceClientServerStub extends AServerStub {
 		super(oIdentifier);
 		a_oDataProducer = new RabbitMQProducerConnection(null);
 		a_oActionConsumer = new RabbitMQConsumerConnection(null);
-		ISettings oDataProducerSettings = NewDataRealtimeProducerSettings(sRemote, iPortRabbit, null);
-		ISettings oActionConsumerSettings = NewActionControlConsumerSettings(sRemote, iPortRabbit, GetIdentifier(), null);
+		ISettings oDataProducerSettings = NewDataRealtimeProducerSettings(sRemote, iPortRabbit, null, null);
+		ISettings oActionConsumerSettings = NewActionControlConsumerSettings(sRemote, iPortRabbit, null, GetIdentifier().toString(), null);
 		a_oDataProducer.Configure(oDataProducerSettings);
 		a_oActionConsumer.Configure(oActionConsumerSettings);
 	}

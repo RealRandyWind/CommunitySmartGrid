@@ -116,9 +116,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	}
 
 	private void Fx_Analyze() {
-		Serializable ptrData = a_lDataQueue.poll();
-		if(ptrData == null) { return; }
-		IData oData = (IData) ptrData;
+		Serializable ptrRoute = a_lDataQueue.poll();
+		if(ptrRoute == null) { return; }
+		IRoute oRoute = (IRoute)ptrRoute;
+		IData oData = (IData) oRoute.GetContent();
 		a_mLogManager.Log("received data %s by %s",0,oData.GetIdentifier().toString(),GetIdentifier().toString());
 		IAction oAction = Generator.GenerateActionMachine(null);
 		IPackage oPackage = new Package(oAction,oData.GetIdentifier(),null,0,System.currentTimeMillis());
@@ -127,7 +128,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		lActions[0] = oAction.GetIdentifier();
 		IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
 		a_mLogManager.Log("produced action %s by %s",0,oAction.GetIdentifier(), GetIdentifier().toString());
-		a_lActionQueue.offer(oPackage);
+		a_lActionQueue.offer(oRoute.SetContent(oPackage));
 		a_lResultQueue.offer(oResult);
 		a_bIsIdle = false;
 	}

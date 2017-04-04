@@ -10,37 +10,44 @@ import java.util.Queue;
 import java.util.UUID;
 
 public final class AnalyticServerStub extends AServerStub {
-	/* Data Consumers */
+	/* Internal Route Ids */
+	private static final String ROUTE_RABBITMQ = "e429674e-2dc7-4109-8d8c-1855c2a9ae1d";
+	private static final String ROUTE_UDP = "ebe0ac8f-2d31-4adb-ba85-637fe20e6d16";
+	private static final String ROUTE_TCP = "4f65eaf7-e7b1-4aef-9faf-4aaab705a895";
+
+	/* Connections */
 	private RabbitMQConsumerConnection a_oDataConsumerRabbitMQ = null;
 	private UDPConsumerConnection a_oDataConsumerUDP = null;
 	private TCPConsumerConnection a_oDataConsumerTCP = null;
 	private RabbitMQProducerConnection a_oActionProducer = null;
 	private MongoDBStoreConnection a_oResultStore = null;
 	private RMIControllerListenerConnection a_oControllerListener = null;
-	// TODO Storage, Monitor
 
+	/* Queues */
 	private Queue<Serializable> a_lLogQueue = null;
 	private Queue<Serializable> a_lDataQueue = null;
 	private Queue<Serializable> a_lActionQueue = null;
 	private Queue<Serializable> a_lResultQueue = null;
 
+	/* Other */
 	private IController a_oController = null;
 	private DataToDocument a_oConverter = null;
 
 	public AnalyticServerStub(UUID oIdentifier, String sRemote, String sLocal, int iPortRabbit, int iPortMongo, int iPortUDP, int iPortTCP, int iPortRMI) {
 		super(oIdentifier);
+
 		a_oDataConsumerRabbitMQ = new RabbitMQConsumerConnection(null);
 		a_oDataConsumerUDP = new UDPConsumerConnection(null);
 		a_oDataConsumerTCP = new TCPConsumerConnection(null);
 		a_oActionProducer = new RabbitMQProducerConnection(null);
 		a_oResultStore = new MongoDBStoreConnection(null);
 		a_oControllerListener = new RMIControllerListenerConnection(null);
-		ISettings oDataConsumerSettingsRabbitMQ = NewDataRealtimeConsumerSettingsRabbitMQ(sRemote, iPortRabbit, null);
-		ISettings oDataConsumerSettingsUDP = NewDataRealtimeConsumerSettingsUDP(sLocal, iPortUDP, null);
-		ISettings oDataConsumerSettingsTCP = NewDataRealtimeConsumerSettingsTCP(sLocal, iPortTCP, null);
-		ISettings oActionProducerSettings = NewActionControlProducerSettings(sRemote, iPortRabbit, null);
-		ISettings oResultStoreSettings = NewResultStoreSettings(sRemote,iPortMongo,null);
-		ISettings oControllerListenerSettings = NewControllerListenerSettings(GetIdentifier().toString(), null, iPortRMI, null);
+		ISettings oDataConsumerSettingsRabbitMQ = NewDataRealtimeConsumerSettingsRabbitMQ(sRemote, iPortRabbit, null, null);
+		ISettings oDataConsumerSettingsUDP = NewDataRealtimeConsumerSettingsUDP(sLocal, iPortUDP, null, null);
+		ISettings oDataConsumerSettingsTCP = NewDataRealtimeConsumerSettingsTCP(sLocal, iPortTCP, null, null);
+		ISettings oActionProducerSettings = NewActionControlProducerSettings(sRemote, iPortRabbit, null, null);
+		ISettings oResultStoreSettings = NewResultStoreSettings(sRemote,iPortMongo, null, null);
+		ISettings oControllerListenerSettings = NewControllerListenerSettings(null, GetIdentifier().toString(), iPortRMI, null);
 		a_oDataConsumerRabbitMQ.Configure(oDataConsumerSettingsRabbitMQ);
 		a_oDataConsumerUDP.Configure(oDataConsumerSettingsUDP);
 		a_oDataConsumerTCP.Configure(oDataConsumerSettingsTCP);

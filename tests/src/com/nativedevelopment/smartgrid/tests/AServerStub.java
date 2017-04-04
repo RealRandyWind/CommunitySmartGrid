@@ -54,9 +54,9 @@ public abstract class AServerStub implements Runnable {
 		return a_oIdentifier;
 	}
 
-	public static final ISettings NewDataRealtimeConsumerSettingsRabbitMQ(String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewDataRealtimeConsumerSettingsRabbitMQ(String sRemote, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"data.realtime");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -71,9 +71,9 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewDataRealtimeConsumerSettingsUDP(String sLocal, int iPort, UUID iSettings) {
+	public static final ISettings NewDataRealtimeConsumerSettingsUDP(String sLocal, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
@@ -81,9 +81,9 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewDataRealtimeConsumerSettingsTCP(String sLocal, int iPort, UUID iSettings) {
+	public static final ISettings NewDataRealtimeConsumerSettingsTCP(String sLocal, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
@@ -94,9 +94,9 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewActionControlConsumerSettings(String sRemote, int iPort, UUID iRoute, UUID iSettings) {
+	public static final ISettings NewActionControlConsumerSettings(String sRemote, int iPort, String iRoute, String iRouteKey, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"action.control");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"direct");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -105,15 +105,15 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_CHECKTIME,200000);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADDRESS,sRemote);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEPORT,iPort);
-		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,iRoute.toString());
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTINGKEY,iRouteKey);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERNAME,"guest");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
 		return oSettings;
 	}
 
-	public static final ISettings NewDataRealtimeProducerSettings(String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewDataRealtimeProducerSettings(String sRemote, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID, iRoute);
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"data.realtime");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -129,9 +129,9 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewActionControlProducerSettings(String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewActionControlProducerSettings(String sRemote, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"action.control");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"direct");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -147,7 +147,7 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewControllerListenerSettings(String sExchange, String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewControllerListenerSettings(String sRemote, String sExchange, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(RMIControllerListenerConnection.SETTINGS_KEY_EXCHANGE,sExchange);
 		oSettings.Set(RMIControllerListenerConnection.SETTING_KEY_ISREBIND,false);
@@ -168,9 +168,9 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewResultStoreSettings(String sRemote, int iPort, UUID iSettings) {
+	public static final ISettings NewResultStoreSettings(String sRemote, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
-		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ROUTEID,null);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,false);
 		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ISDOCUMENT,true);
 		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);

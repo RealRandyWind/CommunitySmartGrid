@@ -9,14 +9,22 @@ public class Route implements IRoute {
 
     public Route(UUID iRoute, Serializable oContent) {
         a_iRoute = iRoute;
-        a_oContent = oContent;
+        SetContent(oContent);
     }
 
+    @Override
     public UUID GetRouteId() {
         return a_iRoute;
     }
 
+    @Override
     public Serializable GetContent() {
         return a_oContent;
+    }
+
+    @Override
+    public IRoute SetContent(Serializable oContent) {
+        a_oContent = oContent;
+        return this;
     }
 }
