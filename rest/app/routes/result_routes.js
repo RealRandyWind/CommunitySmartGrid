@@ -11,6 +11,7 @@ var Result = function(_id) {
 Result.query = function(query) {
 	const bson_query = {};
 	if(!query) { return bson_query; }
+	
 	if(query._id) { bson_query._id = new ObjectID(query._id); }
 	if(query.flag) { bson_query.flag = Long.fromString(query.flag); }
 	if(query.action) { bson_query.action = query.action; }
@@ -23,17 +24,17 @@ Result.query = function(query) {
 	}
 
 	if(query.interval_min || query.interval_max) {
-		bson_query.weight = {};
-		if(query.interval_min) { bson_query.weight.$gte = Long.fromStrin(query.interval_min); }
-		if(query.interval_max) { bson_query.weight.$lte = Long.fromStrin(query.interval_max); }
+		bson_query.interval = {};
+		if(query.interval_min) { bson_query.interval.$gte = Long.fromString(query.interval_min); }
+		if(query.interval_max) { bson_query.interval.$lte = Long.fromString(query.interval_max); }
 	}
 
 	if(query.weight_min || query.weight_max) {
-		bson_query.interval = {};
-		if(query.weight_min) { bson_query.interval.$gte = parseFloat(query.weight_min); }
-		if(query.weight_max) { bson_query.interval.$lte = parseFloat(query.weight_max); }
+		bson_query.weight = {};
+		if(query.weight_min) { bson_query.weight.$gte = parseFloat(query.weight_min); }
+		if(query.weight_max) { bson_query.weight.$lte = parseFloat(query.weight_max); }
 	}
-	
+
 	return bson_query;
 }
 
