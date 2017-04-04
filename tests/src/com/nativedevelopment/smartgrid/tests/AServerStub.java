@@ -56,6 +56,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewDataRealtimeConsumerSettingsRabbitMQ(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"data.realtime");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -72,6 +73,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewDataRealtimeConsumerSettingsUDP(String sLocal, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
@@ -81,6 +83,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewDataRealtimeConsumerSettingsTCP(String sLocal, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
@@ -93,6 +96,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewActionControlConsumerSettings(String sRemote, int iPort, UUID iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"action.control");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGETYPE,"direct");
 		oSettings.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -109,6 +113,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewDataRealtimeProducerSettings(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"data.realtime");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"fanout");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -126,6 +131,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewActionControlProducerSettings(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"action.control");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGETYPE,"direct");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ISAUTHENTICATE,true);
@@ -164,6 +170,7 @@ public abstract class AServerStub implements Runnable {
 
 	public static final ISettings NewResultStoreSettings(String sRemote, int iPort, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ROUTEID,null);
 		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ISPACKAGEWRAPPED,false);
 		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_ISDOCUMENT,true);
 		oSettings.Set(MongoDBStoreConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);

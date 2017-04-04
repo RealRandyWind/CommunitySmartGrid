@@ -25,7 +25,7 @@ public class RMIControllerListenerConnection extends Connection{
 	private boolean a_bIsForceUnExport = false;
 
 	protected TimeOut a_oTimeOut = null;
-	private static Registry a_oRegistry = null;
+	volatile private static Registry a_oRegistry = null;
 	private IController a_oRemote = null;
 
 	public RMIControllerListenerConnection(UUID oIdentifier) {

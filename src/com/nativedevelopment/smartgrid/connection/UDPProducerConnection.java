@@ -68,12 +68,21 @@ public class UDPProducerConnection extends Connection{
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
-		a_oTimeOut.Routine(ptrSerializable==null);
+		if(a_iRoute != null) {
+			IRoute oRoute = (IRoute) ptrSerializable;
+			if(!oRoute.GetRouteId().equals(a_iRoute)) {
+				a_lFromQueue.offer(ptrSerializable);
+				ptrSerializable = null;
+			} else { ptrSerializable = oRoute.GetContent(); }
+		}
+		a_oTimeOut.Routine(ptrSerializable == null);
 		return ptrSerializable;
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
+		Serializable sRouteId = oConfigurations.Get(SETTINGS_KEY_ROUTEID);
+		a_iRoute = (sRouteId == null) ? null : UUID.fromString((String) sRouteId);
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
 		a_nDeltaConnections = (int)oConfigurations.Get(SETTINGS_KEY_DELTACONNECTIONS);
 

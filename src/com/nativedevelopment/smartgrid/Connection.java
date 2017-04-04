@@ -5,9 +5,12 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class Connection implements IConnection {
+    public static final String SETTINGS_KEY_ROUTEID = "route.id";
+
     protected Thread a_oThread = null;
 
     private UUID a_oIdentifier = null;
+    protected UUID a_iRoute = null;
     protected Queue<Serializable> a_lToLogQueue = null;
     volatile private boolean a_bIsClose = false;
 
@@ -72,5 +75,10 @@ public class Connection implements IConnection {
     @Override
     public void SetToLogQueue(Queue<Serializable> lToLogQueue) {
         a_lToLogQueue = lToLogQueue;
+    }
+
+    @Override
+    public void SetRoute(UUID iRoute) {
+        a_iRoute = iRoute;
     }
 }

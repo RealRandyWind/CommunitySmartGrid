@@ -50,6 +50,7 @@ public class TCPConnectionTest implements ITestCase {
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
 
+		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,55539);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
@@ -58,6 +59,7 @@ public class TCPConnectionTest implements ITestCase {
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		a_oConsumerConfiguration.Set(TCPConsumerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
 
+		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_ROUTEID,null);
 		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
 		a_oProducerConfiguration.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);

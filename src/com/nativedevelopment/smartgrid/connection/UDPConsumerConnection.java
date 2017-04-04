@@ -35,14 +35,18 @@ public class UDPConsumerConnection extends Connection {
 		if(ptrSerializable == null) { return; }
 		if(a_bIsPackageUnwrap) {
 			IPackage oPackage = (IPackage)ptrSerializable;
-			a_lToQueue.offer(oPackage.GetContent());
-		} else {
-			a_lToQueue.offer(ptrSerializable);
+			ptrSerializable =  oPackage.GetContent();
 		}
+		if(a_iRoute != null) {
+			ptrSerializable = new Route(a_iRoute, ptrSerializable);
+		}
+		a_lToQueue.offer(ptrSerializable);
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
+		Serializable sRouteId = oConfigurations.Get(SETTINGS_KEY_ROUTEID);
+		a_iRoute = (sRouteId == null) ? null : UUID.fromString((String) sRouteId);
 		a_bIsPackageUnwrap = (boolean)oConfigurations.Get(SETTINGS_KEY_ISPACKAGEUNWRAP);
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
 		a_sLocalAddress = oConfigurations.GetString(SETTINGS_KEY_LOCALADDRESS);

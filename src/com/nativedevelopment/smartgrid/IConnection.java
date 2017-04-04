@@ -14,4 +14,5 @@ public interface IConnection extends Runnable, IConfigurable {
     public boolean IsActive();
     public void Run();
     public void SetToLogQueue(Queue<Serializable> lToLogQueue);
+    public void SetRoute(UUID iRoute);
 }

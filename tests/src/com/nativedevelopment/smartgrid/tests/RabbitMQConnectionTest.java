@@ -49,6 +49,7 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
 
+		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_EXCHANGE,"test");
@@ -61,6 +62,7 @@ public class RabbitMQConnectionTest implements ITestCase {
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_USERPASSWORD,SETTINGS_VALUE_PASSWORD);
 		a_oConsumerConfiguration.Set(RabbitMQConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,SETTINGS_VALUE_ISPACKAGEUNWRAP);
 
+		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,null);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_REMOTEADRESS,SETTINGS_VALUE_HOST);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_REMOTEPORT,SETTINGS_VALUE_PORT);
 		a_oProducerConfiguration.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"test");

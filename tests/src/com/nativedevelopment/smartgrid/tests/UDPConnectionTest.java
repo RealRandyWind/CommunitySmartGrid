@@ -52,12 +52,14 @@ public class UDPConnectionTest implements ITestCase {
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
 
+		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_ROUTEID,null);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,SETTINGS_VALUE_HOST);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,55539);
 		//a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
 		a_oConsumerConfiguration.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,SETTINGS_VALUE_ISPACKAGEUNWRAP);
 
+		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_ROUTEID,null);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS,16);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY,SETTINGS_VALUE_BUFFERCAPACITY);
 		a_oProducerConfiguration.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);

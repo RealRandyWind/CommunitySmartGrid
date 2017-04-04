@@ -1,7 +1,6 @@
 package com.nativedevelopment.smartgrid.connection;
 
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.nativedevelopment.smartgrid.*;
@@ -48,12 +47,21 @@ public class MongoDBStoreConnection extends Connection {
 	private Serializable Fx_Store() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
+		if(a_iRoute != null) {
+			IRoute oRoute = (IRoute) ptrSerializable;
+			if(!oRoute.GetRouteId().equals(a_iRoute)) {
+				a_lFromQueue.offer(ptrSerializable);
+				ptrSerializable = null;
+			} else { ptrSerializable = oRoute.GetContent(); }
+		}
 		a_oTimeOut.Routine(ptrSerializable == null);
 		return ptrSerializable;
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
+		Serializable sRouteId = oConfigurations.Get(SETTINGS_KEY_ROUTEID);
+		a_iRoute = (sRouteId == null) ? null : UUID.fromString((String) sRouteId);
 		a_sToHost = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
 		a_iThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_sKeySpace = oConfigurations.GetString(SETTINGS_KEY_DATABASE);

@@ -54,14 +54,18 @@ public class RabbitMQConsumerConnection extends Connection {
 		if(ptrSerializable == null) { return; }
 		if(a_bIsPackageUnwrap) {
 			IPackage oPackage = (IPackage)ptrSerializable;
-			a_lToQueue.offer(oPackage.GetContent());
-		} else {
-			a_lToQueue.offer(ptrSerializable);
+			ptrSerializable =  oPackage.GetContent();
 		}
+		if(a_iRoute != null) {
+			ptrSerializable = new Route(a_iRoute, ptrSerializable);
+		}
+		a_lToQueue.offer(ptrSerializable);
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
+		Serializable sRouteId = oConfigurations.Get(SETTINGS_KEY_ROUTEID);
+		a_iRoute = (sRouteId == null) ? null : UUID.fromString((String) sRouteId);
 		a_sFromHost = oConfigurations.GetString(SETTINGS_KEY_REMOTEADDRESS);
 		a_iThroughPort = (int)oConfigurations.Get(SETTINGS_KEY_REMOTEPORT);
 		a_sFromExchange = oConfigurations.GetString(SETTINGS_KEY_EXCHANGE);

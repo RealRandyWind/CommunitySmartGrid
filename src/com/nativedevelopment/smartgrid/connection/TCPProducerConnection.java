@@ -10,11 +10,11 @@ import java.util.*;
 
 public class TCPProducerConnection extends Connection {
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
+	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
-	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
 	private int a_nBufferCapacity = 0;
 	private int a_nDeltaConnections = 0;
@@ -67,11 +67,21 @@ public class TCPProducerConnection extends Connection {
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.poll();
+		if(a_iRoute != null) {
+			IRoute oRoute = (IRoute) ptrSerializable;
+			if(!oRoute.GetRouteId().equals(a_iRoute)) {
+				a_lFromQueue.offer(ptrSerializable);
+				ptrSerializable = null;
+			} else { ptrSerializable = oRoute.GetContent(); }
+		}
+		a_oTimeOut.Routine(ptrSerializable == null);
 		return ptrSerializable;
 	}
 
 	@Override
 	public void Configure(ISettings oConfigurations) {
+		Serializable sRouteId = oConfigurations.Get(SETTINGS_KEY_ROUTEID);
+		a_iRoute = (sRouteId == null) ? null : UUID.fromString((String) sRouteId);
 		a_nBufferCapacity = (int)oConfigurations.Get(SETTINGS_KEY_BUFFERCAPACITY);
 		a_nDeltaConnections = (int)oConfigurations.Get(SETTINGS_KEY_DELTACONNECTIONS);
 
