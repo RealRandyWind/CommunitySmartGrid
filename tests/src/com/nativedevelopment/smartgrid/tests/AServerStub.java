@@ -129,7 +129,7 @@ public abstract class AServerStub implements Runnable {
 		return oSettings;
 	}
 
-	public static final ISettings NewActionControlProducerSettings(String sRemote, int iPort, String iRoute, UUID iSettings) {
+	public static final ISettings NewActionControlProducerSettingsRabbitMQ(String sRemote, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_EXCHANGE,"action.control");
@@ -144,6 +144,28 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_ROUTINGKEY,"");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERNAME,"guest");
 		oSettings.Set(RabbitMQProducerConnection.SETTINGS_KEY_USERPASSWORD,"guest");
+		return oSettings;
+	}
+
+	public static final ISettings NewActionControlProducerSettingsTCP(String iRoute, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_ROUTEID, iRoute);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY, 64);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS, 2);
+		return oSettings;
+	}
+
+	public static final ISettings NewActionControlProducerSettingsUDP(String iRoute, UUID iSettings) {
+		ISettings oSettings = new Settings(iSettings);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_ROUTEID, iRoute);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY, 64);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACONNECTIONS, 2);
 		return oSettings;
 	}
 

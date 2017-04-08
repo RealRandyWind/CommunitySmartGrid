@@ -11,7 +11,7 @@ var Result = function(_id) {
 Result.query = function(query) {
 	const bson_query = {};
 	if(!query) { return bson_query; }
-	
+
 	if(query._id) { bson_query._id = new ObjectID(query._id); }
 	if(query.flag) { bson_query.flag = Long.fromString(query.flag); }
 	if(query.action) { bson_query.action = query.action; }
@@ -58,7 +58,6 @@ Result.prototype = {
 		return this;
 	},
 }
-
 
 module.exports = function(app, db) {
 	app.get('/results', function(req, ret) {

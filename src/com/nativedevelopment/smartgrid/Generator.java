@@ -113,7 +113,8 @@ public final class Generator {
 		lAttributes[0] = "timestamp";
 		lAttributes[1] = "interval";
 		lAttributes[2] = "action";
-		// TODO also add arguments used
+		// TODO add action arguments used
+		// TODO add server uuid
 		lAttributes[3] = "weight";
 		lAttributes[4] = "flag";
 
