@@ -1,7 +1,7 @@
 package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
-import com.nativedevelopment.smartgrid.connection.*;
+import com.nativedevelopment.smartgrid.connections.*;
 
 import java.io.Serializable;
 import java.util.Arrays;

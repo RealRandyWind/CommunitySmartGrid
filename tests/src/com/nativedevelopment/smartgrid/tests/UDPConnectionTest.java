@@ -1,8 +1,8 @@
 package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
-import com.nativedevelopment.smartgrid.connection.UDPConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.UDPProducerConnection;
+import com.nativedevelopment.smartgrid.connections.UDPConsumerConnection;
+import com.nativedevelopment.smartgrid.connections.UDPProducerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

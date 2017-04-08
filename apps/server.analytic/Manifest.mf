@@ -1,3 +1,6 @@
-Main-Class: com.nativedevelopment.smartgrid.server.analytic.AnalyticServer
-Class-Path: smartgrid.jar lib/*
 Manifest-Version: 0.1.1
+Class-Path: smartgrid.jar connections.extended.jar connections.minimal
+ .jar controllers.jar converters.extended.jar lib/*
+Main-Class: com.nativedevelopment.smartgrid.server.analytic.AnalyticSe
+ rver
+

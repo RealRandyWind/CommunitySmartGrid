@@ -1,20 +1,21 @@
-package com.nativedevelopment.smartgrid.connection;
+package com.nativedevelopment.smartgrid.connections;
 
 import com.nativedevelopment.smartgrid.*;
 
-import java.io.Serializable;
+import java.io.*;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.DatagramChannel;
 import java.util.*;
 
-public class TCPProducerConnection extends Connection {
+public class UDPProducerConnection extends Connection{
 	public static final String SETTINGS_KEY_BUFFERCAPACITY = "buffer.capacity";
-	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
 	public static final String SETTINGS_KEY_DELTACHECKUPPERBOUND = "checktime.delta";
+
+	public static final String SETTINGS_KEY_DELTACONNECTIONS = "connections.delta";
 
 	private int a_nBufferCapacity = 0;
 	private int a_nDeltaConnections = 0;
@@ -22,9 +23,9 @@ public class TCPProducerConnection extends Connection {
 	protected TimeOut a_oTimeOut = null;
 	protected Deque<Serializable> a_lRemoteQueue = null;
 	protected Deque<Serializable> a_lFromQueue = null;
-	private Set<SocketChannel> a_lChannels = null;
+	private Set<DatagramChannel> a_lChannels = null;
 
-	public TCPProducerConnection(UUID oIdentifier) {
+	public UDPProducerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_lChannels = new HashSet<>();
 		a_oTimeOut = new TimeOut();
@@ -39,12 +40,12 @@ public class TCPProducerConnection extends Connection {
 	}
 
 	private void Fx_EstablishConnections() throws Exception {
-		Serializable ptrRemote = a_lRemoteQueue.pollFirst();
+		Serializable ptrRemote =  a_lRemoteQueue.pollFirst();
 		int iRemote = a_nDeltaConnections;
 		while (ptrRemote!=null && 0 < iRemote) {
 			SocketAddress oRemote = (SocketAddress) ptrRemote;
-			SocketChannel oChannel = SocketChannel.open(oRemote);
-			oChannel.shutdownInput();
+			DatagramChannel oChannel = DatagramChannel.open();
+			oChannel.connect(oRemote);
 			a_lChannels.add(oChannel);
 			ptrRemote = a_lRemoteQueue.pollFirst();
 			iRemote--;
@@ -55,11 +56,11 @@ public class TCPProducerConnection extends Connection {
 		}
 	}
 
-	private boolean Fx_CheckConnection(SocketChannel oChannel) throws Exception {
+	private boolean Fx_CheckConnection(DatagramChannel oChannel) throws Exception {
 		if(oChannel.isConnected()) { return true; }
 		a_lChannels.remove(oChannel);
 		System.out.printf("_WARNING: %slost connection \"%s\"\n"
-				, MLogManager.MethodName()
+				,MLogManager.MethodName()
 				,String.valueOf(oChannel.getRemoteAddress()));
 		return false;
 	}
@@ -98,20 +99,21 @@ public class TCPProducerConnection extends Connection {
 			while (!IsClose()) {
 				Fx_EstablishConnections();
 				Serializable ptrSerializable = Fx_Produce();
-				if(a_oTimeOut.Routine(ptrSerializable==null)) { continue; }
+				if(ptrSerializable == null) { continue; }
 				byte[] rawBytes = Serializer.Serialize(ptrSerializable,a_nBufferCapacity);
 				if(rawBytes == null) { continue; }
 				oByteBuffer.clear();
 				oByteBuffer.put(rawBytes,0,rawBytes.length);
 
-				for (SocketChannel oChannel: a_lChannels) {
+				for (DatagramChannel oChannel: a_lChannels) {
 					if(!Fx_CheckConnection(oChannel)) { continue; }
 					oByteBuffer.flip();
 					oChannel.write(oByteBuffer);
 				}
 			}
 
-			for (SocketChannel oChannel: a_lChannels) {
+			for (DatagramChannel oChannel: a_lChannels) {
+				oChannel.disconnect();
 				oChannel.close();
 			}
 			a_lChannels.clear();

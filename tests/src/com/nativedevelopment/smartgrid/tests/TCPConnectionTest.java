@@ -3,8 +3,8 @@ package com.nativedevelopment.smartgrid.tests;
 import com.nativedevelopment.smartgrid.ISettings;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Settings;
-import com.nativedevelopment.smartgrid.connection.TCPConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.TCPProducerConnection;
+import com.nativedevelopment.smartgrid.connections.TCPConsumerConnection;
+import com.nativedevelopment.smartgrid.connections.TCPProducerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.Assert.*;
 

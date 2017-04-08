@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: lib/bson-3.4.2.jar lib/mongodb-driver-3.4.2.jar lib/mongod
+ b-driver-core-3.4.2.jar
+

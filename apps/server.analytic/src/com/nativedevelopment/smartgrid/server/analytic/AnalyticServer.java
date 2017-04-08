@@ -2,9 +2,9 @@ package com.nativedevelopment.smartgrid.server.analytic;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
-import com.nativedevelopment.smartgrid.connection.*;
-import com.nativedevelopment.smartgrid.controller.IAnalyticServer;
-import com.nativedevelopment.smartgrid.converter.DataToDocument;
+import com.nativedevelopment.smartgrid.connections.*;
+import com.nativedevelopment.smartgrid.controllers.IAnalyticServer;
+import com.nativedevelopment.smartgrid.converters.DataToDocument;
 
 import java.io.Serializable;
 import java.util.Deque;
@@ -19,7 +19,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	public static final String APP_SETTINGS_DEFAULT_PATH = "server.analytic.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "server.analytic.dump";
-	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCER_PREFIX = "action.control.producer.";
+	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCERRABBITMQ_PREFIX = "action.control.producer.rabbitmq.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERRABBITMQ_PREFIX = "data.realtime.consumer.rabbitmq.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERUDP_PREFIX = "data.realtime.consumer.udp.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERTCP_PREFIX = "data.realtime.consumer.tcp.";
@@ -31,7 +31,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	private RabbitMQConsumerConnection a_oDataRealtimeConsumerRabbitMQ = null;
 	private UDPConsumerConnection a_oDataRealtimeConsumerUDP = null;
 	private TCPConsumerConnection a_oDataRealtimeConsumerTCP = null;
-	private RabbitMQProducerConnection a_oActionControlProducer = null;
+	private RabbitMQProducerConnection a_oActionControlProducerRabbitMQ = null;
 	private MongoDBStoreConnection a_oResultStore = null;
 	private RMIControllerListenerConnection a_oControllerListener = null;
 
@@ -62,7 +62,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		a_oControllerListener.Close();
 		a_oResultStore.Close();
-		a_oActionControlProducer.Close();
+		a_oActionControlProducerRabbitMQ.Close();
 		a_oDataRealtimeConsumerTCP.Close();
 		a_oDataRealtimeConsumerUDP.Close();
 		a_oDataRealtimeConsumerRabbitMQ.Close();
@@ -100,10 +100,10 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_oDataRealtimeConsumerTCP.SetToQueue(a_lDataQueue);
 		a_oDataRealtimeConsumerTCP.Configure(oAnalyticServerSettings);
 
-		a_oActionControlProducer = new RabbitMQProducerConnection(null);
-		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLPRODUCER_PREFIX);
-		a_oActionControlProducer.SetFromQueue(a_lActionQueue);
-		a_oActionControlProducer.Configure(oAnalyticServerSettings);
+		a_oActionControlProducerRabbitMQ = new RabbitMQProducerConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLPRODUCERRABBITMQ_PREFIX);
+		a_oActionControlProducerRabbitMQ.SetFromQueue(a_lActionQueue);
+		a_oActionControlProducerRabbitMQ.Configure(oAnalyticServerSettings);
 
 		a_oResultStore = new MongoDBStoreConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_RESULTSTORE_PREFIX);
@@ -119,9 +119,26 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_oDataRealtimeConsumerRabbitMQ.Open();
 		a_oDataRealtimeConsumerUDP.Open();
 		a_oDataRealtimeConsumerTCP.Open();
-		a_oActionControlProducer.Open();
+		a_oActionControlProducerRabbitMQ.Open();
 		a_oResultStore.Open();
 		a_oControllerListener.Open();
+
+		a_mLogManager.Info("data.realtime.consumer (RabbitMQ) \"%s\"",0
+				,a_oDataRealtimeConsumerRabbitMQ.GetIdentifier().toString());
+		a_mLogManager.Info("data.realtime.consumer (UDP) \"%s\"",0
+				,a_oDataRealtimeConsumerUDP.GetIdentifier().toString());
+		a_mLogManager.Info("data.realtime.consumer (TCP) \"%s\"",0
+				,a_oDataRealtimeConsumerTCP.GetIdentifier().toString());
+		a_mLogManager.Info("action.control.producer (RabbitMQ) \"%s\"",0
+				,a_oActionControlProducerRabbitMQ.GetIdentifier().toString());
+		/*a_mLogManager.Info("action.control.producer (UDP) \"%s\"",0
+				,a_oActionControlProducerUDP.GetIdentifier().toString());*/
+		/*a_mLogManager.Info("action.control.producer (TCP) \"%s\"",0
+				,a_oActionControlProducerTCP.GetIdentifier().toString());*/
+		a_mLogManager.Info("result.store (MongoDB) \"%s\"",0
+				,a_oResultStore.GetIdentifier().toString());
+		a_mLogManager.Info("controller.listener (RMI) \"%s\"",0
+				,a_oControllerListener.GetIdentifier().toString());
 
 		a_mLogManager.Success("",0);
 	}

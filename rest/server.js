@@ -11,6 +11,6 @@ MongoClient.connect(db.url, function(err, database) {
 	if (err) { return console.log(err); }
 	require('./app/routes')(app, database);
 	app.listen(port, function(){
-		console.log('Smart Service Center REST API running at port ' + port);
+		console.log('Info: [Express.listen] Smart Service Center REST API running at port ' + port);
 	});
 });

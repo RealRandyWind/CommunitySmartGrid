@@ -1,4 +1,4 @@
-package com.nativedevelopment.smartgrid.connection;
+package com.nativedevelopment.smartgrid.connections;
 
 import com.nativedevelopment.smartgrid.*;
 

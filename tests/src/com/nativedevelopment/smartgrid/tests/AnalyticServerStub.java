@@ -2,8 +2,8 @@ package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
-import com.nativedevelopment.smartgrid.connection.*;
-import com.nativedevelopment.smartgrid.converter.DataToDocument;
+import com.nativedevelopment.smartgrid.connections.*;
+import com.nativedevelopment.smartgrid.converters.DataToDocument;
 
 import java.io.Serializable;
 import java.util.Deque;

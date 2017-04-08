@@ -1,9 +1,8 @@
 package com.nativedevelopment.smartgrid.client.device;
 
 import com.nativedevelopment.smartgrid.*;
-import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
-import com.nativedevelopment.smartgrid.controller.IDeviceClient;
+import com.nativedevelopment.smartgrid.connections.RabbitMQConsumerConnection;
+import com.nativedevelopment.smartgrid.connections.RabbitMQProducerConnection;
 
 import java.io.Serializable;
 import java.util.Deque;
@@ -11,9 +10,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
+public class DeviceClient extends Main implements IConfigurable {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
@@ -72,7 +70,6 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_lActionQueue = new ConcurrentLinkedDeque<>();
 		a_lActionMap = new ConcurrentHashMap<>();
 
-		/* temporary configuration begin */
 		a_oDataRealtimeProducer = new RabbitMQProducerConnection(null);
 		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_DATAREALTIMEPRODUCER_PREFIX);
 		a_oDataRealtimeProducer.SetFromQueue(a_lDataQueue);
@@ -86,11 +83,13 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		// TODO store date to mongodb
 
 		oDeviceClientSettings.SetKeyPrefix("");
-		a_mLogManager.Info("data.realtime.producer \"%s\"",0,a_oDataRealtimeProducer.GetIdentifier().toString());
-		a_mLogManager.Info("action.control.consumer \"%s\"",0,a_oActionControlConsumer.GetIdentifier().toString());
 		a_oDataRealtimeProducer.Open();
 		a_oActionControlConsumer.Open();
-		/* temporary configuration end */
+
+		a_mLogManager.Info("data.realtime.producer (RabbitMQ) \"%s\"",0
+				,a_oDataRealtimeProducer.GetIdentifier().toString());
+		a_mLogManager.Info("action.control.consumer (RabbitMQ) \"%s\"",0
+				,a_oActionControlConsumer.GetIdentifier().toString());
 
 		a_mLogManager.Success("",0);
 	}

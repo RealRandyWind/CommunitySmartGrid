@@ -1,8 +1,7 @@
-package com.nativedevelopment.smartgrid.converter;
+package com.nativedevelopment.smartgrid.converters;
 
 import com.nativedevelopment.smartgrid.Converter;
 import com.nativedevelopment.smartgrid.Data;
-import com.nativedevelopment.smartgrid.IConverter;
 import com.nativedevelopment.smartgrid.IData;
 import org.bson.Document;
 

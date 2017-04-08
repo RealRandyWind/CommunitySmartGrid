@@ -1,4 +1,4 @@
-package com.nativedevelopment.smartgrid.connection;
+package com.nativedevelopment.smartgrid.connections;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Connection;
@@ -90,8 +90,7 @@ public class RabbitMQConsumerConnection extends Connection {
 				a_oRabbitMQConnectionFactory.setUsername(a_sUserName);
 				a_oRabbitMQConnectionFactory.setPassword(a_sUserPassword);
 			}
-			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %s, %s, %s, consumer }\n",MLogManager.MethodName()
-					,GetIdentifier().toString(), a_sFromHost, a_iThroughPort, a_sUserName, a_sUserPassword, a_sFromExchange, a_sTypeExchange);
+			a_oRabbitMQConnectionFactory.setConnectionTimeout(0);
 			a_oRabbitMQConnectionFactory.setAutomaticRecoveryEnabled(true);
 			a_oRabbitMQConnection = a_oRabbitMQConnectionFactory.newConnection();
 			a_oRabbitMQChannel = a_oRabbitMQConnection.createChannel();
@@ -99,6 +98,8 @@ public class RabbitMQConsumerConnection extends Connection {
 			a_sFromQueue = a_oRabbitMQChannel.queueDeclare().getQueue();
 			a_oRabbitMQChannel.queueBind(a_sFromQueue, a_sFromExchange, a_sRoutingKey);
 			a_oRabbitMQChannel.basicConsume(a_sFromQueue, a_bIsHandshake, oConsumer);
+			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %s, %s, %s, consumer }\n",MLogManager.MethodName()
+					,GetIdentifier().toString(), a_sFromHost, a_iThroughPort, a_sUserName, a_sUserPassword, a_sFromExchange, a_sTypeExchange);
 			// TODO stay active until connection closed or rabbitmq connection closed.
 			while(!IsClose()) {
 				a_oTimeOut.Routine(a_oRabbitMQConnection.isOpen());

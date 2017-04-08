@@ -2,8 +2,8 @@ package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
-import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
+import com.nativedevelopment.smartgrid.connections.RabbitMQConsumerConnection;
+import com.nativedevelopment.smartgrid.connections.RabbitMQProducerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

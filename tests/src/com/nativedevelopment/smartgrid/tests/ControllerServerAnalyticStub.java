@@ -1,7 +1,7 @@
 package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.MLogManager;
-import com.nativedevelopment.smartgrid.controller.IAnalyticServer;
+import com.nativedevelopment.smartgrid.controllers.IAnalyticServer;
 
 public class ControllerServerAnalyticStub implements IAnalyticServer{
 	protected MLogManager a_mLogManager = MLogManager.GetInstance();

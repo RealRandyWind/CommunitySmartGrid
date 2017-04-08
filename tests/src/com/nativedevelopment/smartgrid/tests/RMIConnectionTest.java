@@ -1,8 +1,8 @@
 package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
-import com.nativedevelopment.smartgrid.connection.RMIControllerCallerConnection;
-import com.nativedevelopment.smartgrid.connection.RMIControllerListenerConnection;
+import com.nativedevelopment.smartgrid.connections.RMIControllerCallerConnection;
+import com.nativedevelopment.smartgrid.connections.RMIControllerListenerConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

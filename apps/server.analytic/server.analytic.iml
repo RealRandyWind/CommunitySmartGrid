@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../../bin/server.analytic" />
     <output-test url="file://$MODULE_DIR$/../../tests/bin/server.analytic" />
     <exclude-output />
@@ -23,5 +23,9 @@
         <jarDirectory url="file://$MODULE_DIR$/../../tests/deps" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="connections.extended" scope="PROVIDED" />
+    <orderEntry type="module" module-name="connections.minimal" scope="PROVIDED" />
+    <orderEntry type="module" module-name="controllers" scope="PROVIDED" />
+    <orderEntry type="module" module-name="converters.extended" scope="PROVIDED" />
   </component>
 </module>

@@ -1,8 +1,8 @@
 package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
-import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
-import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
+import com.nativedevelopment.smartgrid.connections.RabbitMQConsumerConnection;
+import com.nativedevelopment.smartgrid.connections.RabbitMQProducerConnection;
 
 import java.io.Serializable;
 import java.util.Deque;
@@ -41,8 +41,8 @@ public class DeviceClientServerStub extends AServerStub {
 	}
 
 	public void Start() {
-		a_mLogManager.Info("data.realtime.producer \"%s\"",0,a_oDataProducer.GetIdentifier().toString());
-		a_mLogManager.Info("action.control.consumer \"%s\"",0,a_oActionConsumer.GetIdentifier().toString());
+		a_mLogManager.Info("data.realtime.producer (RabbitMQ) \"%s\"",0,a_oDataProducer.GetIdentifier().toString());
+		a_mLogManager.Info("action.control.consumer (RabbitMQ) \"%s\"",0,a_oActionConsumer.GetIdentifier().toString());
 		a_oDataProducer.Open();
 		a_oActionConsumer.Open();
 		a_bIsStop = false;

@@ -1,13 +1,11 @@
-package com.nativedevelopment.smartgrid.connection;
+package com.nativedevelopment.smartgrid.connections;
 
 import com.nativedevelopment.smartgrid.*;
 
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Arrays;
-import java.util.Queue;
 import java.util.UUID;
 
 public class RMIControllerCallerConnection extends Connection {
