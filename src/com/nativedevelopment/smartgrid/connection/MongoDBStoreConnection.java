@@ -8,7 +8,7 @@ import org.bson.Document;
 import org.bson.types.Binary;
 
 import java.io.Serializable;
-import java.util.Queue;
+import java.util.Deque;
 import java.util.UUID;
 
 public class MongoDBStoreConnection extends Connection {
@@ -33,24 +33,24 @@ public class MongoDBStoreConnection extends Connection {
 	private boolean a_bIsDocument = false;
 
 	protected TimeOut a_oTimeOut = null;
-	protected Queue<Serializable> a_lFromQueue = null;
+	protected Deque<Serializable> a_lFromQueue = null;
 
 	public MongoDBStoreConnection(UUID oIdentifier) {
 		super(oIdentifier);
 		a_oTimeOut = new TimeOut();
 	}
 
-	public void SetFromQueue(Queue<Serializable> lFromQueue) {
+	public void SetFromQueue(Deque<Serializable> lFromQueue) {
 		a_lFromQueue = lFromQueue;
 	}
 
 	private Serializable Fx_Store() throws Exception {
 		if(a_lFromQueue == null) { return null; }
-		Serializable ptrSerializable = a_lFromQueue.poll();
+		Serializable ptrSerializable = a_lFromQueue.pollFirst();
 		if(ptrSerializable != null && (a_iRoute != null)) {
 			IRoute oRoute = (IRoute) ptrSerializable;
 			if(!oRoute.GetRouteId().equals(a_iRoute)) {
-				a_lFromQueue.offer(ptrSerializable);
+				a_lFromQueue.offerFirst(ptrSerializable);
 				ptrSerializable = null;
 			} else { ptrSerializable = oRoute.GetContent(); }
 		}

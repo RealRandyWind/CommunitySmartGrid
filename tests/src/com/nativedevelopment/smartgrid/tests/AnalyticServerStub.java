@@ -6,7 +6,7 @@ import com.nativedevelopment.smartgrid.connection.*;
 import com.nativedevelopment.smartgrid.converter.DataToDocument;
 
 import java.io.Serializable;
-import java.util.Queue;
+import java.util.Deque;
 import java.util.UUID;
 
 public final class AnalyticServerStub extends AServerStub {
@@ -24,10 +24,10 @@ public final class AnalyticServerStub extends AServerStub {
 	private RMIControllerListenerConnection a_oControllerListener = null;
 
 	/* Queues */
-	private Queue<Serializable> a_lLogQueue = null;
-	private Queue<Serializable> a_lDataQueue = null;
-	private Queue<Serializable> a_lActionQueue = null;
-	private Queue<Serializable> a_lResultQueue = null;
+	private Deque<Serializable> a_lLogQueue = null;
+	private Deque<Serializable> a_lDataQueue = null;
+	private Deque<Serializable> a_lActionQueue = null;
+	private Deque<Serializable> a_lResultQueue = null;
 
 	/* Other */
 	private IController a_oController = null;
@@ -42,10 +42,10 @@ public final class AnalyticServerStub extends AServerStub {
 		a_oActionProducer = new RabbitMQProducerConnection(null);
 		a_oResultStore = new MongoDBStoreConnection(null);
 		a_oControllerListener = new RMIControllerListenerConnection(null);
-		ISettings oDataConsumerSettingsRabbitMQ = NewDataRealtimeConsumerSettingsRabbitMQ(sRemote, iPortRabbit, null, null);
+		ISettings oDataConsumerSettingsRabbitMQ = NewDataRealtimeConsumerSettingsRabbitMQ(sRemote, iPortRabbit, ROUTE_RABBITMQ, null);
 		ISettings oDataConsumerSettingsUDP = NewDataRealtimeConsumerSettingsUDP(sLocal, iPortUDP, null, null);
 		ISettings oDataConsumerSettingsTCP = NewDataRealtimeConsumerSettingsTCP(sLocal, iPortTCP, null, null);
-		ISettings oActionProducerSettings = NewActionControlProducerSettings(sRemote, iPortRabbit, null, null);
+		ISettings oActionProducerSettings = NewActionControlProducerSettings(sRemote, iPortRabbit, ROUTE_RABBITMQ, null);
 		ISettings oResultStoreSettings = NewResultStoreSettings(sRemote,iPortMongo, null, null);
 		ISettings oControllerListenerSettings = NewControllerListenerSettings(null, GetIdentifier().toString(), iPortRMI, null);
 		a_oDataConsumerRabbitMQ.Configure(oDataConsumerSettingsRabbitMQ);
@@ -58,8 +58,8 @@ public final class AnalyticServerStub extends AServerStub {
 		a_oConverter = new DataToDocument();
 	}
 
-	public void SetQueues(Queue<Serializable> lLogQueue, Queue<Serializable> lDataQueue,
-						  Queue<Serializable> lActionQueue, Queue<Serializable> lResultQueue) {
+	public void SetQueues(Deque<Serializable> lLogQueue, Deque<Serializable> lDataQueue,
+						  Deque<Serializable> lActionQueue, Deque<Serializable> lResultQueue) {
 		a_lLogQueue = lLogQueue;
 		a_lDataQueue = lDataQueue;
 		a_lActionQueue = lActionQueue;
@@ -117,20 +117,21 @@ public final class AnalyticServerStub extends AServerStub {
 		a_mLogManager.Debug("%s running",0, GetIdentifier().toString());
 		try {
 			while(!a_bIsStop) {
-				Serializable ptrData = a_lDataQueue.poll();
-				if(a_oTimeOut.Routine(ptrData == null)) { continue; }
-				IData oData = (IData) ptrData;
+				Serializable ptrRoute = a_lDataQueue.pollFirst();
+				if(a_oTimeOut.Routine(ptrRoute == null)) { continue; }
+				IRoute oRoute = (IRoute) ptrRoute;
+				IData oData = (IData) oRoute.GetContent();
 				DisplayData(oData, "received");
 				IAction oAction = Generator.GenerateActionMachine(null);
 				DisplayAction(oAction, "generated");
 				IPackage oPackage = new Package(oAction,oData.GetIdentifier(),null,0,System.currentTimeMillis());
-				a_lActionQueue.offer(oPackage);
+				a_lActionQueue.offerLast(oRoute.SetContent(oPackage));
 				int nTuple = 1;
 				UUID[] lActions = new UUID[1];
 				lActions[0] = oAction.GetIdentifier();
 				IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
 				DisplayResult(oResult, "generated");
-				a_lResultQueue.offer(a_oConverter.Do(oResult,0));
+				a_lResultQueue.offerLast(a_oConverter.Do(oResult,0));
 			}
 		} catch (Exception oException) {
 			a_mLogManager.Warning("%s \"%s\"\n",0

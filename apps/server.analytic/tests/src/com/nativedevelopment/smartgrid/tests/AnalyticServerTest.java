@@ -7,29 +7,30 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.util.Deque;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class AnalyticServerTest implements ITestCase {
 	AnalyticServer a_oApplication = null;
 	MLogManager a_mLogManager = null;
 	Thread a_oAnalyticServerThread = null;
 
-	Queue<Serializable> a_lDataQueue = null;
-	Queue<Serializable> a_lActionQueue = null;
+	Deque<Serializable> a_lDataQueue = null;
+	Deque<Serializable> a_lActionQueue = null;
 	Queue<Serializable> a_lResultQueue = null;
 	Queue<Serializable> a_lRemoteQueue = null;
 
 	@Before
 	public void setUp() throws Exception {
 		a_oApplication = (AnalyticServer)AnalyticServer.GetInstance();
-		a_oAnalyticServerThread = new Thread(() -> { a_oApplication.Entry(); });
+		a_oAnalyticServerThread = new Thread(() -> a_oApplication.Entry());
 		a_mLogManager = MLogManager.GetInstance();
 		a_mLogManager.SetUp();
-		a_lDataQueue = new ConcurrentLinkedQueue<>();
-		a_lActionQueue = new ConcurrentLinkedQueue<>();
-		a_lResultQueue = new ConcurrentLinkedQueue<>();
-		a_lRemoteQueue = new ConcurrentLinkedQueue<>();
+		a_lDataQueue = new ConcurrentLinkedDeque<>();
+		a_lActionQueue = new ConcurrentLinkedDeque<>();
+		a_lResultQueue = new ConcurrentLinkedDeque<>();
+		a_lRemoteQueue = new ConcurrentLinkedDeque<>();
 	}
 
 	@After

@@ -11,9 +11,7 @@ import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static org.junit.Assert.*;
 
@@ -30,24 +28,24 @@ public class UDPConnectionTest implements ITestCase {
 	ISettings a_oProducerConfiguration = null;
 	ISettings a_oConsumerConfiguration = null;
 
-	Queue<Serializable> a_oFromQueue = null;
-	Queue<Serializable> a_oToQueue = null;
-	Queue<Serializable> a_oLogQueue = null;
-	Queue<Serializable> a_lReceivers = null;
-	Queue<Serializable> a_lSenders1 = null;
-	Queue<Serializable> a_lSenders2 = null;
+	Deque<Serializable> a_oFromQueue = null;
+	Deque<Serializable> a_oToQueue = null;
+	Deque<Serializable> a_oLogQueue = null;
+	Deque<Serializable> a_lReceivers = null;
+	Deque<Serializable> a_lSenders1 = null;
+	Deque<Serializable> a_lSenders2 = null;
 
 	@Before
 	public void setUp() throws Exception {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mLogManager.SetUp();
 
-		a_oFromQueue = new ConcurrentLinkedQueue<>();
-		a_oToQueue = new ConcurrentLinkedQueue<>();
-		a_oLogQueue = new ConcurrentLinkedQueue<>();
-		a_lReceivers = new ConcurrentLinkedQueue<>();
-		a_lSenders1 = new ConcurrentLinkedQueue<>();
-		a_lSenders2 = new ConcurrentLinkedQueue<>();
+		a_oFromQueue = new ConcurrentLinkedDeque<>();
+		a_oToQueue = new ConcurrentLinkedDeque<>();
+		a_oLogQueue = new ConcurrentLinkedDeque<>();
+		a_lReceivers = new ConcurrentLinkedDeque<>();
+		a_lSenders1 = new ConcurrentLinkedDeque<>();
+		a_lSenders2 = new ConcurrentLinkedDeque<>();
 
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);

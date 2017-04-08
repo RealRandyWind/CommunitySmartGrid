@@ -1,7 +1,7 @@
 package com.nativedevelopment.smartgrid;
 
 import java.io.Serializable;
-import java.util.Queue;
+import java.util.Deque;
 import java.util.UUID;
 
 public class Connection implements IConnection {
@@ -11,7 +11,7 @@ public class Connection implements IConnection {
 
     private UUID a_oIdentifier = null;
     protected UUID a_iRoute = null;
-    protected Queue<Serializable> a_lToLogQueue = null;
+    protected Deque<Serializable> a_lToLogQueue = null;
     volatile private boolean a_bIsClose = false;
 
     public Connection(UUID oIdentifier) {
@@ -73,7 +73,7 @@ public class Connection implements IConnection {
     }
 
     @Override
-    public void SetToLogQueue(Queue<Serializable> lToLogQueue) {
+    public void SetToLogQueue(Deque<Serializable> lToLogQueue) {
         a_lToLogQueue = lToLogQueue;
     }
 

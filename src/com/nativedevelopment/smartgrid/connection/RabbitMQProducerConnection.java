@@ -5,7 +5,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.*;
-import java.util.Queue;
+import java.util.Deque;
 import java.util.UUID;
 
 public class RabbitMQProducerConnection extends Connection {
@@ -34,7 +34,7 @@ public class RabbitMQProducerConnection extends Connection {
 	private boolean a_bIsPackageWrapped = false;
 
 	protected TimeOut a_oTimeOut = null;
-	protected Queue<Serializable> a_lFromQueue = null;
+	protected Deque<Serializable> a_lFromQueue = null;
 
 	private ConnectionFactory a_oRabbitMQConnectionFactory = null;
 	private Channel a_oRabbitMQChannel = null;
@@ -47,11 +47,11 @@ public class RabbitMQProducerConnection extends Connection {
 
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
-		Serializable ptrSerializable = a_lFromQueue.poll();
+		Serializable ptrSerializable = a_lFromQueue.pollFirst();
 		if(ptrSerializable != null && a_iRoute != null) {
 			IRoute oRoute = (IRoute) ptrSerializable;
 			if(!oRoute.GetRouteId().equals(a_iRoute)) {
-				a_lFromQueue.offer(ptrSerializable);
+				a_lFromQueue.offerFirst(ptrSerializable);
 				ptrSerializable = null;
 			} else { ptrSerializable = oRoute.GetContent(); }
 		}
@@ -59,7 +59,7 @@ public class RabbitMQProducerConnection extends Connection {
 		return ptrSerializable;
 	}
 
-	public void SetFromQueue(Queue<Serializable> lFromQueue) {
+	public void SetFromQueue(Deque<Serializable> lFromQueue) {
 		a_lFromQueue = lFromQueue;
 	}
 

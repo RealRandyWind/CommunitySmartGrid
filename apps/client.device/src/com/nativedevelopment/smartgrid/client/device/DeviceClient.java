@@ -6,10 +6,11 @@ import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 import com.nativedevelopment.smartgrid.controller.IDeviceClient;
 
 import java.io.Serializable;
+import java.util.Deque;
 import java.util.Map;
-import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
@@ -33,8 +34,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	private boolean a_bIsIdle = true;
 	private TimeOut a_oTimeOut = null;
 
-	private Queue<Serializable> a_lDataQueue = null; // TODO IData
-	private Queue<Serializable> a_lActionQueue = null; // TODO IAction
+	private Deque<Serializable> a_lDataQueue = null; // TODO IData
+	private Deque<Serializable> a_lActionQueue = null; // TODO IAction
 	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> IInstruction
 
 	protected DeviceClient() {
@@ -67,8 +68,8 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		a_iSettings = oDeviceClientSettings.GetIdentifier();
 		Configure(oDeviceClientSettings);
 
-		a_lDataQueue = new ConcurrentLinkedQueue<>();
-		a_lActionQueue = new ConcurrentLinkedQueue<>();
+		a_lDataQueue = new ConcurrentLinkedDeque<>();
+		a_lActionQueue = new ConcurrentLinkedDeque<>();
 		a_lActionMap = new ConcurrentHashMap<>();
 
 		/* temporary configuration begin */
@@ -101,7 +102,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 	}
 
 	private void Fx_PerformAction() {
-		Serializable ptrAction = a_lActionQueue.poll();
+		Serializable ptrAction = a_lActionQueue.pollFirst();
 		if(ptrAction == null) {
 			return;
 		}
@@ -115,7 +116,7 @@ public class DeviceClient extends Main implements IDeviceClient, IConfigurable {
 		int nTuples = 1;
 		IData oData = Generator.GenerateDataSensor(a_oIdentifier, nTuples);
 		a_mLogManager.Log("produce data by %s",0,GetIdentifier().toString());
-		a_lDataQueue.offer(oData);
+		a_lDataQueue.offerLast(oData);
 		a_bIsIdle = false;
 	}
 

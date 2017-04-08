@@ -8,7 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
-import java.util.Queue;
+import java.util.Deque;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DeviceClientTest implements ITestCase {
@@ -16,20 +17,20 @@ public class DeviceClientTest implements ITestCase {
 	MLogManager a_mLogManager = null;
 	Thread a_oDeviceClientThread = null;
 
-	Queue<Serializable> a_lDataQueue = null;
-	Queue<Serializable> a_lActionQueue = null;
-	Queue<Serializable> a_lResultQueue = null;
+	Deque<Serializable> a_lDataQueue = null;
+	Deque<Serializable> a_lActionQueue = null;
+	Deque<Serializable> a_lResultQueue = null;
 	IController a_oController = null;
 
 	@Before
 	public void setUp() throws Exception {
 		a_oApplication = (DeviceClient)DeviceClient.GetInstance();
-		a_oDeviceClientThread = new Thread(() -> { a_oApplication.Entry(); });
+		a_oDeviceClientThread = new Thread(() -> a_oApplication.Entry());
 		a_mLogManager = MLogManager.GetInstance();
 		a_mLogManager.SetUp();
-		a_lDataQueue = new ConcurrentLinkedQueue<>();
-		a_lActionQueue = new ConcurrentLinkedQueue<>();
-		a_lResultQueue = new ConcurrentLinkedQueue<>();
+		a_lDataQueue = new ConcurrentLinkedDeque<>();
+		a_lActionQueue = new ConcurrentLinkedDeque<>();
+		a_lResultQueue = new ConcurrentLinkedDeque<>();
 		a_oController = new ControllerServerAnalyticStub();
 	}
 

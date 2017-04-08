@@ -21,8 +21,8 @@ public class UDPProducerConnection extends Connection{
 	private int a_nDeltaConnections = 0;
 
 	protected TimeOut a_oTimeOut = null;
-	protected Queue<Serializable> a_lRemoteQueue = null;
-	protected Queue<Serializable> a_lFromQueue = null;
+	protected Deque<Serializable> a_lRemoteQueue = null;
+	protected Deque<Serializable> a_lFromQueue = null;
 	private Set<DatagramChannel> a_lChannels = null;
 
 	public UDPProducerConnection(UUID oIdentifier) {
@@ -31,23 +31,23 @@ public class UDPProducerConnection extends Connection{
 		a_oTimeOut = new TimeOut();
 	}
 
-	public void SetRemoteQueue(Queue<Serializable> lRemoteQueue) {
+	public void SetRemoteQueue(Deque<Serializable> lRemoteQueue) {
 		a_lRemoteQueue = lRemoteQueue;
 	}
 
-	public void SetFromQueue(Queue<Serializable> lFromQueue) {
+	public void SetFromQueue(Deque<Serializable> lFromQueue) {
 		a_lFromQueue = lFromQueue;
 	}
 
 	private void Fx_EstablishConnections() throws Exception {
-		Serializable ptrRemote =  a_lRemoteQueue.poll();
+		Serializable ptrRemote =  a_lRemoteQueue.pollFirst();
 		int iRemote = a_nDeltaConnections;
 		while (ptrRemote!=null && 0 < iRemote) {
 			SocketAddress oRemote = (SocketAddress) ptrRemote;
 			DatagramChannel oChannel = DatagramChannel.open();
 			oChannel.connect(oRemote);
 			a_lChannels.add(oChannel);
-			ptrRemote = a_lRemoteQueue.poll();
+			ptrRemote = a_lRemoteQueue.pollFirst();
 			iRemote--;
 			System.out.printf("_DEBUG: %snew connection to \"%s\" through \"%s\"\n"
 					,MLogManager.MethodName()
@@ -67,11 +67,11 @@ public class UDPProducerConnection extends Connection{
 
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
-		Serializable ptrSerializable = a_lFromQueue.poll();
+		Serializable ptrSerializable = a_lFromQueue.pollFirst();
 		if(ptrSerializable != null && (a_iRoute != null)) {
 			IRoute oRoute = (IRoute) ptrSerializable;
 			if(!oRoute.GetRouteId().equals(a_iRoute)) {
-				a_lFromQueue.offer(ptrSerializable);
+				a_lFromQueue.offerFirst(ptrSerializable);
 				ptrSerializable = null;
 			} else { ptrSerializable = oRoute.GetContent(); }
 		}

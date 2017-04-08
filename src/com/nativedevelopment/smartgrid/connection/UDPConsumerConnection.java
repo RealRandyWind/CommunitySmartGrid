@@ -19,13 +19,13 @@ public class UDPConsumerConnection extends Connection {
 	private int a_nBufferCapacity = 0;
 	private boolean a_bIsPackageUnwrap = false;
 
-	protected Queue<Serializable> a_lToQueue = null;
+	protected Deque<Serializable> a_lToQueue = null;
 
 	public UDPConsumerConnection(UUID oIdentifier) {
 		super(oIdentifier);
 	}
 
-	public void SetToQueue(Queue<Serializable> lToQueue) {
+	public void SetToQueue(Deque<Serializable> lToQueue) {
 		a_lToQueue = lToQueue;
 	}
 
@@ -40,7 +40,7 @@ public class UDPConsumerConnection extends Connection {
 		if(a_iRoute != null) {
 			ptrSerializable = new Route(a_iRoute, ptrSerializable);
 		}
-		a_lToQueue.offer(ptrSerializable);
+		a_lToQueue.offerLast(ptrSerializable);
 	}
 
 	@Override

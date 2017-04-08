@@ -4,9 +4,9 @@ import com.nativedevelopment.smartgrid.MLogManager;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 public class StubController implements IStubController {
 	public enum EMethods {
@@ -18,11 +18,11 @@ public class StubController implements IStubController {
 		FUNCTIONRETURNMAPNOARGUMENTSSERIALIZABLE
 	}
 
-	private Queue<Serializable> a_lQueue = null;
+	private Deque<Serializable> a_lQueue = null;
 	private Map<Serializable,Serializable> a_lSerializables = null;
 	private Serializable a_oSerializable = null;
 
-	public StubController(Queue<Serializable> lQueue, Serializable oSerializable, Map<Serializable,Serializable> lSerializables) {
+	public StubController(Deque<Serializable> lQueue, Serializable oSerializable, Map<Serializable,Serializable> lSerializables) {
 		a_lQueue = lQueue;
 		a_lSerializables = lSerializables;
 		a_oSerializable = oSerializable;

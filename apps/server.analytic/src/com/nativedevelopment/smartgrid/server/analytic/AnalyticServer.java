@@ -6,9 +6,9 @@ import com.nativedevelopment.smartgrid.connection.*;
 import com.nativedevelopment.smartgrid.controller.IAnalyticServer;
 
 import java.io.Serializable;
-import java.util.Queue;
+import java.util.Deque;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class AnalyticServer extends Main implements IAnalyticServer, IConfigurable {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
@@ -36,9 +36,9 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	private TimeOut a_oTimeOut = null;
 
-	private Queue<Serializable> a_lDataQueue = null;
-	private Queue<Serializable> a_lActionQueue = null;
-	private Queue<Serializable> a_lResultQueue = null;
+	private Deque<Serializable> a_lDataQueue = null;
+	private Deque<Serializable> a_lActionQueue = null;
+	private Deque<Serializable> a_lResultQueue = null;
 
 	protected AnalyticServer() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -71,9 +71,9 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_iSettings = oAnalyticServerSettings.GetIdentifier();
 		Configure(oAnalyticServerSettings);
 
-		a_lDataQueue = new ConcurrentLinkedQueue<>();
-		a_lActionQueue = new ConcurrentLinkedQueue<>();
-		a_lResultQueue = new ConcurrentLinkedQueue<>();
+		a_lDataQueue = new ConcurrentLinkedDeque<>();
+		a_lActionQueue = new ConcurrentLinkedDeque<>();
+		a_lResultQueue = new ConcurrentLinkedDeque<>();
 
 		/* temporary configuration begin */
 		a_oDataRealtimeConsumer = new RabbitMQConsumerConnection(null);
@@ -116,9 +116,9 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	}
 
 	private void Fx_Analyze() {
-		Serializable ptrRoute = a_lDataQueue.poll();
+		Serializable ptrRoute = a_lDataQueue.pollFirst();
 		if(ptrRoute == null) { return; }
-		IRoute oRoute = (IRoute)ptrRoute;
+		IRoute oRoute = (IRoute) ptrRoute;
 		IData oData = (IData) oRoute.GetContent();
 		a_mLogManager.Log("received data %s by %s",0,oData.GetIdentifier().toString(),GetIdentifier().toString());
 		IAction oAction = Generator.GenerateActionMachine(null);
@@ -128,8 +128,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		lActions[0] = oAction.GetIdentifier();
 		IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
 		a_mLogManager.Log("produced action %s by %s",0,oAction.GetIdentifier(), GetIdentifier().toString());
-		a_lActionQueue.offer(oRoute.SetContent(oPackage));
-		a_lResultQueue.offer(oResult);
+		a_lActionQueue.offerLast(oRoute.SetContent(oPackage));
+		a_lResultQueue.offerLast(oResult);
 		a_bIsIdle = false;
 	}
 

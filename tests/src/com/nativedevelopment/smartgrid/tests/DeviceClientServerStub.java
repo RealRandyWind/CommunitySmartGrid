@@ -5,7 +5,7 @@ import com.nativedevelopment.smartgrid.connection.RabbitMQConsumerConnection;
 import com.nativedevelopment.smartgrid.connection.RabbitMQProducerConnection;
 
 import java.io.Serializable;
-import java.util.Queue;
+import java.util.Deque;
 import java.util.UUID;
 
 public class DeviceClientServerStub extends AServerStub {
@@ -13,9 +13,9 @@ public class DeviceClientServerStub extends AServerStub {
 	private RabbitMQConsumerConnection a_oActionConsumer = null;
 	// TODO Storage, Monitor
 
-	private Queue<Serializable> a_lLogQueue = null;
-	private Queue<Serializable> a_lDataQueue = null;
-	private Queue<Serializable> a_lActionQueue = null;
+	private Deque<Serializable> a_lLogQueue = null;
+	private Deque<Serializable> a_lDataQueue = null;
+	private Deque<Serializable> a_lActionQueue = null;
 
 	public DeviceClientServerStub(UUID oIdentifier, String sRemote, int iPortRabbit, int iPortMongo, int iPortUDP) {
 		super(oIdentifier);
@@ -27,8 +27,8 @@ public class DeviceClientServerStub extends AServerStub {
 		a_oActionConsumer.Configure(oActionConsumerSettings);
 	}
 
-	public void SetQueues(Queue<Serializable> lLogQueue, Queue<Serializable> lDataQueue,
-						  Queue<Serializable> lActionQueue) {
+	public void SetQueues(Deque<Serializable> lLogQueue, Deque<Serializable> lDataQueue,
+						  Deque<Serializable> lActionQueue) {
 		a_oDataProducer.SetFromQueue(lDataQueue);
 		a_oActionConsumer.SetToQueue(lActionQueue);
 
@@ -64,8 +64,8 @@ public class DeviceClientServerStub extends AServerStub {
 				int nTuples = 1;
 				IData oData = Generator.GenerateDataMachine(GetIdentifier(),nTuples);
 				DisplayData(oData, "generated");
-				a_lDataQueue.offer(oData);
-				Serializable ptrAction = a_lActionQueue.poll();
+				a_lDataQueue.offerLast(oData);
+				Serializable ptrAction = a_lActionQueue.pollFirst();
 				if(ptrAction == null) { continue; }
 				IAction oAction = (IAction) ptrAction;
 				DisplayAction(oAction, "received");

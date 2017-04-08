@@ -8,10 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static org.junit.Assert.*;
 
@@ -25,12 +25,12 @@ public class RMIConnectionTest implements ITestCase {
 	MLogManager a_mLogManager = null;
 
 	IController a_oController = null;
-	Queue<Serializable> a_oLogQueue = null;
+	Deque<Serializable> a_oLogQueue = null;
 
 	ISettings a_oCallerConfiguration = null;
 	ISettings a_oListenerConfiguration = null;
 
-	Queue<Serializable> a_lQueue = null;
+	Deque<Serializable> a_lQueue = null;
 	HashMap<Serializable, Serializable> a_lSerializables = null;
 	Serializable a_oSerializable = null;
 
@@ -39,7 +39,7 @@ public class RMIConnectionTest implements ITestCase {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mLogManager.SetUp();
 
-		a_lQueue = new ConcurrentLinkedQueue<>();
+		a_lQueue = new ConcurrentLinkedDeque<>();
 		a_lSerializables = new HashMap<>();
 		a_oSerializable = SERIALIZABLE_OBJECT;
 

@@ -25,7 +25,7 @@ public class TCPConsumerConnection extends Connection {
 	private boolean a_bIsPackageUnwrap = false;
 
 	protected TimeOut a_oTimeOut = null;
-	protected Queue<Serializable> a_lToQueue = null;
+	protected Deque<Serializable> a_lToQueue = null;
 	private Set<SocketChannel> a_lChannels = null;
 
 	public TCPConsumerConnection(UUID oIdentifier) {
@@ -34,7 +34,7 @@ public class TCPConsumerConnection extends Connection {
 		a_oTimeOut = new TimeOut();
 	}
 
-	public void SetToQueue(Queue<Serializable> lToQueue) {
+	public void SetToQueue(Deque<Serializable> lToQueue) {
 		a_lToQueue = lToQueue;
 	}
 
@@ -72,7 +72,7 @@ public class TCPConsumerConnection extends Connection {
 		if(a_iRoute != null) {
 			ptrSerializable = new Route(a_iRoute, ptrSerializable);
 		}
-		a_lToQueue.offer(ptrSerializable);
+		a_lToQueue.offerLast(ptrSerializable);
 	}
 
 	@Override

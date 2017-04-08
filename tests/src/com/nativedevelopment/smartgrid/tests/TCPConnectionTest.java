@@ -1,6 +1,5 @@
 package com.nativedevelopment.smartgrid.tests;
 
-import com.nativedevelopment.smartgrid.IConnection;
 import com.nativedevelopment.smartgrid.ISettings;
 import com.nativedevelopment.smartgrid.MLogManager;
 import com.nativedevelopment.smartgrid.Settings;
@@ -13,7 +12,8 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.Queue;
+import java.util.Deque;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.Assert.*;
@@ -30,22 +30,22 @@ public class TCPConnectionTest implements ITestCase {
 	ISettings a_oProducerConfiguration = null;
 	ISettings a_oConsumerConfiguration = null;
 
-	Queue<Serializable> a_oFromQueue = null;
-	Queue<Serializable> a_oToQueue = null;
-	Queue<Serializable> a_oLogQueue = null;
-	Queue<Serializable> a_lReceivers = null;
-	Queue<Serializable> a_lSenders = null;
+	Deque<Serializable> a_oFromQueue = null;
+	Deque<Serializable> a_oToQueue = null;
+	Deque<Serializable> a_oLogQueue = null;
+	Deque<Serializable> a_lReceivers = null;
+	Deque<Serializable> a_lSenders = null;
 
 	@Before
 	public void setUp() throws Exception {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mLogManager.SetUp();
 
-		a_oFromQueue = new ConcurrentLinkedQueue<>();
-		a_oToQueue = new ConcurrentLinkedQueue<>();
-		a_oLogQueue = new ConcurrentLinkedQueue<>();
-		a_lReceivers = new ConcurrentLinkedQueue<>();
-		a_lSenders = new ConcurrentLinkedQueue<>();
+		a_oFromQueue = new ConcurrentLinkedDeque<>();
+		a_oToQueue = new ConcurrentLinkedDeque<>();
+		a_oLogQueue = new ConcurrentLinkedDeque<>();
+		a_lReceivers = new ConcurrentLinkedDeque<>();
+		a_lSenders = new ConcurrentLinkedDeque<>();
 
 		a_oProducerConfiguration = new Settings(null);
 		a_oConsumerConfiguration = new Settings(null);
