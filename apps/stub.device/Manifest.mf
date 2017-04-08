@@ -1,0 +1,4 @@
+Manifest-Version: 0.1.1
+Class-Path: smartgrid.jar connections.extended.jar
+Main-Class: com.nativedevelopment.smartgrid.stub.device.StubDevice
+

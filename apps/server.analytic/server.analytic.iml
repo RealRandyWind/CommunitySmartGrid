@@ -13,6 +13,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="smartgrid" scope="PROVIDED" />
+    <orderEntry type="module" module-name="controllers.interfaces" scope="PROVIDED" />
+    <orderEntry type="module" module-name="connections.extended" scope="PROVIDED" />
+    <orderEntry type="module" module-name="connections.minimal" scope="PROVIDED" />
+    <orderEntry type="module" module-name="converters.extended" scope="PROVIDED" />
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
@@ -23,9 +27,5 @@
         <jarDirectory url="file://$MODULE_DIR$/../../tests/deps" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="connections.extended" scope="PROVIDED" />
-    <orderEntry type="module" module-name="connections.minimal" scope="PROVIDED" />
-    <orderEntry type="module" module-name="controllers" scope="PROVIDED" />
-    <orderEntry type="module" module-name="converters.extended" scope="PROVIDED" />
   </component>
 </module>

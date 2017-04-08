@@ -1,4 +1,4 @@
 Manifest-Version: 0.1.1
-Class-Path: smartgrid.jar connections.minimal.jar lib/*
+Class-Path: smartgrid.jar connections.minimal.jar
 Main-Class: com.nativedevelopment.smartgrid.client.device.DeviceClient
 

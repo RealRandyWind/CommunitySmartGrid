@@ -3,7 +3,7 @@ package com.nativedevelopment.smartgrid.server.analytic;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
 import com.nativedevelopment.smartgrid.connections.*;
-import com.nativedevelopment.smartgrid.controllers.IAnalyticServer;
+import com.nativedevelopment.smartgrid.controllers.interfaces.IAnalyticServer;
 import com.nativedevelopment.smartgrid.converters.DataToDocument;
 
 import java.io.Serializable;
@@ -20,6 +20,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	public static final String APP_SETTINGS_DEFAULT_PATH = "server.analytic.settings";
 	public static final String APP_DUMP_DEFAULT_PATH = "server.analytic.dump";
 	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCERRABBITMQ_PREFIX = "action.control.producer.rabbitmq.";
+	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCERUDP_PREFIX = "action.control.producer.udp.";
+	public static final String APP_CONNECTION_ACTIONCONTROLPRODUCERTCP_PREFIX = "action.control.producer.tcp.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERRABBITMQ_PREFIX = "data.realtime.consumer.rabbitmq.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERUDP_PREFIX = "data.realtime.consumer.udp.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERTCP_PREFIX = "data.realtime.consumer.tcp.";
@@ -32,6 +34,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	private UDPConsumerConnection a_oDataRealtimeConsumerUDP = null;
 	private TCPConsumerConnection a_oDataRealtimeConsumerTCP = null;
 	private RabbitMQProducerConnection a_oActionControlProducerRabbitMQ = null;
+	private UDPProducerConnection a_oActionControlProducerUDP = null;
+	private TCPProducerConnection a_oActionControlProducerTCP = null;
 	private MongoDBStoreConnection a_oResultStore = null;
 	private RMIControllerListenerConnection a_oControllerListener = null;
 

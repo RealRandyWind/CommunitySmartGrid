@@ -2,7 +2,7 @@ package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connections.RMIControllerCallerConnection;
-import com.nativedevelopment.smartgrid.controllers.IAnalyticServer;
+import com.nativedevelopment.smartgrid.controllers.interfaces.IAnalyticServer;
 
 import java.util.UUID;
 
