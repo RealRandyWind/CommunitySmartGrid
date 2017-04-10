@@ -2,7 +2,7 @@ package com.nativedevelopment.smartgrid.tests;
 
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.connections.RMIControllerCallerConnection;
-import com.nativedevelopment.smartgrid.controllers.interfaces.IAnalyticServer;
+import com.nativedevelopment.smartgrid.controllers.interfaces.IAnalyticServerController;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ public class GUIAnalyticServerStub extends AServerStub {
 	private RMIControllerCallerConnection a_oControllerCaller = null;
 
 	private IPromise a_oPromise = null;
-	private IAnalyticServer a_oControllerStub = null;
+	private IAnalyticServerController a_oControllerStub = null;
 
 	private String a_sExchange = null;
 
@@ -46,7 +46,7 @@ public class GUIAnalyticServerStub extends AServerStub {
 			while(!a_bIsStop) {
 				a_oTimeOut.Now();
 				if(!a_oPromise.IsDone()) { continue; }
-				a_oControllerStub = (IAnalyticServer) a_oPromise.Get();
+				a_oControllerStub = (IAnalyticServerController) a_oPromise.Get();
 				a_mLogManager.Log("\"%s\" %s", 0
 						,a_sExchange
 						,a_oControllerStub.Notify(GetIdentifier().toString()));

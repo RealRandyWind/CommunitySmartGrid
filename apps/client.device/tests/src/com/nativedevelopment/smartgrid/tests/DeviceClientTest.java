@@ -30,7 +30,6 @@ public class DeviceClientTest implements ITestCase {
 		a_lDataQueue = new ConcurrentLinkedDeque<>();
 		a_lActionQueue = new ConcurrentLinkedDeque<>();
 		a_lResultQueue = new ConcurrentLinkedDeque<>();
-		a_oController = new ControllerServerAnalyticStub();
 	}
 
 	@After
@@ -43,7 +42,7 @@ public class DeviceClientTest implements ITestCase {
 		a_mLogManager.Test("begin",0);
 		AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"localhost","localhost",5672,27017,5675,55539,1099);
 		oAnalyticServerStub.SetQueues(null,a_lDataQueue,a_lActionQueue,a_lResultQueue);
-		oAnalyticServerStub.SetControllers(a_oController);
+		oAnalyticServerStub.SetControllers(ControllerServerAnalyticStubController.GetInstance());
 		oAnalyticServerStub.Start();
 		a_oDeviceClientThread.start();
 		Thread.sleep(5000);

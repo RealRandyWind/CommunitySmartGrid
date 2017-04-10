@@ -1,4 +1,4 @@
-package com.nativedevelopment.smartgrid.controllers.interfaces;
+package com.nativedevelopment.smartgrid.client.device;
 
 import com.nativedevelopment.smartgrid.IController;
 

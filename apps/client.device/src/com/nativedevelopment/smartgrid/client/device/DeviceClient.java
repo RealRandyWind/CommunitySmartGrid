@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class DeviceClient extends Main implements IConfigurable {
+public class DeviceClient extends Main implements IConfigurable, IDeviceClient {
 	public static final String SETTINGS_KEY_IDENTIFIER = "identifier";
 	public static final String SETTINGS_KEY_CHECKTIMELOWERBOUND = "checktime.lowerbound";
 	public static final String SETTINGS_KEY_CHECKTIMEUPPERBOUND = "checktime.upperbound";
@@ -36,7 +36,7 @@ public class DeviceClient extends Main implements IConfigurable {
 	private Deque<Serializable> a_lActionQueue = null; // TODO IAction
 	private Map<UUID, Serializable> a_lActionMap = null; // TODO iAction -> IInstruction
 
-	protected DeviceClient() {
+	private DeviceClient() {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_oTimeOut = new TimeOut();

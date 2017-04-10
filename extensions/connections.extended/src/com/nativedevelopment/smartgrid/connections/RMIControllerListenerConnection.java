@@ -72,6 +72,9 @@ public class RMIControllerListenerConnection extends Connection{
 				oStub = UnicastRemoteObject.exportObject(a_oRemote, a_iRemotePort);
 			}
 
+			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %b, %b, caller }\n",MLogManager.MethodName()
+					,GetIdentifier().toString(), a_sRemoteAddress, a_iRemotePort, a_sExchange, a_bIsRebind, a_bIsForceUnExport);
+
 			while (!IsClose()) {
 				a_oTimeOut.Now();
 				if(a_bIsRebind || !Fx_Contains(a_sExchange,oRegistry.list())) {

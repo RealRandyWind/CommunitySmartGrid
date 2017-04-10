@@ -1,5 +1,6 @@
 Manifest-Version: 0.1.1
-Class-Path: smartgrid.jar controllers.interfaces.jar
+Class-Path: smartgrid.jar controllers.interfaces.jar connections.exten
+ ded.jar
 Main-Class: com.nativedevelopment.smartgrid.stub.server.analytic.gui.S
  tubServerAnalyticGUI
 

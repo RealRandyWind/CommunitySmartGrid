@@ -3,8 +3,8 @@ package com.nativedevelopment.smartgrid.server.analytic;
 import com.nativedevelopment.smartgrid.*;
 import com.nativedevelopment.smartgrid.Package;
 import com.nativedevelopment.smartgrid.connections.*;
-import com.nativedevelopment.smartgrid.controllers.interfaces.IAnalyticServer;
 import com.nativedevelopment.smartgrid.converters.DataToDocument;
+import com.nativedevelopment.smartgrid.server.analytic.controllers.AnalyticServerController;
 
 import java.io.Serializable;
 import java.util.Deque;
@@ -50,7 +50,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	private Deque<Serializable> a_lActionQueue = null;
 	private Deque<Serializable> a_lResultQueue = null;
 
-	protected AnalyticServer() {
+	private AnalyticServer() {
 		a_mLogManager = MLogManager.GetInstance();
 		a_mSettingsManager = MSettingsManager.GetInstance();
 		a_oTimeOut = new TimeOut();
@@ -116,7 +116,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		a_oControllerListener = new RMIControllerListenerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_CONTROLLERLISTENER_PREFIX);
-		a_oControllerListener.SetRemote(this);
+		a_oControllerListener.SetRemote(AnalyticServerController.GetInstance());
 		a_oControllerListener.Configure(oAnalyticServerSettings);
 
 		oAnalyticServerSettings.SetKeyPrefix("");
@@ -201,11 +201,5 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		Main oApplication = AnalyticServer.GetInstance();
 		int iEntryReturn = oApplication.Entry();
 		System.exit(iEntryReturn);
-	}
-
-	@Override
-	public String Notify(String sMessage) {
-		a_mLogManager.Log("call from \"%s\"",0,sMessage);
-		return String.format("reply to \"%s\"",sMessage);
 	}
 }

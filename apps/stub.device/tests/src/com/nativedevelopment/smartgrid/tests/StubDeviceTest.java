@@ -11,12 +11,10 @@ import java.io.Serializable;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import static org.junit.Assert.*;
-
 public class StubDeviceTest implements ITestCase {
     StubDevice a_oApplication = null;
     MLogManager a_mLogManager = null;
-    Thread a_oDeviceClientThread = null;
+    Thread a_oStubDeviceThread = null;
 
     Deque<Serializable> a_lDataQueue = null;
     Deque<Serializable> a_lActionQueue = null;
@@ -26,13 +24,12 @@ public class StubDeviceTest implements ITestCase {
     @Before
     public void setUp() throws Exception {
         a_oApplication = (StubDevice)StubDevice.GetInstance();
-        a_oDeviceClientThread = new Thread(() -> a_oApplication.Entry());
+        a_oStubDeviceThread = new Thread(() -> a_oApplication.Entry());
         a_mLogManager = MLogManager.GetInstance();
         a_mLogManager.SetUp();
         a_lDataQueue = new ConcurrentLinkedDeque<>();
         a_lActionQueue = new ConcurrentLinkedDeque<>();
         a_lResultQueue = new ConcurrentLinkedDeque<>();
-        a_oController = new ControllerServerAnalyticStub();
     }
 
     @After
@@ -45,13 +42,13 @@ public class StubDeviceTest implements ITestCase {
         a_mLogManager.Test("begin",0);
         AnalyticServerStub oAnalyticServerStub = new AnalyticServerStub(null,"localhost","localhost",5672,27017,5675,55539,1099);
         oAnalyticServerStub.SetQueues(null,a_lDataQueue,a_lActionQueue,a_lResultQueue);
-        oAnalyticServerStub.SetControllers(a_oController);
+        oAnalyticServerStub.SetControllers(ControllerServerAnalyticStubController.GetInstance());
         oAnalyticServerStub.Start();
-        a_oDeviceClientThread.start();
+        a_oStubDeviceThread.start();
         Thread.sleep(5000);
         oAnalyticServerStub.Stop();
         a_oApplication.Exit();
-        a_oDeviceClientThread.join();
+        a_oStubDeviceThread.join();
         a_mLogManager.Test("end",0);
     }
 

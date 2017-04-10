@@ -74,7 +74,7 @@ public abstract class AServerStub implements Runnable {
 	public static final ISettings NewDataRealtimeConsumerSettingsUDP(String sLocal, int iPort, String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ROUTEID,iRoute);
-		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
+		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,4096);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
 		oSettings.Set(UDPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
@@ -86,7 +86,7 @@ public abstract class AServerStub implements Runnable {
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_ROUTEID,iRoute);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALADDRESS,sLocal);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_LOCALPORT,iPort);
-		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,64);
+		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_BUFFERCAPACITY,4096);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_ISPACKAGEUNWRAP,false);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		oSettings.Set(TCPConsumerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
@@ -150,7 +150,7 @@ public abstract class AServerStub implements Runnable {
 	public static final ISettings NewActionControlProducerSettingsTCP(String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_ROUTEID, iRoute);
-		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY, 64);
+		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY, 4096);
 		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		oSettings.Set(TCPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);
@@ -161,7 +161,7 @@ public abstract class AServerStub implements Runnable {
 	public static final ISettings NewActionControlProducerSettingsUDP(String iRoute, UUID iSettings) {
 		ISettings oSettings = new Settings(iSettings);
 		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_ROUTEID, iRoute);
-		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY, 64);
+		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_BUFFERCAPACITY, 4096);
 		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMELOWERBOUND,5);
 		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_CHECKTIMEUPPERBOUND,20000);
 		oSettings.Set(UDPProducerConnection.SETTINGS_KEY_DELTACHECKUPPERBOUND,500);

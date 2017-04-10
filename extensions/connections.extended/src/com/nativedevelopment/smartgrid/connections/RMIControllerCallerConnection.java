@@ -58,6 +58,8 @@ public class RMIControllerCallerConnection extends Connection {
 	public void Run() {
 		try {
 			Registry oRegistry = LocateRegistry.getRegistry(a_sRemoteAddress, a_iRemotePort);
+			System.out.printf("_DEBUG: %s@%s { %s:%d, %s, %b, caller }\n",MLogManager.MethodName()
+					,GetIdentifier().toString(), a_sRemoteAddress, a_iRemotePort, a_sExchange, a_bIsRebind);
 			while (!IsClose()) {
 				a_oTimeOut.Now();
 				if((a_oRemote == null || a_bIsRebind) && Fx_Contains(a_sExchange, oRegistry.list())) {

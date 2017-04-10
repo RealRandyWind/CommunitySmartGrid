@@ -34,7 +34,7 @@ public final class AnalyticServerStub extends AServerStub {
 	private Deque<Serializable> a_lRemotes = null;
 
 	/* Other */
-	private IController a_oController = null;
+	private Controller a_oController = null;
 	private DataToDocument a_oConverter = null;
 
 	public AnalyticServerStub(UUID oIdentifier, String sRemote, String sLocal, int iPortRabbit, int iPortMongo, int iPortUDP, int iPortTCP, int iPortRMI) {
@@ -97,8 +97,7 @@ public final class AnalyticServerStub extends AServerStub {
 		a_oActionProducerTCP.SetRemoteQueue(a_lRemotes);
 	}
 
-	public void SetControllers(IController oController) {
-		a_oController = oController;
+	public void SetControllers(Controller oController) {
 		a_oControllerListener.SetRemote(oController);
 	}
 

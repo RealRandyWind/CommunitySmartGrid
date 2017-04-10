@@ -2,7 +2,7 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../../bin/stub.device" />
-    <output-test url="file://$MODULE_DIR$/../../test/bin/stub.device" />
+    <output-test url="file://$MODULE_DIR$/../../tests/bin/stub.device" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
