@@ -1,8 +1,8 @@
 identifier = null
 directory.working = null
-checktime.lowerbound = 20
-checktime.upperbound = 400
-checktime.delta = 20
+checktime.lowerbound = 500
+checktime.upperbound = 4000
+checktime.delta = 50
 controller.caller.isrebind = false
 controller.caller.remote.port = 1099
 controller.caller.remote.address = "localhost"
