@@ -79,6 +79,7 @@ public class DeviceClient extends Main implements IConfigurable {
 		oDeviceClientSettings.SetKeyPrefix(APP_CONNECTION_ACTIONCONTROLCONSUMER_PREFIX);
 		a_oActionControlConsumer.SetToQueue(a_lActionQueue);
 		a_oActionControlConsumer.Configure(oDeviceClientSettings);
+		a_oActionControlConsumer.SetRoutingKey(GetIdentifier().toString());
 
 		// TODO store date to mongodb
 
@@ -123,7 +124,6 @@ public class DeviceClient extends Main implements IConfigurable {
 	public void Configure(ISettings oConfigurations) {
 		Serializable oIdentifier = oConfigurations.Get(SETTINGS_KEY_IDENTIFIER);
 		a_oIdentifier = oIdentifier == null ? UUID.randomUUID() : UUID.fromString((String)oIdentifier);
-		oConfigurations.Set(SETTINGS_KEY_IDENTIFIER,oIdentifier.toString());
 		a_oTimeOut.SetLowerBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMELOWERBOUND));
 		a_oTimeOut.SetUpperBound((int)oConfigurations.Get(SETTINGS_KEY_CHECKTIMEUPPERBOUND));
 		a_oTimeOut.SetDelta((int)oConfigurations.Get(SETTINGS_KEY_DELTACHECKUPPERBOUND));

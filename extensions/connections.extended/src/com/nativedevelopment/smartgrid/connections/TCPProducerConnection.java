@@ -18,6 +18,7 @@ public class TCPProducerConnection extends Connection {
 
 	private int a_nBufferCapacity = 0;
 	private int a_nDeltaConnections = 0;
+	private String a_sRoutingKey = null;
 
 	protected TimeOut a_oTimeOut = null;
 	protected Deque<Serializable> a_lRemoteQueue = null;
@@ -36,6 +37,10 @@ public class TCPProducerConnection extends Connection {
 
 	public void SetFromQueue(Deque<Serializable> lFromQueue) {
 		a_lFromQueue = lFromQueue;
+	}
+
+	public void SetRoutingKey(String sRoutingKey) {
+		a_sRoutingKey = sRoutingKey;
 	}
 
 	private void Fx_EstablishConnections() throws Exception {

@@ -45,6 +45,10 @@ public class RabbitMQProducerConnection extends Connection {
 		a_oTimeOut = new TimeOut();
 	}
 
+	public void SetRoutingKey(String sRoutingKey) {
+		a_sRoutingKey = sRoutingKey;
+	}
+
 	private Serializable Fx_Produce() throws Exception {
 		if(a_lFromQueue == null) { return null; }
 		Serializable ptrSerializable = a_lFromQueue.pollFirst();

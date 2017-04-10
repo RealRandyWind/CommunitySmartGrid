@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DeviceClientTest implements ITestCase {
 	DeviceClient a_oApplication = null;

@@ -48,6 +48,10 @@ public class RabbitMQConsumerConnection extends Connection {
 		a_lToQueue = lToQueue;
 	}
 
+	public void SetRoutingKey(String sRoutingKey) {
+		a_sRoutingKey = sRoutingKey;
+	}
+
 	private void Fx_Consume(byte[] rawBytes) throws Exception {
 		if(a_lToQueue == null) { return; }
 		Serializable ptrSerializable = Serializer.Deserialize(rawBytes,0);

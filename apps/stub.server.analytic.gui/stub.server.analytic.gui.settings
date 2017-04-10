@@ -1,0 +1,10 @@
+identifier = null
+directory.working = null
+checktime.lowerbound = 5
+checktime.upperbound = 20000
+checktime.delta = 500
+controller.caller.isrebind = false
+controller.caller.remote.port = 1099
+controller.caller.remote.adress = "localhost"
+controller.caller.exchange = "f89a1319-c937-4305-a6b5-d51b88e80e7e"
+controller.caller.checktime.lowerbound = 2000

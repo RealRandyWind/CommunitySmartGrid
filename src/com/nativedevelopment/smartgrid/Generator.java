@@ -34,6 +34,22 @@ public final class Generator {
 		return null;
 	}
 
+	public static boolean NextBoolean() {
+		return a_oRandom.nextBoolean();
+	}
+
+	public static int NextInteger(int nMin, int nMax) {
+		return a_oRandom.nextInt(nMax - nMin) + nMin;
+	}
+
+	public static double NextDouble(double dMin, double dMax) {
+		return a_oRandom.nextDouble() * (dMax - dMin) + dMin;
+	}
+
+	public static double NextNormal(double dMean, double dDeviation) {
+		return a_oRandom.nextGaussian() * dDeviation + dMean;
+	}
+
 	public static IData GenerateDataSensor(UUID iSensor, int nTuples) {
 		/* create attributes */
 		String[] lAttributes = new String[4];

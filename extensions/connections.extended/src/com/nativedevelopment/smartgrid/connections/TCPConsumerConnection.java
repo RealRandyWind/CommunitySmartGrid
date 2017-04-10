@@ -23,6 +23,7 @@ public class TCPConsumerConnection extends Connection {
 	private int a_nLocalPort = 0;
 	private int a_nBufferCapacity = 0;
 	private boolean a_bIsPackageUnwrap = false;
+	private String a_sRoutingKey = null;
 
 	protected TimeOut a_oTimeOut = null;
 	protected Deque<Serializable> a_lToQueue = null;
@@ -36,6 +37,10 @@ public class TCPConsumerConnection extends Connection {
 
 	public void SetToQueue(Deque<Serializable> lToQueue) {
 		a_lToQueue = lToQueue;
+	}
+
+	public void SetRoutingKey(String sRoutingKey) {
+		a_sRoutingKey = sRoutingKey;
 	}
 
 	private void Fx_AcceptConnection(SocketChannel oChannel) throws Exception {
