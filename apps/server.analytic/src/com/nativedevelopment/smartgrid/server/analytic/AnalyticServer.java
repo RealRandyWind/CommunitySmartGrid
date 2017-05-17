@@ -26,6 +26,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERUDP_PREFIX = "data.realtime.consumer.udp.";
 	public static final String APP_CONNECTION_DATAREAILTIMECONSUMERTCP_PREFIX = "data.realtime.consumer.tcp.";
 	public static final String APP_CONNECTION_RESULTSTORE_PREFIX = "result.store.";
+	public static final String APP_CONNECTION_DATASTORE_PREFIX = "data.store.";
 	public static final String APP_CONNECTION_CONTROLLERLISTENER_PREFIX = "controller.listener.";
 
 	private MLogManager a_mLogManager = null;
@@ -37,6 +38,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 	private UDPProducerConnection a_oActionControlProducerUDP = null;
 	private TCPProducerConnection a_oActionControlProducerTCP = null;
 	private MongoDBStoreConnection a_oResultStore = null;
+	private MongoDBStoreConnection a_oDataStore = null;
 	private RMIControllerListenerConnection a_oControllerListener = null;
 
 	private UUID a_oIdentifier = null;
@@ -48,7 +50,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 	private Deque<Serializable> a_lDataQueue = null;
 	private Deque<Serializable> a_lActionQueue = null;
-	private Deque<Serializable> a_lResultQueue = null;
+	private Deque<Serializable> a_lResultStoreQueue = null;
+	private Deque<Serializable> a_lDataStoreQueue = null;
 
 	private AnalyticServer() {
 		a_mLogManager = MLogManager.GetInstance();
@@ -66,6 +69,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		a_oControllerListener.Close();
 		a_oResultStore.Close();
+		a_oDataStore.Close();
 		a_oActionControlProducerRabbitMQ.Close();
 		a_oDataRealtimeConsumerTCP.Close();
 		a_oDataRealtimeConsumerUDP.Close();
@@ -87,7 +91,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		a_lDataQueue = new ConcurrentLinkedDeque<>();
 		a_lActionQueue = new ConcurrentLinkedDeque<>();
-		a_lResultQueue = new ConcurrentLinkedDeque<>();
+		a_lResultStoreQueue = new ConcurrentLinkedDeque<>();
+		a_lDataStoreQueue = new ConcurrentLinkedDeque<>();
 
 		a_oDataRealtimeConsumerRabbitMQ = new RabbitMQConsumerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_DATAREAILTIMECONSUMERRABBITMQ_PREFIX);
@@ -111,8 +116,13 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 
 		a_oResultStore = new MongoDBStoreConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_RESULTSTORE_PREFIX);
-		a_oResultStore.SetFromQueue(a_lResultQueue);
+		a_oResultStore.SetFromQueue(a_lResultStoreQueue);
 		a_oResultStore.Configure(oAnalyticServerSettings);
+
+		a_oDataStore = new MongoDBStoreConnection(null);
+		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_DATASTORE_PREFIX);
+		a_oDataStore.SetFromQueue(a_lDataStoreQueue);
+		a_oDataStore.Configure(oAnalyticServerSettings);
 
 		a_oControllerListener = new RMIControllerListenerConnection(null);
 		oAnalyticServerSettings.SetKeyPrefix(APP_CONNECTION_CONTROLLERLISTENER_PREFIX);
@@ -125,6 +135,7 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		a_oDataRealtimeConsumerTCP.Open();
 		a_oActionControlProducerRabbitMQ.Open();
 		a_oResultStore.Open();
+		a_oDataStore.Open();
 		a_oControllerListener.Open();
 
 		a_mLogManager.Info("data.realtime.consumer (RabbitMQ) \"%s\"",0
@@ -141,6 +152,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 				,a_oActionControlProducerTCP.GetIdentifier().toString());*/
 		a_mLogManager.Info("result.store (MongoDB) \"%s\"",0
 				,a_oResultStore.GetIdentifier().toString());
+		a_mLogManager.Info("data.store (MongoDB) \"%s\"",0
+				,a_oDataStore.GetIdentifier().toString());
 		a_mLogManager.Info("controller.listener (RMI) \"%s\"",0
 				,a_oControllerListener.GetIdentifier().toString());
 
@@ -167,7 +180,8 @@ public class AnalyticServer extends Main implements IAnalyticServer, IConfigurab
 		IData oResult = Generator.GenerateResult(oData.GetIdentifier(),nTuple,lActions);
 		a_mLogManager.Log("produced action %s by %s",0,oAction.GetIdentifier(), GetIdentifier().toString());
 		a_lActionQueue.offerLast(oRoute.SetContent(oPackage));
-		a_lResultQueue.offerLast(a_oConverter.Do(oResult,0));
+		a_lDataStoreQueue.offerLast(a_oConverter.Do(oData,0));
+		a_lResultStoreQueue.offerLast(a_oConverter.Do(oResult,0));
 		a_bIsIdle = false;
 	}
 
