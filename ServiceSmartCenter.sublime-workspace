@@ -1,0 +1,1354 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"oP",
+				"oPointer"
+			],
+			[
+				"nP",
+				"nParticles"
+			],
+			[
+				"pt",
+				"ptrSize"
+			],
+			[
+				"EF",
+				"EFLAG"
+			],
+			[
+				"raw",
+				"rawFrom"
+			],
+			[
+				"ptr",
+				"ptrTo"
+			],
+			[
+				"l",
+				"lTemp"
+			],
+			[
+				"nLay",
+				"nLayer"
+			],
+			[
+				"la",
+				"lLayers"
+			],
+			[
+				"NN",
+				"NN_RESOLUTION"
+			],
+			[
+				"nL",
+				"nLayers"
+			],
+			[
+				"n",
+				"nNeurons"
+			],
+			[
+				"F",
+				"FConvNeuron"
+			],
+			[
+				"nRe",
+				"nResolution"
+			],
+			[
+				"Con",
+				"ConvNeuron"
+			],
+			[
+				"ic",
+				"inc\t#include \"…\""
+			],
+			[
+				"G",
+				"GenerateFTN"
+			],
+			[
+				"nT",
+				"nTransitivity"
+			],
+			[
+				"oT",
+				"oTo"
+			],
+			[
+				"o",
+				"oToReturn"
+			],
+			[
+				"FT",
+				"FTN"
+			],
+			[
+				"Monte",
+				"MonteCarlo"
+			],
+			[
+				"dM",
+				"dMin"
+			],
+			[
+				"i",
+				"iTask"
+			],
+			[
+				"p",
+				"printf\tprintf …"
+			],
+			[
+				"oC",
+				"oCopyTo"
+			],
+			[
+				"lF",
+				"lFTNPD"
+			],
+			[
+				"lFT",
+				"lFT0PD"
+			],
+			[
+				"Lf",
+				"lFT0D"
+			],
+			[
+				"nS",
+				"nSamples"
+			],
+			[
+				"GEN",
+				"GENERATE_NTESTS"
+			],
+			[
+				"NS",
+				"nSubject"
+			],
+			[
+				"iM",
+				"iMin"
+			],
+			[
+				"im",
+				"iMax"
+			],
+			[
+				"s",
+				"srand"
+			],
+			[
+				"Gere",
+				"GenerateFT0"
+			],
+			[
+				"D",
+				"DSRand"
+			],
+			[
+				"Prin",
+				"printf"
+			],
+			[
+				"oF",
+				"oFT0W"
+			],
+			[
+				"pte",
+				"ptrFile"
+			],
+			[
+				"Gene",
+				"GenerateFT0"
+			],
+			[
+				"iId",
+				"iIndex"
+			],
+			[
+				"oData",
+				"oDataRead"
+			],
+			[
+				"inc",
+				"inc\t#include \"…\""
+			],
+			[
+				"_",
+				"_oNext"
+			],
+			[
+				"print",
+				"printf\tprintf …"
+			],
+			[
+				"do",
+				"double"
+			],
+			[
+				"oD",
+				"oDeserialize"
+			],
+			[
+				"SE",
+				"SERIALIZE_TYPE_FMETA"
+			],
+			[
+				"Fx_",
+				"Fx_PrintData"
+			],
+			[
+				"S",
+				"SERIALIZE_UNITSIZE"
+			],
+			[
+				"oH",
+				"oHeader"
+			],
+			[
+				"nB",
+				"nBytes"
+			],
+			[
+				"nBytesOff",
+				"nBytesOffsetsName"
+			],
+			[
+				"nb",
+				"nBytessData"
+			],
+			[
+				"siz",
+				"sizeof"
+			],
+			[
+				"ma",
+				"malloc"
+			],
+			[
+				"en",
+				"entrys"
+			],
+			[
+				"pr",
+				"predicates"
+			],
+			[
+				"sy",
+				"symbole_stack"
+			],
+			[
+				"for",
+				"for\tFor Loop"
+			],
+			[
+				"sym",
+				"symbole"
+			],
+			[
+				"symbol",
+				"symbol_stack"
+			],
+			[
+				"T",
+				"TZERO"
+			],
+			[
+				"r",
+				"readfile\tRead File Into Vector"
+			],
+			[
+				"st",
+				"struct\tstruct"
+			],
+			[
+				"pa",
+				"particles"
+			],
+			[
+				"un",
+				"unsigned"
+			],
+			[
+				"EI",
+				"EXIT_SUCCES"
+			],
+			[
+				"FV",
+				"FValue"
+			],
+			[
+				"re",
+				"readfile\tRead File Into Vector"
+			],
+			[
+				"pdb",
+				"pdbParticle"
+			],
+			[
+				"map",
+				"mapParticles"
+			],
+			[
+				"Ne",
+				"NeuralNetworkBuilder"
+			],
+			[
+				"lC",
+				"lConnections"
+			],
+			[
+				"Neu",
+				"NeuralNetwork"
+			],
+			[
+				"BUILDER",
+				"BUILDERNEURON_HIDDEN"
+			],
+			[
+				"TLU",
+				"TLUNetworkBuilder"
+			],
+			[
+				"lCo",
+				"lConnections"
+			],
+			[
+				"a_l",
+				"a_lNeurons"
+			],
+			[
+				"a_lCo",
+				"a_lConnections"
+			],
+			[
+				"dD",
+				"dDecayBound"
+			],
+			[
+				"a_",
+				"a_nTemp"
+			],
+			[
+				"aL",
+				"a_lParms"
+			],
+			[
+				"a_n",
+				"a_nNeurons"
+			],
+			[
+				"dAc",
+				"dActivationHelper"
+			],
+			[
+				"a",
+				"a_nInputs"
+			],
+			[
+				"lP",
+				"a_lParms"
+			],
+			[
+				"nIN",
+				"nInputParms"
+			],
+			[
+				"v",
+				"vector\tstd::vector"
+			],
+			[
+				"Re",
+				"RESOURCE"
+			],
+			[
+				"in",
+				"intervals"
+			],
+			[
+				"de",
+				"define"
+			],
+			[
+				"d",
+				"define"
+			],
+			[
+				"t",
+				"tp\ttemplate <typename ${1:_InputIter}>"
+			],
+			[
+				"si",
+				"sigma"
+			],
+			[
+				"flo",
+				"float"
+			],
+			[
+				"bu",
+				"bufferSize"
+			],
+			[
+				"pixe",
+				"pixelShader"
+			],
+			[
+				"px",
+				"pixelPointer"
+			],
+			[
+				"pix",
+				"pixelShader"
+			],
+			[
+				"ker",
+				"kernelX"
+			],
+			[
+				"b",
+				"bufferSize"
+			],
+			[
+				"vid",
+				"VideoPlayer"
+			],
+			[
+				"norm",
+				"norm2"
+			],
+			[
+				"oOp",
+				"oOptions"
+			],
+			[
+				"func",
+				"funcs"
+			],
+			[
+				"f",
+				"func\tsmall function"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "apps/server.analytic/server.analytic.settings",
+			"settings":
+			{
+				"buffer_size": 3061,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "apps/stub.server.analytic.gui/stub.server.analytic.gui.settings",
+			"settings":
+			{
+				"buffer_size": 351,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "192.168.99.1\n10.0.75.1",
+			"settings":
+			{
+				"buffer_size": 22,
+				"line_ending": "Windows",
+				"name": "192.168.99.1"
+			}
+		},
+		{
+			"file": "apps/client.device/client.device.settings",
+			"settings":
+			{
+				"buffer_size": 1270,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "apps/stub.device/stub.device.settings",
+			"settings":
+			{
+				"buffer_size": 1931,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/C++11/C++11.sublime-build",
+					""
+				],
+				[
+					"Packages/C++11/C++11.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/CUDA C++/cuda-c++.sublime-build",
+					""
+				],
+				[
+					"Packages/CUDA C++/cuda-c++.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 288.0,
+		"last_filter": "c++",
+		"selected_items":
+		[
+			[
+				"c++",
+				"Set Syntax: C++"
+			],
+			[
+				"c",
+				"Set Syntax: C++"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"sy",
+				"Set Syntax: C++"
+			],
+			[
+				"C",
+				"Build With: C++11"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"Ins",
+				"Package Control: Install Package"
+			],
+			[
+				"jas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"Inst",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"java sc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set mat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Markdown",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"INstal",
+				"Package Control: Install Package"
+			],
+			[
+				"make",
+				"Set Syntax: Makefile Plus"
+			],
+			[
+				"mak",
+				"Build With: Make"
+			],
+			[
+				"C++",
+				"Set Syntax: C++11"
+			],
+			[
+				"lower",
+				"Convert Case: Lower Case"
+			],
+			[
+				"Matl",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"java",
+				"Set Syntax: Java"
+			],
+			[
+				"M",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"Ma",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"Mat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"ma",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"MAt",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"mat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"matl",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"cuda",
+				"Set Syntax: CUDA C++"
+			],
+			[
+				"INsta",
+				"Package Control: Install Package"
+			],
+			[
+				"MAT",
+				"Set Syntax: MATLAB"
+			]
+		],
+		"width": 808.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Repositories/communitysmartgrid",
+		"/D/Repositories/communitysmartgrid/apps",
+		"/D/Repositories/communitysmartgrid/apps/client.device",
+		"/D/Repositories/communitysmartgrid/apps/server.analytic",
+		"/D/Repositories/communitysmartgrid/apps/stub.device",
+		"/D/Repositories/communitysmartgrid/apps/stub.server.analytic.gui"
+	],
+	"file_history":
+	[
+		"/D/Repositories/communitysmartgrid/apps/stub.server.analytic.gui/stub.server.analytic.gui.settings",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/bin/stub.server.analytic.gui.settings",
+		"/D/Repositories/communitysmartgrid/rest/app/routes/result_routes.js",
+		"/C/Users/Gebruiker/Desktop/ParticleDB/ParticleDB.sublime-project",
+		"/D/Repositories/OpenParticleDatabase/web/package.json",
+		"/D/Repositories/OpenParticleDatabase/rest/package.json",
+		"/D/Repositories/communitysmartgrid/apps/server.analytic/server.analytic.settings",
+		"/D/Repositories/communitysmartgrid/apps/client.device/client.device.settings",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/app/routes/result_routes.js",
+		"/D/Repositories/communitysmartgrid/README.md",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/server.js",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/app/routes/index.js",
+		"/D/Repositories/communitysmartgrid/.gitignore",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/config/db.js",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/package.json",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/app/routes/note_routes.js",
+		"/C/Users/Gebruiker/Desktop/SmartServiceCenter/rest/index.js",
+		"/D/Repositories/OpenParticleDatabase/index.js",
+		"/C/Users/Gebruiker/Desktop/TestCode/make.bat",
+		"/C/Users/Gebruiker/Desktop/TestCode/simple_serializer.h",
+		"/C/Users/Gebruiker/Desktop/TestCode/simple_serializer.c",
+		"/C/Users/Gebruiker/Desktop/TestCode/FParticle.h",
+		"/C/Users/Gebruiker/Desktop/TestCode/ParticleDB.c",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/MonteCarlo.c",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/FTN.c",
+		"/C/Users/Gebruiker/Desktop/TestCode/FParticle.c",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/FTN.h",
+		"/C/Users/Gebruiker/Desktop/NeuralNetwork/ConvNet.c",
+		"/C/Users/Gebruiker/Desktop/NeuralNetwork/ConvNet.h",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/FTN.results.bin",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/yvonne_guess.data.attributes.description.text",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/simple_serializer.h",
+		"/C/Users/Gebruiker/Desktop/TestCode/main.c",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/main.c",
+		"/C/Users/Gebruiker/Desktop/MonteCarlo/MonteCarlo.sublime-project",
+		"/C/Users/Gebruiker/Desktop/TestCode/simple_serializer_v1.c",
+		"/C/Users/Gebruiker/Desktop/TestCode/ParticleDB.bin",
+		"/C/Users/Gebruiker/Desktop/TestCode/FParticle.cpp",
+		"/C/Users/Gebruiker/Desktop/TestCode/FParticle.hpp",
+		"/C/Users/Gebruiker/Desktop/TestCode/FData.bin",
+		"/C/Users/Gebruiker/Desktop/TestCode/serializer.c",
+		"/D/Online/Dropbox/Temp/openparticledb.txt",
+		"/C/Users/Gebruiker/Desktop/travlers.ns.txt",
+		"/C/Users/Gebruiker/AppData/Local/Temp/7zOCE1D64F3/MANIFEST.MF",
+		"/C/Users/Gebruiker/AppData/Local/Temp/7zOC676BF81/MANIFEST.MF",
+		"/D/Repositories/SciCom/assignment1/input/nw_test2.txt",
+		"/D/Repositories/SciCom/assignment1/nw3-output2.txt",
+		"/D/Repositories/SciCom/assignment1/nw3-output3.txt",
+		"/D/Repositories/SciCom/assignment1/input/nw_test3.txt",
+		"/D/Repositories/SciCom/nw3-output.txt",
+		"/D/Repositories/SciCom/nw3-output2.txt",
+		"/D/Repositories/SciCom/assignment1/nw3-output.txt",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/tblprs.cpp",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/lrprs.cpp",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/ctrtbls.cpp",
+		"/D/Online/Dropbox/Temp/Yvonne Acts/yvonne_guess.data.attributes.description.text",
+		"/D/Repositories/SignalsAndSystems/.gitignore",
+		"/D/Online/Dropbox/Project ScienceFlow/scienceflow/data.py",
+		"/D/Program Files (x86)/Steam/steamapps/common/Age2HD/resources/_common/drs/graphics/2.slp",
+		"/D/Repositories/SignalsAndSystems/Lab3/rootofunity.c",
+		"/D/Repositories/SignalsAndSystems/Lab3/make.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/Makefile",
+		"/D/Repositories/SignalsAndSystems/Lab3/make.bat",
+		"/D/Repositories/SignalsAndSystems/Lab3/dispcompfun.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/compfun.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/myconv.c",
+		"/D/Repositories/SignalsAndSystems/Lab3/main.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/rootofunity.mexw64",
+		"/D/Repositories/SignalsAndSystems/Lab2/ex1.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/modinverse.c",
+		"/D/Repositories/SignalsAndSystems/Lab3/modinverse.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/main.asv",
+		"/D/Repositories/SignalsAndSystems/Lab3/rootsofunity.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/cmodinverse.mexw64",
+		"/D/Repositories/SignalsAndSystems/Lab3/ex.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/myconv.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/initcl.bat",
+		"/D/Repositories/SignalsAndSystems/Lab3/initmex.m",
+		"/D/Repositories/SignalsAndSystems/Lab3/modinverse.mexw64",
+		"/D/Repositories/SignalsAndSystems/Lab3/rootofunity.mex",
+		"/C/Users/Gebruiker/Desktop/Particles.cpp",
+		"/D/Online/Dropbox/Project ScienceFlow/scienceflow/pipeline.py",
+		"/C/Users/Gebruiker/Desktop/Hehe.c",
+		"/D/Repositories/CompilerAndConstructions/Lab4/README.md",
+		"/D/Repositories/CompilerAndConstructions/Lab3/Makefile",
+		"/C/Users/Gebruiker/Downloads/minipas/Makefile",
+		"/C/Users/Gebruiker/Downloads/minipas/minipas.y",
+		"/C/Users/Gebruiker/Downloads/minipas/minipas.fl",
+		"/D/Online/Dropbox/Project ScienceFlow/scienceflow/scienceflow.py",
+		"/D/Online/Dropbox/Project ScienceFlow/scienceflow/nodes.py",
+		"/C/Users/Gebruiker/Downloads/Makefile(4)",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/2016/Session 2/nfa_extension.c",
+		"/D/Repositories/CompilerAndConstructions/Lab1/Makefile",
+		"/D/Repositories/onroadlocalization/src/DataTensor.hpp",
+		"/D/Repositories/ENGINE2D/scripts/BicycleGame.js",
+		"/D/Repositories/ENGINE2D/scripts/entry.js",
+		"/D/Repositories/ENGINE2D/scripts/engine/LogManager.js",
+		"/D/Repositories/ENGINE2D/scripts/engine/LoadingManager.js",
+		"/D/Repositories/ENGINE2D/scripts/engine/ENGINE2D.js",
+		"/D/Repositories/CompilerAndConstructions/Lab3/minipascal.fl",
+		"/D/Repositories/CompilerAndConstructions/Lab3/tests/gcd.in",
+		"/D/Repositories/CompilerAndConstructions/Lab3/tests/gcd.out.expected",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/2016/Session 2/nfa.c",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/2016/Session 2/intset.c",
+		"/C/Users/Gebruiker/Downloads/ex1.m",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/Tutorial/Solutions Tutorial 1/comment.fl",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/Tutorial/Solutions Tutorial 1/cnt.fl",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/Tutorial/Solutions Tutorial 1/cat.fl",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/Tutorial/Solutions Tutorial 1/bits.fl",
+		"/D/Repositories/OpenParticleDatabase/.gitignore",
+		"/C/Users/Gebruiker/Desktop/FindFloor(N,K)",
+		"/C/Users/Gebruiker/Desktop/plan.cpp",
+		"/D/Online/Dropbox/Studie/Compiler And Constructions/Sessions/morse.txt",
+		"/D/Repositories/OpenParticleDatabase/README.md",
+		"/D/Program Files (x86)/Steam/steamapps/common/Age2HD/resources/_common/ai/Economy/General Rules.per",
+		"/C/Users/Gebruiker/Desktop/NewPc",
+		"/D/Program Files (x86)/Epic Games/4.12/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h",
+		"/D/Program Files (x86)/Epic Games/4.12/Engine/Source/Runtime/Engine/Classes/Components/ShapeComponent.h",
+		"/C/Users/Gebruiker/Downloads/DataVector.hpp",
+		"/C/Users/Gebruiker/Downloads/Allocator.hpp",
+		"/C/Users/Gebruiker/Downloads/Allocator.cpp",
+		"/D/Program Files (x86)/Steam/steamapps/common/Elite Dangerous/Products/elite-dangerous-64/AppConfig.xml",
+		"/D/Program Files (x86)/Steam/steamapps/common/Elite Dangerous/Products/COMBAT_TUTORIAL_DEMO/AppConfig.xml",
+		"/D/Program Files (x86)/Steam/steamapps/common/Elite Dangerous/Products/FORC-FDEV-D-1010/AppConfig.xml",
+		"/D/Online/Dropbox/Temp/Code/EOAState.hpp",
+		"/D/Online/Dropbox/Temp/Code/RORLCodeNotes.cpp",
+		"/D/Projects/Games/Samples/StrategyGame/Source/StrategyGame/Public/StrategyGameMode.h",
+		"/D/Projects/Games/Samples/StrategyGame/Source/StrategyGame/Private/AI/StrategyAIController.cpp"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"C:\\Users\\Gebruiker\\Desktop\\MonteCarlo",
+			"D:\\Projects\\Games\\Samples\\StrategyGame\\Source",
+			"D:\\Projects\\Games\\Samples\\StrategyGame\\Source\\StrategyGame"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"particle",
+			"result",
+			"sFileResults",
+			"nResults",
+			"FTN",
+			"FTask",
+			"FTN",
+			"FTask",
+			"Faculty",
+			"NewSampleBuffer",
+			"NewFTNBuffer",
+			"oCopyTo",
+			"oCopyFrom",
+			"RRand",
+			"FT0",
+			"iTest",
+			"FT0",
+			"iParticle",
+			"FParticle",
+			"FChannel",
+			"FParticle",
+			"FChannel",
+			"FParticle",
+			",\n",
+			"}\n",
+			"FData",
+			"FMeta",
+			"FHeader",
+			"oMeta",
+			"ptrPointer",
+			"oDataWrite",
+			"ptrData",
+			"oDataWriteRead",
+			"oData",
+			"oSerialize",
+			"oData",
+			"oMeta",
+			"oHeadersData",
+			"\\lib\\",
+			"\\n",
+			"symbol",
+			"symbole",
+			"stack",
+			"state",
+			"top",
+			"dft",
+			"conv",
+			"(x, y)",
+			"make",
+			"DataVector",
+			"CapsuleComponent",
+			"CapsuleCompone",
+			"CapsuleComponene",
+			"collision",
+			"COLLISION_PROJECTILE",
+			"AO",
+			"SpawnActor",
+			"Spawn",
+			"AddChar",
+			"StaticClass",
+			"SpawnMinions",
+			"Spawn",
+			"res",
+			"TWO",
+			"ONE",
+			"THREE",
+			"TWO",
+			"THREE",
+			"BodyIstaince",
+			"MinionCharClass",
+			"StaticClass",
+			"Fx_AddNeuron",
+			");",
+			"Myriad Pro",
+			"AI",
+			"FStaticMeshComponentRecreateRenderStateContext",
+			"Mesh",
+			"MEsh",
+			"SkeletalMeshComponent",
+			"Mesh",
+			"MEsh",
+			"Mesh",
+			"MEsh",
+			"AIControllerClass",
+			"AI",
+			"IA",
+			"FHitResult",
+			"Hit",
+			"assert",
+			"DDMovie",
+			"(.)",
+			");",
+			"NeuralNetworkBuilder* ",
+			"Complete",
+			"TLUNeuronBuilder",
+			"TLUNetworkBuilder",
+			"TLUNeuronBuilder",
+			"TLUNetworkBuilder",
+			"TLUNETWORKBUILDER_HPP",
+			"TLUNetworkBuilder",
+			"TLUNETWORKBUILDER_HPP",
+			"TLUNetwork",
+			"TLUNetworkBuilder",
+			"TLUNETWORK",
+			"(\\w*)",
+			"\\w*",
+			"([A-Z])([A-Z]+)\\b",
+			"raw",
+			"DETAIL_",
+			"public static final int ",
+			"MSettingsManager",
+			"${className}",
+			"MLogManager",
+			"LoadFile",
+			"Load",
+			"load",
+			"libraries",
+			"tau",
+			"theta",
+			"Sigma",
+			"Theta",
+			"sdfreq",
+			"meanfreq",
+			"amphlidues",
+			"sdamph",
+			"meanamph",
+			"sdfreq",
+			"meanfreq"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"channel",
+			"particle",
+			"sFileClasses",
+			"nClasses",
+			"FConvNet",
+			"FConvNeuron",
+			"FConvNet",
+			"FConvNeuron",
+			"Factorial",
+			"SampleBuffer",
+			"NewSampleBuffer",
+			"lCopyTo",
+			"lCopyFrom",
+			"RandR",
+			"FTN",
+			"iTask",
+			"FTask",
+			"iTest",
+			"FT0",
+			"FTask",
+			"FSubject",
+			"FDisorder",
+			"FChannel",
+			"FParticle",
+			"_FHeader",
+			"lMeta",
+			"ptrRaw",
+			"oSerialize",
+			"oToPrint",
+			"ptrTo",
+			"oDataRead",
+			"oDataWrite",
+			"oData",
+			"oDeserialize",
+			"oSerialize",
+			"oHeadersName",
+			"./lib/",
+			" \\\\lib\\\\",
+			" \\lib\\",
+			" ",
+			"state",
+			"symbol",
+			"symbole_stack",
+			"symbole",
+			"state",
+			"idft",
+			"dft",
+			"(u, v)",
+			"DataTensor",
+			"THREE",
+			"TWO",
+			"ONE",
+			"TWO",
+			")\n{\n\treturn this;\n}\n",
+			");\n{\n\treturn this;\n}\n",
+			"BuilderAllocator",
+			"$L0",
+			"L$0",
+			")\n{\n\treturn 0;\n}\n",
+			")\n{\n\t\n}\n",
+			"NeuralNetworkBuilder* NeuralNetworkBuilder::",
+			"Convolution",
+			"NeuronBuilder",
+			"NeuralNetworkBuilder",
+			"NeuronBuilder",
+			"NeuralNetworkBuilder",
+			"NEURALNETWORKBUILDER_HPP",
+			"TLUNeuronBuilder",
+			"TLUNEURONBUILDER_HPP",
+			"TLUNetworkBuilder",
+			"TLUNETWORKBUILDER",
+			"\\U$1",
+			"\\L$1",
+			"$1\\L",
+			"\\L$1",
+			"L$1",
+			"$1\\L$2",
+			"",
+			"MConnectionManager",
+			"MSettingsManager",
+			"Theta",
+			"Tau",
+			"sdintr",
+			"meanintr",
+			"spikes",
+			"sdspks",
+			"meanspks",
+			"sdamph",
+			"meanamph",
+			"RNeuralNetwork",
+			"CNEURALNETWORK",
+			"CNeuralNetwork",
+			"activation",
+			"",
+			"Cuda",
+			"CUDA",
+			"Cuda",
+			"CUDA",
+			"Cuda"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "apps/server.analytic/server.analytic.settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3061,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2668,
+								2668
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "apps/stub.server.analytic.gui/stub.server.analytic.gui.settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 351,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12,
+								12
+							]
+						],
+						"settings":
+						{
+							"auto_name": "192.168.99.1",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "apps/client.device/client.device.settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1270,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								158,
+								158
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 4,
+					"file": "apps/stub.device/stub.device.settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1931,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								822,
+								822
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.5,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.hex_viewer_inspector":
+	{
+		"height": 124.0
+	},
+	"pinned_build_system": "",
+	"project": "ServiceSmartCenter.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 288.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
