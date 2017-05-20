@@ -2837,7 +2837,7 @@ function init_DataTables() {
 	sgData.forEach((e) => {
 		$('#datatable > tbody').append(`<tr>
 			<td>${e._identifier}</td>
-			<td>${e.timestamp}</td>
+			<td>${new Date(e.timestamp)}</td>
 			<td>${e.interval}</td>
 			<td>${e.activity}</td>
 			<td>${e.handled}</td>
@@ -2848,7 +2848,7 @@ function init_DataTables() {
 	sgResults.forEach((e) => {
 		$('#resulttable > tbody').append(`<tr>
 			<td>${e._identifier}</td>
-			<td>${e.timestamp}</td>
+			<td>${new Date(e.timestamp)}</td>
 			<td>${e.interval}</td>
 			<td>${e.activity}</td>
 			<td>${e.weight}</td>
@@ -3926,7 +3926,8 @@ function init_echarts() {
 			},
 			xAxis: [{
 				type: 'value',
-				scale: true
+				scale: true,
+				formatter: (params) => ''
 			}],
 			yAxis: [{
 				type: 'value',
@@ -3937,13 +3938,6 @@ function init_echarts() {
 				type: 'scatter',
 				tooltip: {
 					trigger: 'item',
-					formatter: function (params) {
-						if (params.value.length > 1) {
-							return params.seriesName + ' :<br/>' + params.value[0] + 'cm ' + params.value[1] + 'kg ';
-						} else {
-							return params.seriesName + ' :<br/>' + params.name + ' : ' + params.value + 'kg ';
-						}
-					}
 				},
 				data: sgData.map((e) => [e.timestamp, e.activity])
 			}]
