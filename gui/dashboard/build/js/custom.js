@@ -2850,7 +2850,6 @@ function init_DataTables() {
 			<td>${e._identifier}</td>
 			<td>${new Date(e.timestamp)}</td>
 			<td>${e.interval}</td>
-			<td>${e.activity}</td>
 			<td>${e.weight}</td>
 			<td>${e.flag}</td>
 		</tr>`);
@@ -3877,7 +3876,7 @@ function init_echarts() {
 	// 		yAxis: [{
 	// 			type: 'value'
 	// 		}],
-	// 		series: Object.entries(_.groupBy(sgData, '_identifier')).map((e) => ({ 
+	// 		series: Object.entries(_.groupBy(sgData, '_identifier')).map((e) => ({
 	// 			data: e[1].map((e) => e.activity),
 	// 			name: e[0],
 	// 			type: 'line',
@@ -3933,14 +3932,14 @@ function init_echarts() {
 				type: 'value',
 				scale: true
 			}],
-			series: [{
+			series: Object.entries(_.groupBy(sgData, '_identifier')).map((e) => ({
 				name: 'Activity',
 				type: 'scatter',
 				tooltip: {
 					trigger: 'item',
 				},
-				data: sgData.map((e) => [e.timestamp, e.activity])
-			}]
+				data: e[1].map((f) => [f.timestamp,f.activity])
+			}))
 		});
 
 	}
