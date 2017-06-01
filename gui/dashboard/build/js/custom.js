@@ -4937,10 +4937,15 @@ function init_echarts() {
 
 var sgData = null;
 var sgResults = null;
-$(document).ready(function () {
-	$.when($.ajax("/data"), $.ajax("/results")).done(function (res1, res2) {
-		sgData = JSON.parse(res1[0]);
-		sgResults = JSON.parse(res2[0]);
+
+$('#ipForm').submit(function(event) {
+	event.preventDefault();
+	serverIp = $(this).find('[name="ip"]').val();
+	var date = new Date();
+	date.setDate(date.getDate(-1));
+	$.when($.ajax(`http://${serverIp}/data?from=${date.getUTCDate()}`), $.ajax(`http://${serverIp}/results?from=${date.getUTCDate()}`)).done(function (res1, res2) {
+		sgData = res1[0];
+		sgResults = res2[0];
 		console.log(Object.entries(_.groupBy(sgData, '_identifier')).map((e) => ({ 
 				data: e[1].map((e) => e.activity),
 				name: e[0],
