@@ -3825,74 +3825,6 @@ function init_echarts() {
 
 	}
 
-	//echart Line
-
-	// if ($('#echart_line').length) {
-
-	// 	var echartLine = echarts.init(document.getElementById('echart_line'), theme);
-
-	// 	echartLine.setOption({
-	// 		title: {
-	// 			text: 'Line Graph',
-	// 			subtext: 'Subtitle'
-	// 		},
-	// 		tooltip: {
-	// 			trigger: 'axis'
-	// 		},
-	// 		legend: {
-	// 			x: 220,
-	// 			y: 40,
-	// 			data: ['Intent', 'Pre-order', 'Deal']
-	// 		},
-	// 		toolbox: {
-	// 			show: true,
-	// 			feature: {
-	// 				magicType: {
-	// 					show: true,
-	// 					title: {
-	// 						line: 'Line',
-	// 						bar: 'Bar',
-	// 						stack: 'Stack',
-	// 						tiled: 'Tiled'
-	// 					},
-	// 					type: ['line', 'bar', 'stack', 'tiled']
-	// 				},
-	// 				restore: {
-	// 					show: true,
-	// 					title: "Restore"
-	// 				},
-	// 				saveAsImage: {
-	// 					show: true,
-	// 					title: "Save Image"
-	// 				}
-	// 			}
-	// 		},
-	// 		calculable: true,
-	// 		xAxis: [{
-	// 			type: 'category',
-	// 			boundaryGap: false,
-	// 			data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-	// 		}],
-	// 		yAxis: [{
-	// 			type: 'value'
-	// 		}],
-	// 		series: Object.entries(_.groupBy(sgData, '_identifier')).map((e) => ({
-	// 			data: e[1].map((e) => e.activity),
-	// 			name: e[0],
-	// 			type: 'line',
-	// 			smooth: true,
-	// 			itemStyle: {
-	// 				normal: {
-	// 					areaStyle: {
-	// 						type: 'default'
-	// 					}
-	// 				}
-	// 			},
-	// 		}))
-	// 	});
-
-	// }
-
 	//echart Scatter
 
 	if ($('#echart_scatter').length) {
@@ -4937,10 +4869,15 @@ function init_echarts() {
 
 var sgData = null;
 var sgResults = null;
-$(document).ready(function () {
-	$.when($.ajax("/data"), $.ajax("/results")).done(function (res1, res2) {
-		sgData = JSON.parse(res1[0]);
-		sgResults = JSON.parse(res2[0]);
+
+$('#ipForm').submit(function(event) {
+	event.preventDefault();
+	serverIp = $(this).find('[name="ip"]').val();
+	var date = new Date();
+	date.setDate(date.getDate(-1));
+	$.when($.ajax(`http://${serverIp}/data?from=${date.getUTCDate()}`), $.ajax(`http://${serverIp}/results?from=${date.getUTCDate()}`)).done(function (res1, res2) {
+		sgData = res1[0];
+		sgResults = res2[0];
 		console.log(Object.entries(_.groupBy(sgData, '_identifier')).map((e) => ({ 
 				data: e[1].map((e) => e.activity),
 				name: e[0],
